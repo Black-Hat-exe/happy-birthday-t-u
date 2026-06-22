@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Open Graph Metadata for Rich Link Previews -->
     <meta property="og:title" content="A Special Birthday Surprise 🎁">
     <meta property="og:description" content="I engineered a custom digital experience just for you. Tap to open!">
-    <meta property="og:image" content="https://black-hat-exe.github.io/Birthday-Gift/mcqueen.jpg">
-    <meta property="og:url" content="https://black-hat-exe.github.io/Birthday-Gift/">
+    <meta property="og:image" content="https://black-hat-exe.github.io/happy-birthday-t-u/mcqueen.jpg">
+    <meta property="og:url" content="https://black-hat-exe.github.io/happy-birthday-t-u/">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#1a2a6c">
     <title>A Special Surprise</title>
@@ -51,8 +52,7 @@
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            max-width: 440px; width: 85%; text-align: center; box-sizing: border-box;
-            position: relative; /* For runaway button boundaries */
+            max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; 
         }
 
         h1 { font-weight: 300; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; }
@@ -75,37 +75,60 @@
         }
         button:active { transform: scale(0.96); }
 
-        /* Button Rows for Yes/No Logic */
-        .btn-row { display: flex; gap: 15px; justify-content: center; position: relative; }
+        .btn-row { display: flex; gap: 15px; justify-content: center; position: relative; flex-direction: column; }
         .btn-row button { margin-bottom: 0; }
-        
-        /* The Runaway Button */
-        #noBtn {
-            background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: none; position: relative; z-index: 100;
-        }
+        #noBtn { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: none; position: relative; z-index: 100; transition: transform 0.1s; }
+        .ghost-btn { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: none; margin-top: 20px; }
+        .ghost-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .hidden { display: none !important; }
 
         .error { color: #ff6b6b; font-size: 13px; margin-top: 10px; opacity: 0; transition: opacity 0.3s; height: 18px; }
         .error.show { opacity: 1; }
 
         /* Reveal Section Elements */
-        .car-container { 
-            margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); 
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
         .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
         .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; }
         .mcqueen-text { color: #ff4757; } .doc-text { color: #70a1ff; }
         .car-quote { font-style: italic; color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
 
         /* Personal Letter Box */
-        .personal-message {
-            background: rgba(0, 0, 0, 0.2); border-left: 3px solid rgba(255, 255, 255, 0.4);
-            padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left;
-        }
+        .personal-message { background: rgba(0, 0, 0, 0.2); border-left: 3px solid rgba(255, 255, 255, 0.4); padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left; }
         .personal-message p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; }
         .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #ffffff; text-align: right; }
 
+        /* --- THE INTERACTIVE CAKE CSS --- */
+        .cake-stage {
+            position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center;
+            margin: 20px 0; cursor: crosshair; touch-action: none; /* Prevents scrolling while swiping cake */
+        }
+        
+        .flame {
+            transform-origin: bottom center;
+            animation: flicker 0.6s ease-in-out infinite alternate;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+            100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+        }
+        
+        .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        
+        /* The CSS classes triggered by JavaScript */
+        .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
+        .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
+        .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
+
+        .swipe-hint {
+            font-size: 12px; color: #4ade80; letter-spacing: 2px; text-transform: uppercase;
+            animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%;
+            pointer-events: none; opacity: 0; transition: opacity 0.5s;
+        }
+        @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
+        .swipe-hint.visible { opacity: 1; }
+
+        /* Watermark */
         .watermark {
             position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08);
@@ -127,6 +150,7 @@
     <div class="watermark">Engineered by M. Ertaza</div>
 
     <div class="ui-layer">
+        <!-- STEP 1: WELCOME -->
         <div id="step-1" class="step-container active">
             <div class="glass-card">
                 <h1>Hello.</h1>
@@ -135,6 +159,7 @@
             </div>
         </div>
 
+        <!-- STEP 2: SECURITY CHECK -->
         <div id="step-2" class="step-container">
             <div class="glass-card">
                 <h2>Security Check</h2>
@@ -147,17 +172,19 @@
             </div>
         </div>
 
+        <!-- STEP 3: THE TEASE -->
         <div id="step-3" class="step-container">
             <div class="glass-card">
                 <h2>Hold on...</h2>
                 <p>Before I show you the surprise, I need to know... Are you actually excited for this?</p>
                 <div class="btn-row">
-                    <button id="yesBtnTease" onclick="goToStep('step-4')">YES!</button>
+                    <button id="yesBtnTease">YES!</button>
                     <button id="noBtn">No</button>
                 </div>
             </div>
         </div>
 
+        <!-- STEP 4: THE REVEAL -->
         <div id="step-4" class="step-container">
             <div class="glass-card" style="max-height: 85dvh; overflow-y: auto;">
                 <h1>Happy Birthday!</h1>
@@ -181,11 +208,59 @@
                     <div class="signature">- M. Ertaza</div>
                 </div>
                 
+                <!-- MOVES TO THE CAKE ROOM NOW -->
                 <button onclick="goToStep('step-5')" style="margin-top: 15px;">Continue</button>
             </div>
         </div>
 
+        <!-- STEP 5: THE INTERACTIVE CAKE ROOM (NEW) -->
         <div id="step-5" class="step-container">
+            <div class="glass-card">
+                <h2>Make a Wish!</h2>
+                <p id="cakeInstruction">Blow out the candles before we slice it!</p>
+                
+                <!-- Premium SVG Split Cake -->
+                <div class="cake-stage" id="cakeStage">
+                    <svg width="240" height="200" viewBox="0 0 240 200" id="theCake">
+                        <defs>
+                            <!-- The invisible bounding boxes that allow us to cut the cake in half -->
+                            <clipPath id="left-clip"><rect x="0" y="0" width="120" height="200" /></clipPath>
+                            <clipPath id="right-clip"><rect x="120" y="0" width="120" height="200" /></clipPath>
+                            
+                            <!-- Master drawing of the cake -->
+                            <g id="cake-drawing">
+                                <!-- Plate -->
+                                <ellipse cx="120" cy="180" rx="100" ry="15" fill="rgba(255,255,255,0.05)" />
+                                <!-- Bottom Tier -->
+                                <rect x="50" y="100" width="140" height="70" rx="10" fill="#a18cd1" />
+                                <path d="M 50 100 Q 73 125 96 100 Q 120 125 143 100 Q 166 125 190 100" fill="none" stroke="#fbc2eb" stroke-width="8" stroke-linecap="round" />
+                                <!-- Top Tier -->
+                                <rect x="75" y="40" width="90" height="60" rx="8" fill="#fbc2eb" />
+                                <path d="M 75 40 Q 97 60 120 40 Q 142 60 165 40" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+                                <!-- Candles -->
+                                <rect x="95" y="10" width="6" height="30" fill="#ffffff" />
+                                <rect x="139" y="10" width="6" height="30" fill="#ffffff" />
+                                <!-- Flames -->
+                                <path class="flame" d="M 98 8 Q 104 -5 98 -12 Q 92 -5 98 8" fill="#ffdd59" />
+                                <path class="flame" d="M 142 8 Q 148 -5 142 -12 Q 136 -5 142 8" fill="#ffdd59" />
+                            </g>
+                        </defs>
+
+                        <!-- We render the cake twice, masked perfectly down the middle -->
+                        <use href="#cake-drawing" clip-path="url(#left-clip)" id="cake-left" class="cake-half" />
+                        <use href="#cake-drawing" clip-path="url(#right-clip)" id="cake-right" class="cake-half" />
+                    </svg>
+                    
+                    <div class="swipe-hint" id="swipeHint">↓ Swipe down to slice ↓</div>
+                </div>
+
+                <button id="blowBtn" onclick="blowOutCandles()">Blow out candles 🌬️</button>
+                <button id="proceedToFinalBtn" class="hidden ghost-btn" onclick="goToStep('step-6')">Grab a slice and Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 6: THE FINAL RIGGED QUESTION -->
+        <div id="step-6" class="step-container">
             <div class="glass-card">
                 <h2>Just one last thing...</h2>
                 <p>Did you like your gift?</p>
@@ -195,100 +270,140 @@
                 </div>
             </div>
         </div>
+
+        <!-- STEP 7: THE GRAND FINALE -->
+        <div id="step-7" class="step-container">
+            <div class="glass-card">
+                <h1>Glad you liked it! 🎉</h1>
+                <p>Thank you for playing along with my little digital puzzle. I really hope this brought a smile to your face today.</p>
+                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 30px 0;">Have the best birthday ever!</p>
+                <button class="ghost-btn" onclick="location.reload()">Replay Experience</button>
+            </div>
+        </div>
     </div>
 
     <script>
         // --- ROUTING ENGINE ---
         function goToStep(stepId) {
-            initAudio(); 
-            playTone(440, 'sine', 0.08, 0.03); 
-            
+            initAudio(); playTone(440, 'sine', 0.08, 0.03); 
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
-            
             const nextStep = document.getElementById(stepId);
             if (nextStep) {
                 nextStep.classList.add('active');
-                if (stepId === 'step-2') {
-                    setTimeout(() => {
-                        const inputField = document.getElementById('secretInput');
-                        if (inputField) inputField.focus();
-                    }, 50);
-                }
+                if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); }
             }
         }
 
-        document.getElementById("startBtn").addEventListener("click", (e) => {
-            e.preventDefault(); goToStep('step-2');
+        document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
+
+        // --- THE "YES" BUTTON PRANK ---
+        let yesClickCount = 0;
+        document.getElementById("yesBtnTease").addEventListener("click", function(e) {
+            e.preventDefault(); initAudio(); yesClickCount++;
+            playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
+
+            if (yesClickCount === 1) { this.innerText = "Are you sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else if (yesClickCount === 2) { this.innerText = "Like, 100% sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); }
         });
 
-        // --- THE RUNAWAY BUTTON LOGIC ---
+        // --- THE RUNAWAY BUTTON ---
         const noBtn = document.getElementById('noBtn');
-        
         function dodge() {
-            // Calculate random X and Y translation coordinates
-            const randomX = Math.floor(Math.random() * 200) - 100; // -100px to 100px lateral
-            const randomY = Math.floor(Math.random() * 150) - 100; // Mostly upwards
-            
+            const randomX = Math.floor(Math.random() * 160) - 80; 
+            const randomY = Math.floor(Math.random() * 100) - 50; 
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            
-            // Play a little tick sound every time it runs away
             playTone(800, 'square', 0.05, 0.02);
         }
-
-        // Trigger dodge on hover (desktop) or touch (mobile)
         noBtn.addEventListener('mouseover', dodge);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevents them from actually clicking it before it moves
-            dodge();
-        });
-        // Just in case they somehow click it
-        noBtn.addEventListener('click', (e) => {
-            e.preventDefault(); dodge();
-        });
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
+        noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 
         // --- PASSWORD ENGINE ---
         function checkPassword() {
-            initAudio();
-            const input = document.getElementById("secretInput");
-            const errorMsg = document.getElementById("errorMsg");
-            const attempt = input.value.toLowerCase().trim();
-            if (attempt === "") return;
-
+            initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
+            const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
             const daysArray = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-            const today = new Date();
-            const correctAnswer = daysArray[today.getDay()];
+            const today = new Date(); const correctAnswer = daysArray[today.getDay()];
 
             if (attempt === correctAnswer) {
-                errorMsg.classList.remove("show");
-                input.blur(); 
-                playSuccessMelody();
-                goToStep('step-3'); // Sends them to the Tease Step instead of the Reveal
+                errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); goToStep('step-3'); 
             } else {
-                playErrorSound();
-                errorMsg.classList.add("show");
+                playErrorSound(); errorMsg.classList.add("show");
                 const group = document.querySelector('.input-group');
-                if(group) {
-                    group.style.transform = 'translateX(-8px)';
-                    setTimeout(() => group.style.transform = 'translateX(8px)', 100);
-                    setTimeout(() => group.style.transform = 'translateX(-4px)', 200);
-                    setTimeout(() => group.style.transform = 'translateX(0)', 300);
-                }
+                if(group) { group.style.transform = 'translateX(-8px)'; setTimeout(() => group.style.transform = 'translateX(8px)', 100); setTimeout(() => group.style.transform = 'translateX(-4px)', 200); setTimeout(() => group.style.transform = 'translateX(0)', 300); }
+            }
+        }
+        document.getElementById("unlockBtn").addEventListener("click", checkPassword);
+        document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
+
+        // --- CAKE INTERACTION ENGINE (NEW) ---
+        let candlesBlown = false;
+        let cakeCut = false;
+
+        function blowOutCandles() {
+            initAudio();
+            // A gentle, descending "whoosh" sound for blowing
+            playTone(300, 'sine', 0.4, 0.05);
+            setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
+
+            // Trigger CSS to kill flames
+            document.getElementById('theCake').classList.add('blown-out');
+            candlesBlown = true;
+
+            // Update UI
+            document.getElementById('blowBtn').classList.add('hidden');
+            document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!";
+            document.getElementById('swipeHint').classList.add('visible');
+        }
+
+        // Touch/Mouse tracking for the Cake Swipe
+        const cakeStage = document.getElementById('cakeStage');
+        let startY = 0;
+
+        // Mobile Touch
+        cakeStage.addEventListener('touchstart', (e) => { if(candlesBlown && !cakeCut) startY = e.touches[0].clientY; }, {passive: true});
+        cakeStage.addEventListener('touchmove', handleSwipe, {passive: true});
+        // Desktop Mouse
+        cakeStage.addEventListener('mousedown', (e) => { if(candlesBlown && !cakeCut) startY = e.clientY; });
+        cakeStage.addEventListener('mousemove', (e) => { if (e.buttons === 1) handleSwipe(e); });
+
+        function handleSwipe(e) {
+            if (!candlesBlown || cakeCut) return;
+            let currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            // If they swiped down at least 50 pixels over the cake
+            if (currentY - startY > 50) {
+                cutCake();
             }
         }
 
-        document.getElementById("unlockBtn").addEventListener("click", checkPassword);
-        document.getElementById("secretInput").addEventListener("keypress", (e) => {
-            if (e.key === "Enter") { e.preventDefault(); checkPassword(); }
-        });
+        function cutCake() {
+            cakeCut = true;
+            document.getElementById('swipeHint').classList.remove('visible');
+            
+            // High-pitched "Slice" tick sound
+            playTone(1200, 'triangle', 0.1, 0.05);
+
+            // CSS transformation magically splits the SVG vector
+            document.getElementById('theCake').classList.add('sliced');
+            document.getElementById('cakeInstruction').innerText = "Looks delicious!";
+            
+            // Show the button to move to the finale
+            setTimeout(() => {
+                document.getElementById('proceedToFinalBtn').classList.remove('hidden');
+                playSuccessMelody();
+            }, 600);
+        }
 
         // --- FINAL REVEAL TRIGGER ---
         function triggerFinale() {
-            // Hide the final card
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
-            
-            // Play massive success sound and start confetti
+            const finalStep = document.getElementById('step-7');
+            if (finalStep) finalStep.classList.add('active');
+
             playSuccessMelody();
             setTimeout(startCelebration, 200);
         }
@@ -318,14 +433,10 @@
         }
 
         function playSuccessMelody() {
-            playTone(523.25, 'sine', 0.5, 0.04); 
-            setTimeout(() => playTone(659.25, 'sine', 0.5, 0.04), 120); 
-            setTimeout(() => playTone(783.99, 'sine', 0.8, 0.06), 240); 
+            playTone(523.25, 'sine', 0.5, 0.04); setTimeout(() => playTone(659.25, 'sine', 0.5, 0.04), 120); setTimeout(() => playTone(783.99, 'sine', 0.8, 0.06), 240); 
         }
 
-        function playErrorSound() {
-            playTone(240, 'sine', 0.3, 0.08); setTimeout(() => playTone(190, 'sine', 0.4, 0.08), 120);
-        }
+        function playErrorSound() { playTone(240, 'sine', 0.3, 0.08); setTimeout(() => playTone(190, 'sine', 0.4, 0.08), 120); }
 
         // --- CELEBRATION ORBS ---
         function startCelebration() {
@@ -340,34 +451,20 @@
 
             for(let i=0; i<80; i++) { 
                 particles.push({
-                    x: Math.random() * canvas.width,
-                    y: canvas.height + Math.random() * 300,
-                    radius: Math.random() * 5 + 1,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    speed: Math.random() * 2 + 1,
-                    drift: Math.random() * 2 - 1,
-                    opacity: Math.random() * 0.6 + 0.4
+                    x: Math.random() * canvas.width, y: canvas.height + Math.random() * 300,
+                    radius: Math.random() * 5 + 1, color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 2 + 1, drift: Math.random() * 2 - 1, opacity: Math.random() * 0.6 + 0.4
                 });
             }
 
             function animate() {
-                requestAnimationFrame(animate);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
+                requestAnimationFrame(animate); ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
-                    p.y -= p.speed;
-                    p.x += p.drift;
-                    
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.globalAlpha = p.opacity;
-                    ctx.shadowBlur = 15; ctx.shadowColor = p.color;
-                    ctx.fill();
-                    
-                    if(p.y < -20) {
-                        p.y = canvas.height + 20; p.x = Math.random() * canvas.width;
-                    }
+                    p.y -= p.speed; p.x += p.drift;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
+                    ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
+                    if(p.y < -20) { p.y = canvas.height + 20; p.x = Math.random() * canvas.width; }
                 });
             }
             animate();
