@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Open Graph Metadata for Rich Link Previews -->
     <meta property="og:title" content="A Special Birthday Surprise 🎁">
     <meta property="og:description" content="I engineered a custom digital experience just for you. Tap to open!">
     <meta property="og:image" content="https://black-hat-exe.github.io/happy-birthday-t-u/mcqueen.jpg">
@@ -53,7 +52,17 @@
             backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; 
+            
+            /* Firefox Custom Scrollbar Support */
+            scrollbar-width: thin; 
+            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
         }
+
+        /* --- PREMIUM WEBKIT SCROLLBAR --- */
+        .glass-card::-webkit-scrollbar { width: 5px; }
+        .glass-card::-webkit-scrollbar-track { background: transparent; }
+        .glass-card::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .glass-card::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
         h1 { font-weight: 300; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; }
         h2 { font-weight: 400; font-size: 20px; margin-bottom: 15px; letter-spacing: -0.3px; }
@@ -100,7 +109,7 @@
         /* --- THE INTERACTIVE CAKE CSS --- */
         .cake-stage {
             position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center;
-            margin: 20px 0; cursor: crosshair; touch-action: none; /* Prevents scrolling while swiping cake */
+            margin: 20px 0; cursor: crosshair; touch-action: none;
         }
         
         .flame {
@@ -115,7 +124,6 @@
         
         .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         
-        /* The CSS classes triggered by JavaScript */
         .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
         .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
         .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
@@ -150,7 +158,6 @@
     <div class="watermark">Engineered by M. Ertaza</div>
 
     <div class="ui-layer">
-        <!-- STEP 1: WELCOME -->
         <div id="step-1" class="step-container active">
             <div class="glass-card">
                 <h1>Hello.</h1>
@@ -159,7 +166,6 @@
             </div>
         </div>
 
-        <!-- STEP 2: SECURITY CHECK -->
         <div id="step-2" class="step-container">
             <div class="glass-card">
                 <h2>Security Check</h2>
@@ -172,7 +178,6 @@
             </div>
         </div>
 
-        <!-- STEP 3: THE TEASE -->
         <div id="step-3" class="step-container">
             <div class="glass-card">
                 <h2>Hold on...</h2>
@@ -184,7 +189,6 @@
             </div>
         </div>
 
-        <!-- STEP 4: THE REVEAL -->
         <div id="step-4" class="step-container">
             <div class="glass-card" style="max-height: 85dvh; overflow-y: auto;">
                 <h1>Happy Birthday!</h1>
@@ -208,49 +212,36 @@
                     <div class="signature">- M. Ertaza</div>
                 </div>
                 
-                <!-- MOVES TO THE CAKE ROOM NOW -->
                 <button onclick="goToStep('step-5')" style="margin-top: 15px;">Continue</button>
             </div>
         </div>
 
-        <!-- STEP 5: THE INTERACTIVE CAKE ROOM (NEW) -->
         <div id="step-5" class="step-container">
             <div class="glass-card">
                 <h2>Make a Wish!</h2>
                 <p id="cakeInstruction">Blow out the candles before we slice it!</p>
                 
-                <!-- Premium SVG Split Cake -->
                 <div class="cake-stage" id="cakeStage">
                     <svg width="240" height="200" viewBox="0 0 240 200" id="theCake">
                         <defs>
-                            <!-- The invisible bounding boxes that allow us to cut the cake in half -->
                             <clipPath id="left-clip"><rect x="0" y="0" width="120" height="200" /></clipPath>
                             <clipPath id="right-clip"><rect x="120" y="0" width="120" height="200" /></clipPath>
                             
-                            <!-- Master drawing of the cake -->
                             <g id="cake-drawing">
-                                <!-- Plate -->
                                 <ellipse cx="120" cy="180" rx="100" ry="15" fill="rgba(255,255,255,0.05)" />
-                                <!-- Bottom Tier -->
                                 <rect x="50" y="100" width="140" height="70" rx="10" fill="#a18cd1" />
                                 <path d="M 50 100 Q 73 125 96 100 Q 120 125 143 100 Q 166 125 190 100" fill="none" stroke="#fbc2eb" stroke-width="8" stroke-linecap="round" />
-                                <!-- Top Tier -->
                                 <rect x="75" y="40" width="90" height="60" rx="8" fill="#fbc2eb" />
                                 <path d="M 75 40 Q 97 60 120 40 Q 142 60 165 40" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
-                                <!-- Candles -->
                                 <rect x="95" y="10" width="6" height="30" fill="#ffffff" />
                                 <rect x="139" y="10" width="6" height="30" fill="#ffffff" />
-                                <!-- Flames -->
                                 <path class="flame" d="M 98 8 Q 104 -5 98 -12 Q 92 -5 98 8" fill="#ffdd59" />
                                 <path class="flame" d="M 142 8 Q 148 -5 142 -12 Q 136 -5 142 8" fill="#ffdd59" />
                             </g>
                         </defs>
-
-                        <!-- We render the cake twice, masked perfectly down the middle -->
                         <use href="#cake-drawing" clip-path="url(#left-clip)" id="cake-left" class="cake-half" />
                         <use href="#cake-drawing" clip-path="url(#right-clip)" id="cake-right" class="cake-half" />
                     </svg>
-                    
                     <div class="swipe-hint" id="swipeHint">↓ Swipe down to slice ↓</div>
                 </div>
 
@@ -259,7 +250,6 @@
             </div>
         </div>
 
-        <!-- STEP 6: THE FINAL RIGGED QUESTION -->
         <div id="step-6" class="step-container">
             <div class="glass-card">
                 <h2>Just one last thing...</h2>
@@ -271,7 +261,6 @@
             </div>
         </div>
 
-        <!-- STEP 7: THE GRAND FINALE -->
         <div id="step-7" class="step-container">
             <div class="glass-card">
                 <h1>Glad you liked it! 🎉</h1>
@@ -338,63 +327,38 @@
         document.getElementById("unlockBtn").addEventListener("click", checkPassword);
         document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
-        // --- CAKE INTERACTION ENGINE (NEW) ---
+        // --- CAKE INTERACTION ENGINE ---
         let candlesBlown = false;
         let cakeCut = false;
 
         function blowOutCandles() {
             initAudio();
-            // A gentle, descending "whoosh" sound for blowing
-            playTone(300, 'sine', 0.4, 0.05);
-            setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
-
-            // Trigger CSS to kill flames
-            document.getElementById('theCake').classList.add('blown-out');
-            candlesBlown = true;
-
-            // Update UI
+            playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
+            document.getElementById('theCake').classList.add('blown-out'); candlesBlown = true;
             document.getElementById('blowBtn').classList.add('hidden');
             document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!";
             document.getElementById('swipeHint').classList.add('visible');
         }
 
-        // Touch/Mouse tracking for the Cake Swipe
         const cakeStage = document.getElementById('cakeStage');
         let startY = 0;
-
-        // Mobile Touch
         cakeStage.addEventListener('touchstart', (e) => { if(candlesBlown && !cakeCut) startY = e.touches[0].clientY; }, {passive: true});
         cakeStage.addEventListener('touchmove', handleSwipe, {passive: true});
-        // Desktop Mouse
         cakeStage.addEventListener('mousedown', (e) => { if(candlesBlown && !cakeCut) startY = e.clientY; });
         cakeStage.addEventListener('mousemove', (e) => { if (e.buttons === 1) handleSwipe(e); });
 
         function handleSwipe(e) {
             if (!candlesBlown || cakeCut) return;
             let currentY = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            // If they swiped down at least 50 pixels over the cake
-            if (currentY - startY > 50) {
-                cutCake();
-            }
+            if (currentY - startY > 50) cutCake();
         }
 
         function cutCake() {
-            cakeCut = true;
-            document.getElementById('swipeHint').classList.remove('visible');
-            
-            // High-pitched "Slice" tick sound
+            cakeCut = true; document.getElementById('swipeHint').classList.remove('visible');
             playTone(1200, 'triangle', 0.1, 0.05);
-
-            // CSS transformation magically splits the SVG vector
             document.getElementById('theCake').classList.add('sliced');
             document.getElementById('cakeInstruction').innerText = "Looks delicious!";
-            
-            // Show the button to move to the finale
-            setTimeout(() => {
-                document.getElementById('proceedToFinalBtn').classList.remove('hidden');
-                playSuccessMelody();
-            }, 600);
+            setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
         }
 
         // --- FINAL REVEAL TRIGGER ---
@@ -403,9 +367,7 @@
             steps.forEach(step => step.classList.remove('active'));
             const finalStep = document.getElementById('step-7');
             if (finalStep) finalStep.classList.add('active');
-
-            playSuccessMelody();
-            setTimeout(startCelebration, 200);
+            playSuccessMelody(); setTimeout(startCelebration, 200);
         }
 
         // --- AUDIO ENGINE ---
@@ -413,17 +375,12 @@
         let actx = null;
 
         function initAudio() { 
-            try {
-                if (!actx && AudioContext) actx = new AudioContext();
-                if (actx && actx.state === 'suspended') actx.resume();
-            } catch (e) {}
+            try { if (!actx && AudioContext) actx = new AudioContext(); if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {}
         }
 
         function playTone(freq, type, duration, vol=0.05) {
             try {
-                if (!actx) return;
-                const osc = actx.createOscillator();
-                const gain = actx.createGain();
+                if (!actx) return; const osc = actx.createOscillator(); const gain = actx.createGain();
                 osc.connect(gain); gain.connect(actx.destination);
                 osc.type = type; osc.frequency.setValueAtTime(freq, actx.currentTime);
                 gain.gain.setValueAtTime(vol, actx.currentTime);
@@ -443,8 +400,7 @@
             const canvas = document.getElementById('confettiCanvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
-            canvas.style.display = 'block';
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            canvas.style.display = 'block'; canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
             const particles = [];
             const colors = ['#ffffff', '#ff9a9e', '#a18cd1', '#fbc2eb', '#ff4757', '#70a1ff'];
