@@ -214,7 +214,7 @@
                 
                 <div class="personal-message">
                     <p>Dear Friend,</p>
-                    <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.</p>
+                    <p>For someone special, an ordinary greeting simply wasn't enough. So I transformed a birthday wish into an experience—crafted line by line, interaction by interaction, just for you.</p>
                     <div class="signature">- M. Ertaza</div>
                 </div>
                 <button id="impossibleContinueBtn" style="margin-top: 15px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">Continue</button>
@@ -273,8 +273,24 @@
             <div class="glass-card">
                 <h1>Mission accomplished. 🎉</h1>
                 <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Every line of code on this page was written with one goal—to make you smile today. I hope this little surprise made your birthday a bit more memorable. Wishing you happiness, success, and countless wonderful moments in the year ahead.</p>
-                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 30px 0;">Happy Birthday! 🎂❤️</p>
-                <button class="ghost-btn" onclick="location.reload()">Replay Experience</button>
+                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 20px 0;">Happy Birthday! 🎂❤️</p>
+                
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
+                    
+                    <form action="https://formsubmit.co/sertaza27@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                        
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
+                        <input type="hidden" name="_next" value="https://black-hat-exe.github.io/happy-birthday-t-u/">
+                        
+                        <textarea name="Message" placeholder="What did you think?..." rows="2" required style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none; resize: none;"></textarea>
+                        
+                        <button type="submit" style="padding: 12px; font-size: 14px; background: #4ade80; color: #000; box-shadow: none; margin-bottom: 0;">Send Message 💌</button>
+                    </form>
+                </div>
+
+                <button class="ghost-btn" onclick="location.reload()" style="margin-top: 0;">Replay Experience</button>
             </div>
         </div>
 
@@ -334,14 +350,13 @@
         document.getElementById("unlockBtn").addEventListener("click", checkPassword);
         document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
-        // THE "YES" BUTTON PRANK
         let yesClickCount = 0;
         document.getElementById("yesBtnTease").addEventListener("click", function(e) {
             e.preventDefault(); initAudio(); yesClickCount++;
             playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
             if (yesClickCount === 1) { this.innerText = "Are you sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
             else if (yesClickCount === 2) { this.innerText = "Like, 100% sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
-            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); } // Sends to Gift Boxes
+            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); }
         });
 
         const noBtn = document.getElementById('noBtn');
@@ -353,7 +368,6 @@
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
         noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 
-        // --- NEW: THE GIFT BOX LOGIC ---
         let boxesOpened = 0;
         function openBox(el) {
             if (el.style.pointerEvents === 'none') return;
@@ -379,13 +393,11 @@
             }
         }
 
-        // Move to Reveal and Spawn Balloons
         function goToReveal() {
             goToStep('step-5');
-            setTimeout(spawnBalloons, 500); // Wait for card to fade in
+            setTimeout(spawnBalloons, 500); 
         }
 
-        // --- NEW: FLOATING BALLOONS LOGIC ---
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
             for(let i=0; i<6; i++) {
@@ -394,14 +406,13 @@
                 balloon.className = 'balloon';
                 balloon.style.left = (Math.random() * 70 + 10) + '%';
                 balloon.style.bottom = '-60px';
-                balloon.style.pointerEvents = 'auto'; // allow clicking
+                balloon.style.pointerEvents = 'auto'; 
                 balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`;
                 balloon.style.animationDelay = `${Math.random() * 2}s`;
                 
                 balloon.onclick = function(e) {
-                    initAudio(); playTone(900, 'triangle', 0.05); // Pop sound
+                    initAudio(); playTone(900, 'triangle', 0.05); 
                     
-                    // Create floating "+100 Happiness" text
                     let popText = document.createElement('div');
                     popText.className = 'pop-text';
                     popText.innerText = '+100 Happiness';
@@ -418,32 +429,27 @@
             }
         }
 
-        // --- NEW: KA-CHOW MODE EASTER EGG ---
         let mcQueenClicks = 0;
         document.getElementById('mcqueenImg').addEventListener('click', function() {
             initAudio(); mcQueenClicks++;
             playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
             if (mcQueenClicks === 5) {
                 document.body.classList.add('shake');
-                
-                // Huge Honk Sound
                 playTone(200, 'square', 0.6, 0.3);
                 setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
                 
-                // Visual Change
                 const title = document.getElementById('mcqueenTitle');
                 title.innerText = "⚡ KA-CHOW MODE ACTIVATED ⚡";
                 title.style.color = "#fbbf24";
                 title.style.fontSize = "18px";
                 title.style.fontWeight = "600";
                 
-                startCelebration(); // Explode confetti early
+                startCelebration(); 
                 
                 setTimeout(() => document.body.classList.remove('shake'), 500);
             }
         });
 
-        // --- THE IMPOSSIBLE CONTINUE BUTTON ---
         let impossibleClicks = 0;
         const impossibleBtn = document.getElementById("impossibleContinueBtn");
         if (impossibleBtn) {
@@ -459,12 +465,11 @@
                     e.preventDefault(); playTone(800, 'triangle', 0.1);
                     this.style.transform = "translateY(0) scale(1)"; this.innerText = "Okay okay 😂 Continue";
                 } else {
-                    goToStep('step-6'); // Moves to Cake Room
+                    goToStep('step-6'); 
                 }
             });
         }
 
-        // --- MICROPHONE BLOW DETECTION ---
         let micStream = null;
         document.getElementById("micBtn").addEventListener("click", async function(e) {
             e.preventDefault();
@@ -494,7 +499,6 @@
             } catch (err) { alert("Microphone access blocked. No worries, just tap the fallback button!"); }
         });
 
-        // --- CAKE INTERACTION ENGINE ---
         let candlesBlown = false; let cakeCut = false;
         function blowOutCandles() {
             if (candlesBlown) return;
@@ -526,7 +530,6 @@
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
         }
 
-        // --- FINAL REVEAL TRIGGER ---
         function triggerFinale() {
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
@@ -534,10 +537,9 @@
             if (finalStep) finalStep.classList.add('active');
             playSuccessMelody(); setTimeout(startCelebration, 200);
             
-            setTimeout(triggerSecretEnding, 9000); // Secret ending after 9s
+            setTimeout(triggerSecretEnding, 12000); // 12 seconds to give them time to read the form before it fades
         }
 
-        // --- SECRET ENDING ENGINE ---
         function triggerSecretEnding() {
             const canvas = document.getElementById('confettiCanvas');
             if (canvas) canvas.style.display = 'none';
@@ -561,7 +563,6 @@
             }, 2000); 
         }
 
-        // --- AUDIO ENGINE ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let actx = null;
         function initAudio() { try { if (!actx && AudioContext) actx = new AudioContext(); if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {} }
@@ -578,7 +579,6 @@
         function playSuccessMelody() { playTone(523.25, 'sine', 0.5, 0.04); setTimeout(() => playTone(659.25, 'sine', 0.5, 0.04), 120); setTimeout(() => playTone(783.99, 'sine', 0.8, 0.06), 240); }
         function playErrorSound() { playTone(240, 'sine', 0.3, 0.08); setTimeout(() => playTone(190, 'sine', 0.4, 0.08), 120); }
 
-        // --- PHYSICS-ENABLED CELEBRATION ORBS ---
         let mouseX = -1000, mouseY = -1000;
         window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
         window.addEventListener('touchmove', e => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
