@@ -28,7 +28,6 @@
             user-select: none; -webkit-user-select: none; perspective: 1000px; 
         }
 
-        /* Screen Shake for Easter Egg */
         body.shake { animation: screenShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes screenShake { 10%, 90% { transform: translate3d(-5px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-10px, 0, 0); } 40%, 60% { transform: translate3d(10px, 0, 0); } }
 
@@ -85,15 +84,12 @@
         .error { color: #ff6b6b; font-size: 13px; margin-top: 10px; opacity: 0; transition: opacity 0.3s; height: 18px; }
         .error.show { opacity: 1; }
 
-        /* Gift Boxes CSS */
         .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
         .gift-box:active { transform: scale(0.9); }
 
-        /* Cars & Letter Elements */
         .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
         .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; }
         
-        /* McQueen Drive In Animation */
         .step-container.active .drive-in { animation: driveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes driveIn { 0% { transform: translateX(-150%) skewX(15deg); opacity: 0; } 80% { transform: translateX(5%) skewX(-5deg); opacity: 1; } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
 
@@ -104,13 +100,11 @@
         .personal-message p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; }
         .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #ffffff; text-align: right; }
 
-        /* Floating Balloons CSS */
         .balloon { position: absolute; font-size: 35px; cursor: pointer; z-index: 50; transition: transform 0.1s; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); touch-action: manipulation; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity: 0; } 10% { opacity: 1; } 50% { transform: translateY(-40vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity: 1; } }
         .pop-text { position: absolute; color: #4ade80; font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
-        /* Interactive Cake */
         .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
         .flame { transform-origin: bottom center; animation: flicker 0.6s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; }
         @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); opacity: 0.9; } 100% { transform: scale(1.1) rotate(2deg); opacity: 1; } }
@@ -123,7 +117,6 @@
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
-        /* The Secret Ending CSS */
         #step-9 {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999;
             display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center;
@@ -134,7 +127,6 @@
         .caret { display: inline-block; width: 8px; height: 18px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Watermark */
         .watermark { position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 16px; border-radius: 20px; font-size: 10px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; z-index: 1000; pointer-events: none; }
         @media (max-width: 350px) { .watermark { display: none; } }
         #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 20; display: none; }
@@ -214,9 +206,10 @@
                 
                 <div class="personal-message">
                     <p>Dear Friend,</p>
-                    <p>For someone special, an ordinary greeting simply wasn't enough. So I transformed a birthday wish into an experience—crafted line by line, interaction by interaction, just for you.</p>
+                    <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.</p>
                     <div class="signature">- M. Ertaza</div>
                 </div>
+                
                 <button id="impossibleContinueBtn" style="margin-top: 15px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">Continue</button>
             </div>
             <div id="balloonContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden;"></div>
@@ -278,19 +271,19 @@
                 <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
                     
-                    <form action="https://formsubmit.co/sertaza27@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
-                        
+                    <form id="feedbackForm" action="https://formsubmit.co/sertaza27@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
-                        <input type="hidden" name="_next" value="https://black-hat-exe.github.io/happy-birthday-t-u/">
                         
+                        <input type="text" name="Name" placeholder="Your Name" required style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
+                        <input type="email" name="Email" placeholder="Your Email (optional)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
                         <textarea name="Message" placeholder="What did you think?..." rows="2" required style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none; resize: none;"></textarea>
                         
                         <button type="submit" style="padding: 12px; font-size: 14px; background: #4ade80; color: #000; box-shadow: none; margin-bottom: 0;">Send Message 💌</button>
                     </form>
                 </div>
 
-                <button class="ghost-btn" onclick="location.reload()" style="margin-top: 0;">Replay Experience</button>
+                <button id="replayBtn" class="ghost-btn" style="margin-top: 0;">Replay Experience</button>
             </div>
         </div>
 
@@ -298,6 +291,7 @@
             <div class="secret-text">
                 <span id="typewriter"></span><span class="caret"></span>
             </div>
+            <button id="trueReloadBtn" onclick="location.reload()" style="display:none; margin-top: 40px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-family: inherit;">Start Over</button>
         </div>
     </div>
 
@@ -373,57 +367,33 @@
             if (el.style.pointerEvents === 'none') return;
             boxesOpened++;
             initAudio(); playTone(600 + (boxesOpened*100), 'triangle', 0.1);
-            el.style.pointerEvents = 'none';
-            el.style.transform = 'scale(0.8)';
+            el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)';
             const feedback = document.getElementById('box-feedback');
             
-            if (boxesOpened === 1) { 
-                feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; 
-                el.innerText = "🌟"; 
-            }
-            else if (boxesOpened === 2) { 
-                feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; 
-                el.innerText = "⚡"; 
-            }
+            if (boxesOpened === 1) { feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; el.innerText = "🌟"; }
+            else if (boxesOpened === 2) { feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; el.innerText = "⚡"; }
             else if (boxesOpened === 3) {
-                feedback.innerText = "You found the real surprise! 🎉"; 
-                el.innerText = "🎉";
-                document.getElementById('boxContinueBtn').classList.remove('hidden');
-                playSuccessMelody();
+                feedback.innerText = "You found the real surprise! 🎉"; el.innerText = "🎉";
+                document.getElementById('boxContinueBtn').classList.remove('hidden'); playSuccessMelody();
             }
         }
 
-        function goToReveal() {
-            goToStep('step-5');
-            setTimeout(spawnBalloons, 500); 
-        }
+        function goToReveal() { goToStep('step-5'); setTimeout(spawnBalloons, 500); }
 
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
             for(let i=0; i<6; i++) {
                 let balloon = document.createElement('div');
-                balloon.innerText = '🎈';
-                balloon.className = 'balloon';
-                balloon.style.left = (Math.random() * 70 + 10) + '%';
-                balloon.style.bottom = '-60px';
-                balloon.style.pointerEvents = 'auto'; 
-                balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`;
-                balloon.style.animationDelay = `${Math.random() * 2}s`;
+                balloon.innerText = '🎈'; balloon.className = 'balloon';
+                balloon.style.left = (Math.random() * 70 + 10) + '%'; balloon.style.bottom = '-60px'; balloon.style.pointerEvents = 'auto'; 
+                balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`; balloon.style.animationDelay = `${Math.random() * 2}s`;
                 
                 balloon.onclick = function(e) {
                     initAudio(); playTone(900, 'triangle', 0.05); 
-                    
-                    let popText = document.createElement('div');
-                    popText.className = 'pop-text';
-                    popText.innerText = '+100 Happiness';
-                    popText.style.left = (e.clientX - 40) + 'px';
-                    popText.style.top = (e.clientY - 20) + 'px';
-                    document.body.appendChild(popText);
-                    setTimeout(() => popText.remove(), 1000);
-
-                    this.innerText = '💥';
-                    this.style.pointerEvents = 'none';
-                    setTimeout(() => this.remove(), 150);
+                    let popText = document.createElement('div'); popText.className = 'pop-text'; popText.innerText = '+100 Happiness';
+                    popText.style.left = (e.clientX - 40) + 'px'; popText.style.top = (e.clientY - 20) + 'px';
+                    document.body.appendChild(popText); setTimeout(() => popText.remove(), 1000);
+                    this.innerText = '💥'; this.style.pointerEvents = 'none'; setTimeout(() => this.remove(), 150);
                 };
                 container.appendChild(balloon);
             }
@@ -431,22 +401,11 @@
 
         let mcQueenClicks = 0;
         document.getElementById('mcqueenImg').addEventListener('click', function() {
-            initAudio(); mcQueenClicks++;
-            playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
+            initAudio(); mcQueenClicks++; playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
             if (mcQueenClicks === 5) {
-                document.body.classList.add('shake');
-                playTone(200, 'square', 0.6, 0.3);
-                setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
-                
-                const title = document.getElementById('mcqueenTitle');
-                title.innerText = "⚡ KA-CHOW MODE ACTIVATED ⚡";
-                title.style.color = "#fbbf24";
-                title.style.fontSize = "18px";
-                title.style.fontWeight = "600";
-                
-                startCelebration(); 
-                
-                setTimeout(() => document.body.classList.remove('shake'), 500);
+                document.body.classList.add('shake'); playTone(200, 'square', 0.6, 0.3); setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
+                const title = document.getElementById('mcqueenTitle'); title.innerText = "⚡ KA-CHOW MODE ACTIVATED ⚡"; title.style.color = "#fbbf24"; title.style.fontSize = "18px"; title.style.fontWeight = "600";
+                startCelebration(); setTimeout(() => document.body.classList.remove('shake'), 500);
             }
         });
 
@@ -455,18 +414,10 @@
         if (impossibleBtn) {
             impossibleBtn.addEventListener("click", function(e) {
                 impossibleClicks++; initAudio();
-                if (impossibleClicks === 1) {
-                    e.preventDefault(); playTone(600, 'triangle', 0.1);
-                    this.style.transform = "translateY(-40px) scale(0.7)"; this.innerText = "Wait, not yet...";
-                } else if (impossibleClicks === 2) {
-                    e.preventDefault(); playTone(700, 'triangle', 0.1);
-                    this.style.transform = "translateY(30px) scale(1.1)"; this.innerText = "Catch me! 🏃‍♂️";
-                } else if (impossibleClicks === 3) {
-                    e.preventDefault(); playTone(800, 'triangle', 0.1);
-                    this.style.transform = "translateY(0) scale(1)"; this.innerText = "Okay okay 😂 Continue";
-                } else {
-                    goToStep('step-6'); 
-                }
+                if (impossibleClicks === 1) { e.preventDefault(); playTone(600, 'triangle', 0.1); this.style.transform = "translateY(-40px) scale(0.7)"; this.innerText = "Wait, not yet..."; } 
+                else if (impossibleClicks === 2) { e.preventDefault(); playTone(700, 'triangle', 0.1); this.style.transform = "translateY(30px) scale(1.1)"; this.innerText = "Catch me! 🏃‍♂️"; } 
+                else if (impossibleClicks === 3) { e.preventDefault(); playTone(800, 'triangle', 0.1); this.style.transform = "translateY(0) scale(1)"; this.innerText = "Okay okay 😂 Continue"; } 
+                else { goToStep('step-6'); }
             });
         }
 
@@ -478,17 +429,13 @@
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const analyser = audioCtx.createAnalyser();
                 const microphone = audioCtx.createMediaStreamSource(micStream);
-                microphone.connect(analyser);
-                analyser.fftSize = 256;
+                microphone.connect(analyser); analyser.fftSize = 256;
                 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-                this.innerText = "Listening... Blow into your mic! 🌬️";
-                this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff165d";
+                this.innerText = "Listening... Blow into your mic! 🌬️"; this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff165d";
 
                 function checkVolume() {
-                    if (candlesBlown) {
-                        micStream.getTracks().forEach(track => track.stop()); return;
-                    }
+                    if (candlesBlown) { micStream.getTracks().forEach(track => track.stop()); return; }
                     analyser.getByteFrequencyData(dataArray);
                     let sum = 0; for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
                     let average = sum / dataArray.length;
@@ -501,25 +448,20 @@
 
         let candlesBlown = false; let cakeCut = false;
         function blowOutCandles() {
-            if (candlesBlown) return;
-            initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
+            if (candlesBlown) return; initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
             document.getElementById('theCake').classList.add('blown-out'); candlesBlown = true;
-            document.getElementById('blowControls').classList.add('hidden');
-            document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!";
-            document.getElementById('swipeHint').classList.add('visible');
+            document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!"; document.getElementById('swipeHint').classList.add('visible');
             if (micStream) micStream.getTracks().forEach(track => track.stop()); 
         }
 
-        const cakeStage = document.getElementById('cakeStage');
-        let startY = 0;
+        const cakeStage = document.getElementById('cakeStage'); let startY = 0;
         cakeStage.addEventListener('touchstart', (e) => { if(candlesBlown && !cakeCut) startY = e.touches[0].clientY; }, {passive: true});
         cakeStage.addEventListener('touchmove', handleSwipe, {passive: true});
         cakeStage.addEventListener('mousedown', (e) => { if(candlesBlown && !cakeCut) startY = e.clientY; });
         cakeStage.addEventListener('mousemove', (e) => { if (e.buttons === 1) handleSwipe(e); });
 
         function handleSwipe(e) {
-            if (!candlesBlown || cakeCut) return;
-            let currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            if (!candlesBlown || cakeCut) return; let currentY = e.touches ? e.touches[0].clientY : e.clientY;
             if (currentY - startY > 70) cutCake(); 
         }
 
@@ -530,6 +472,8 @@
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
         }
 
+        let secretEndingTimer;
+
         function triggerFinale() {
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
@@ -537,7 +481,47 @@
             if (finalStep) finalStep.classList.add('active');
             playSuccessMelody(); setTimeout(startCelebration, 200);
             
-            setTimeout(triggerSecretEnding, 12000); // 12 seconds to give them time to read the form before it fades
+            // Set default timer, giving them 20 seconds to interact before it auto-triggers
+            secretEndingTimer = setTimeout(triggerSecretEnding, 20000); 
+        }
+
+        // --- NEW AJAX FORM LOGIC ---
+        const feedbackForm = document.getElementById('feedbackForm');
+        if (feedbackForm) {
+            // BUG FIX: If they tap into ANY input box to start typing, CANCEL the auto-timer immediately.
+            feedbackForm.addEventListener('focusin', () => {
+                clearTimeout(secretEndingTimer);
+            });
+
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop standard HTML page reload
+                clearTimeout(secretEndingTimer); // Double check timer is dead
+                
+                const btn = this.querySelector('button[type="submit"]');
+                btn.innerText = "Sending... 🚀";
+                btn.disabled = true;
+
+                // Submit silently using AJAX Fetch
+                fetch(this.action, {
+                    method: "POST",
+                    body: new FormData(this),
+                    headers: { 'Accept': 'application/json' }
+                }).then(response => {
+                    triggerSecretEnding(); // Reward them with the cinematic ending
+                }).catch(error => {
+                    triggerSecretEnding(); // Trigger anyway if their internet glitches
+                });
+            });
+        }
+
+        // --- OVERRIDE REPLAY BUTTON TO TRIGGER ENDING ---
+        const replayBtn = document.getElementById('replayBtn');
+        if(replayBtn) {
+            replayBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                clearTimeout(secretEndingTimer);
+                triggerSecretEnding();
+            });
         }
 
         function triggerSecretEnding() {
@@ -558,9 +542,13 @@
                         if(textToType.charAt(i) === '\n') { target.innerHTML += "<br>"; } 
                         else { target.innerHTML += textToType.charAt(i); playTone(500 + Math.random()*50, 'sine', 0.02, 0.01); }
                         i++;
-                    } else { clearInterval(interval); }
+                    } else { 
+                        clearInterval(interval); 
+                        // Reveal the escape button 2 seconds after text finishes
+                        setTimeout(() => { document.getElementById('trueReloadBtn').style.display = 'block'; }, 2000);
+                    }
                 }, 80); 
-            }, 2000); 
+            }, 1000); 
         }
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
