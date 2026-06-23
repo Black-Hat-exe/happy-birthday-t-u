@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <meta property="og:title" content="A Special Birthday Surprise 🎁">
     <meta property="og:description" content="I engineered a custom digital experience just for you. Tap to open!">
     <meta property="og:image" content="https://black-hat-exe.github.io/happy-birthday-t-u/mcqueen.jpg">
@@ -10,26 +11,33 @@
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#1a2a6c">
     <title>A Special Surprise</title>
+
+    <link rel="preload" href="mcqueen.jpg" as="image">
+    <link rel="preload" href="doc.jpg" as="image">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
+        :root { --color1: rgba(79, 29, 74, 0.4); --color2: rgba(29, 43, 100, 0.5); --color3: rgba(48, 24, 71, 0.4); }
+
         body, html {
-            margin: 0; padding: 0; 
-            height: 100vh; height: 100dvh; width: 100vw;
+            margin: 0; padding: 0; height: 100vh; height: 100dvh; width: 100vw;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #050505; color: #ffffff;
-            display: flex; justify-content: center; align-items: center;
+            background-color: #050505; color: #ffffff; display: flex; justify-content: center; align-items: center;
             overflow: hidden; -webkit-font-smoothing: antialiased;
+            user-select: none; -webkit-user-select: none; perspective: 1000px; 
         }
 
-        /* Animated Background Elements */
+        /* Screen Shake for Easter Egg */
+        body.shake { animation: screenShake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes screenShake { 10%, 90% { transform: translate3d(-5px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-10px, 0, 0); } 40%, 60% { transform: translate3d(10px, 0, 0); } }
+
         .ambient-mesh {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 15% 50%, rgba(79, 29, 74, 0.4), transparent 50%),
-                        radial-gradient(circle at 85% 30%, rgba(29, 43, 100, 0.5), transparent 50%),
-                        radial-gradient(circle at 50% 80%, rgba(48, 24, 71, 0.4), transparent 50%);
-            filter: blur(60px); z-index: 1;
+            background: radial-gradient(circle at 15% 50%, var(--color1), transparent 50%),
+                        radial-gradient(circle at 85% 30%, var(--color2), transparent 50%),
+                        radial-gradient(circle at 50% 80%, var(--color3), transparent 50%);
+            filter: blur(60px); z-index: 1; transition: background 2s ease;
             animation: breathe 10s ease-in-out infinite alternate;
         }
         .film-grain {
@@ -39,48 +47,33 @@
         }
         @keyframes breathe { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
 
-        /* Structural Layout */
         .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .step-container { display: none; width: 100%; justify-content: center; align-items: center; }
+        .step-container { display: none; width: 100%; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .step-container.active { display: flex; animation: silkenFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes silkenFadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* Glassmorphism Card */
         .glass-card {
             background: rgba(255, 255, 255, 0.03); padding: 40px 30px; border-radius: 28px; 
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; 
-            
-            /* Firefox Custom Scrollbar Support */
-            scrollbar-width: thin; 
-            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+            transition: transform 0.1s ease-out; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
         }
 
-        /* --- PREMIUM WEBKIT SCROLLBAR --- */
-        .glass-card::-webkit-scrollbar { width: 5px; }
-        .glass-card::-webkit-scrollbar-track { background: transparent; }
-        .glass-card::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
-        .glass-card::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        .glass-card::-webkit-scrollbar { width: 5px; } .glass-card::-webkit-scrollbar-track { background: transparent; } .glass-card::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
         h1 { font-weight: 300; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; }
         h2 { font-weight: 400; font-size: 20px; margin-bottom: 15px; letter-spacing: -0.3px; }
         p { color: rgba(255, 255, 255, 0.7); line-height: 1.6; font-size: 15px; margin-bottom: 25px; font-weight: 300; }
 
-        /* Inputs & Buttons */
-        .input-group {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 16px; padding: 4px; margin-bottom: 20px; transition: all 0.4s;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
-        }
+        .input-group { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 4px; margin-bottom: 20px; transition: all 0.4s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
         .input-group:focus-within { background: rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.3); }
         input { background: transparent; border: none; color: #fff; font-family: inherit; font-size: 16px; width: 90%; padding: 12px; outline: none; text-align: center; }
         
         button {
             background: #ffffff; color: #000000; border: none; padding: 16px 30px; font-size: 15px; font-weight: 500; font-family: inherit;
-            cursor: pointer; width: 100%; border-radius: 14px; transition: all 0.2s;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); margin-bottom: 10px;
+            cursor: pointer; width: 100%; border-radius: 14px; transition: all 0.2s; box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); margin-bottom: 10px; touch-action: manipulation; 
         }
         button:active { transform: scale(0.96); }
 
@@ -88,64 +81,62 @@
         .btn-row button { margin-bottom: 0; }
         #noBtn { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: none; position: relative; z-index: 100; transition: transform 0.1s; }
         .ghost-btn { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: none; margin-top: 20px; }
-        .ghost-btn:hover { background: rgba(255, 255, 255, 0.15); }
         .hidden { display: none !important; }
-
         .error { color: #ff6b6b; font-size: 13px; margin-top: 10px; opacity: 0; transition: opacity 0.3s; height: 18px; }
         .error.show { opacity: 1; }
 
-        /* Reveal Section Elements */
-        .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; }
+        /* Gift Boxes CSS */
+        .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .gift-box:active { transform: scale(0.9); }
+
+        /* Cars & Letter Elements */
+        .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
+        .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; }
+        
+        /* McQueen Drive In Animation */
+        .step-container.active .drive-in { animation: driveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes driveIn { 0% { transform: translateX(-150%) skewX(15deg); opacity: 0; } 80% { transform: translateX(5%) skewX(-5deg); opacity: 1; } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
+
+        .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; transition: color 0.3s; }
         .mcqueen-text { color: #ff4757; } .doc-text { color: #70a1ff; }
         .car-quote { font-style: italic; color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
-
-        /* Personal Letter Box */
         .personal-message { background: rgba(0, 0, 0, 0.2); border-left: 3px solid rgba(255, 255, 255, 0.4); padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left; }
         .personal-message p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; }
         .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #ffffff; text-align: right; }
 
-        /* --- THE INTERACTIVE CAKE CSS --- */
-        .cake-stage {
-            position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center;
-            margin: 20px 0; cursor: crosshair; touch-action: none;
-        }
-        
-        .flame {
-            transform-origin: bottom center;
-            animation: flicker 0.6s ease-in-out infinite alternate;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        @keyframes flicker {
-            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
-            100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
-        }
-        
+        /* Floating Balloons CSS */
+        .balloon { position: absolute; font-size: 35px; cursor: pointer; z-index: 50; transition: transform 0.1s; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); touch-action: manipulation; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity: 0; } 10% { opacity: 1; } 50% { transform: translateY(-40vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity: 1; } }
+        .pop-text { position: absolute; color: #4ade80; font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
+        @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+
+        /* Interactive Cake */
+        .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
+        .flame { transform-origin: bottom center; animation: flicker 0.6s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; }
+        @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); opacity: 0.9; } 100% { transform: scale(1.1) rotate(2deg); opacity: 1; } }
         .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
-        
         .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
         .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
         .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
 
-        .swipe-hint {
-            font-size: 12px; color: #4ade80; letter-spacing: 2px; text-transform: uppercase;
-            animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%;
-            pointer-events: none; opacity: 0; transition: opacity 0.5s;
-        }
+        .swipe-hint { font-size: 12px; color: #4ade80; letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
-        /* Watermark */
-        .watermark {
-            position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 8px 16px; border-radius: 20px; font-size: 10px; color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px; text-transform: uppercase; font-weight: 500; z-index: 1000;
-            pointer-events: none; user-select: none; -webkit-user-select: none;
+        /* The Secret Ending CSS */
+        #step-9 {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999;
+            display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            opacity: 0; transition: opacity 2s ease;
         }
-        @media (max-width: 350px) { .watermark { display: none; } }
+        #step-9.active-ending { display: flex; opacity: 1; }
+        .secret-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; color: #fff; line-height: 2; font-weight: 400; max-width: 80%; }
+        .caret { display: inline-block; width: 8px; height: 18px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
+        @keyframes blink { 50% { opacity: 0; } }
 
+        /* Watermark */
+        .watermark { position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 16px; border-radius: 20px; font-size: 10px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; z-index: 1000; pointer-events: none; }
+        @media (max-width: 350px) { .watermark { display: none; } }
         #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 20; display: none; }
     </style>
 </head>
@@ -160,7 +151,7 @@
     <div class="ui-layer">
         <div id="step-1" class="step-container active">
             <div class="glass-card">
-                <h1>Hello.</h1>
+                <h1>Hey there 👋</h1>
                 <p>Someone has crafted a very special digital experience just for you. Are you ready to see what it is?</p>
                 <button id="startBtn">Begin Experience</button>
             </div>
@@ -180,7 +171,7 @@
 
         <div id="step-3" class="step-container">
             <div class="glass-card">
-                <h2>Hold on...</h2>
+                <h2>Wait a second...</h2>
                 <p>Before I show you the surprise, I need to know... Are you actually excited for this?</p>
                 <div class="btn-row">
                     <button id="yesBtnTease">YES!</button>
@@ -190,12 +181,28 @@
         </div>
 
         <div id="step-4" class="step-container">
-            <div class="glass-card" style="max-height: 85dvh; overflow-y: auto;">
+            <div class="glass-card">
+                <h2>Choose a Box 🎁</h2>
+                <p>There are three boxes. You have to open them all to find the real gift.</p>
+                <div id="box-feedback" style="min-height: 20px; margin-bottom: 25px; color: #4ade80; font-size: 14px; font-weight: 500;"></div>
+                
+                <div style="margin-bottom: 20px;">
+                    <div class="gift-box" onclick="openBox(this)">🎁</div>
+                    <div class="gift-box" onclick="openBox(this)">🎁</div>
+                    <div class="gift-box" onclick="openBox(this)">🎁</div>
+                </div>
+                
+                <button id="boxContinueBtn" class="hidden ghost-btn" onclick="goToReveal()">See The Real Gift</button>
+            </div>
+        </div>
+
+        <div id="step-5" class="step-container" style="position: relative;">
+            <div class="glass-card" style="max-height: 85dvh; overflow-y: auto; z-index: 10;">
                 <h1>Happy Birthday!</h1>
                 
                 <div class="car-container">
-                    <img src="mcqueen.jpg" class="car-image" alt="Lightning McQueen">
-                    <div class="car-title mcqueen-text">Lightning McQueen</div>
+                    <img src="mcqueen.jpg" id="mcqueenImg" class="car-image drive-in" alt="Lightning McQueen">
+                    <div class="car-title mcqueen-text" id="mcqueenTitle">Lightning McQueen</div>
                     <p class="car-quote">"Ka-chow! Hope your day is lightning fast!"</p>
                 </div>
 
@@ -204,19 +211,18 @@
                     <div class="car-title doc-text">Fabulous Hudson Hornet</div>
                     <p class="car-quote">"The Doc says: Have a legendary birthday."</p>
                 </div>
-
+                
                 <div class="personal-message">
                     <p>Dear Friend,</p>
                     <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.</p>
-                    <p>Wishing you the happiest of birthdays and an incredible year ahead!</p>
                     <div class="signature">- M. Ertaza</div>
                 </div>
-                
-                <button onclick="goToStep('step-5')" style="margin-top: 15px;">Continue</button>
+                <button id="impossibleContinueBtn" style="margin-top: 15px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">Continue</button>
             </div>
+            <div id="balloonContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden;"></div>
         </div>
 
-        <div id="step-5" class="step-container">
+        <div id="step-6" class="step-container">
             <div class="glass-card">
                 <h2>Make a Wish!</h2>
                 <p id="cakeInstruction">Blow out the candles before we slice it!</p>
@@ -226,7 +232,6 @@
                         <defs>
                             <clipPath id="left-clip"><rect x="0" y="0" width="120" height="200" /></clipPath>
                             <clipPath id="right-clip"><rect x="120" y="0" width="120" height="200" /></clipPath>
-                            
                             <g id="cake-drawing">
                                 <ellipse cx="120" cy="180" rx="100" ry="15" fill="rgba(255,255,255,0.05)" />
                                 <rect x="50" y="100" width="140" height="70" rx="10" fill="#a18cd1" />
@@ -245,12 +250,15 @@
                     <div class="swipe-hint" id="swipeHint">↓ Swipe down to slice ↓</div>
                 </div>
 
-                <button id="blowBtn" onclick="blowOutCandles()">Blow out candles 🌬️</button>
-                <button id="proceedToFinalBtn" class="hidden ghost-btn" onclick="goToStep('step-6')">Grab a slice and Continue</button>
+                <div id="blowControls">
+                    <button id="micBtn" style="background: rgba(74, 222, 128, 0.2); border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">Enable Mic to Blow 🎤</button>
+                    <button id="blowBtn" class="ghost-btn" onclick="blowOutCandles()">Or click here to blow 🌬️</button>
+                </div>
+                <button id="proceedToFinalBtn" class="hidden ghost-btn" onclick="goToStep('step-7')">Grab a slice and Continue</button>
             </div>
         </div>
 
-        <div id="step-6" class="step-container">
+        <div id="step-7" class="step-container">
             <div class="glass-card">
                 <h2>Just one last thing...</h2>
                 <p>Did you like your gift?</p>
@@ -261,18 +269,44 @@
             </div>
         </div>
 
-        <div id="step-7" class="step-container">
+        <div id="step-8" class="step-container">
             <div class="glass-card">
-                <h1>Glad you liked it! 🎉</h1>
-                <p>Thank you for playing along with my little digital puzzle. I really hope this brought a smile to your face today.</p>
-                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 30px 0;">Have the best birthday ever!</p>
+                <h1>Mission accomplished. 🎉</h1>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Every line of code on this page was written with one goal—to make you smile today. I hope this little surprise made your birthday a bit more memorable. Wishing you happiness, success, and countless wonderful moments in the year ahead.</p>
+                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 30px 0;">Happy Birthday! 🎂❤️</p>
                 <button class="ghost-btn" onclick="location.reload()">Replay Experience</button>
+            </div>
+        </div>
+
+        <div id="step-9">
+            <div class="secret-text">
+                <span id="typewriter"></span><span class="caret"></span>
             </div>
         </div>
     </div>
 
     <script>
-        // --- ROUTING ENGINE ---
+        console.log("%c\n\n\tEngineered by M. Ertaza\n\tUnauthorized cloning strictly prohibited.\n\n", "color: #050505; background: #4ade80; font-size: 16px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
+
+        const hour = new Date().getHours();
+        const root = document.documentElement;
+        if (hour >= 6 && hour < 12) {
+            root.style.setProperty('--color1', 'rgba(255, 154, 158, 0.4)'); root.style.setProperty('--color2', 'rgba(254, 207, 239, 0.5)'); root.style.setProperty('--color3', 'rgba(253, 191, 105, 0.4)');
+        } else if (hour >= 12 && hour < 18) {
+            root.style.setProperty('--color1', 'rgba(161, 140, 209, 0.4)'); root.style.setProperty('--color2', 'rgba(251, 194, 235, 0.5)'); root.style.setProperty('--color3', 'rgba(118, 75, 162, 0.4)');
+        }
+
+        window.addEventListener("deviceorientation", (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            const tiltX = Math.min(Math.max(e.beta - 45, -20), 20); 
+            const tiltY = Math.min(Math.max(e.gamma, -20), 20); 
+            cards.forEach(card => {
+                if (card.parentElement.classList.contains('active')) {
+                    card.style.transform = `rotateX(${-tiltX/3}deg) rotateY(${tiltY/3}deg)`;
+                }
+            });
+        }, true);
+
         function goToStep(stepId) {
             initAudio(); playTone(440, 'sine', 0.08, 0.03); 
             const steps = document.querySelectorAll('.step-container');
@@ -283,39 +317,12 @@
                 if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); }
             }
         }
-
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
 
-        // --- THE "YES" BUTTON PRANK ---
-        let yesClickCount = 0;
-        document.getElementById("yesBtnTease").addEventListener("click", function(e) {
-            e.preventDefault(); initAudio(); yesClickCount++;
-            playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
-
-            if (yesClickCount === 1) { this.innerText = "Are you sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
-            else if (yesClickCount === 2) { this.innerText = "Like, 100% sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
-            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); }
-        });
-
-        // --- THE RUNAWAY BUTTON ---
-        const noBtn = document.getElementById('noBtn');
-        function dodge() {
-            const randomX = Math.floor(Math.random() * 160) - 80; 
-            const randomY = Math.floor(Math.random() * 100) - 50; 
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            playTone(800, 'square', 0.05, 0.02);
-        }
-        noBtn.addEventListener('mouseover', dodge);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
-        noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
-
-        // --- PASSWORD ENGINE ---
         function checkPassword() {
             initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
             const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
-            const daysArray = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-            const today = new Date(); const correctAnswer = daysArray[today.getDay()];
-
+            const correctAnswer = "monday"; 
             if (attempt === correctAnswer) {
                 errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); goToStep('step-3'); 
             } else {
@@ -327,17 +334,176 @@
         document.getElementById("unlockBtn").addEventListener("click", checkPassword);
         document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
-        // --- CAKE INTERACTION ENGINE ---
-        let candlesBlown = false;
-        let cakeCut = false;
+        // THE "YES" BUTTON PRANK
+        let yesClickCount = 0;
+        document.getElementById("yesBtnTease").addEventListener("click", function(e) {
+            e.preventDefault(); initAudio(); yesClickCount++;
+            playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
+            if (yesClickCount === 1) { this.innerText = "Are you sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else if (yesClickCount === 2) { this.innerText = "Like, 100% sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); } // Sends to Gift Boxes
+        });
 
+        const noBtn = document.getElementById('noBtn');
+        function dodge() {
+            const randomX = Math.floor(Math.random() * 160) - 80; const randomY = Math.floor(Math.random() * 100) - 50; 
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`; playTone(800, 'square', 0.05, 0.02);
+        }
+        noBtn.addEventListener('mouseover', dodge);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
+        noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
+
+        // --- NEW: THE GIFT BOX LOGIC ---
+        let boxesOpened = 0;
+        function openBox(el) {
+            if (el.style.pointerEvents === 'none') return;
+            boxesOpened++;
+            initAudio(); playTone(600 + (boxesOpened*100), 'triangle', 0.1);
+            el.style.pointerEvents = 'none';
+            el.style.transform = 'scale(0.8)';
+            const feedback = document.getElementById('box-feedback');
+            
+            if (boxesOpened === 1) { 
+                feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; 
+                el.innerText = "🌟"; 
+            }
+            else if (boxesOpened === 2) { 
+                feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; 
+                el.innerText = "⚡"; 
+            }
+            else if (boxesOpened === 3) {
+                feedback.innerText = "You found the real surprise! 🎉"; 
+                el.innerText = "🎉";
+                document.getElementById('boxContinueBtn').classList.remove('hidden');
+                playSuccessMelody();
+            }
+        }
+
+        // Move to Reveal and Spawn Balloons
+        function goToReveal() {
+            goToStep('step-5');
+            setTimeout(spawnBalloons, 500); // Wait for card to fade in
+        }
+
+        // --- NEW: FLOATING BALLOONS LOGIC ---
+        function spawnBalloons() {
+            const container = document.getElementById('balloonContainer');
+            for(let i=0; i<6; i++) {
+                let balloon = document.createElement('div');
+                balloon.innerText = '🎈';
+                balloon.className = 'balloon';
+                balloon.style.left = (Math.random() * 70 + 10) + '%';
+                balloon.style.bottom = '-60px';
+                balloon.style.pointerEvents = 'auto'; // allow clicking
+                balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`;
+                balloon.style.animationDelay = `${Math.random() * 2}s`;
+                
+                balloon.onclick = function(e) {
+                    initAudio(); playTone(900, 'triangle', 0.05); // Pop sound
+                    
+                    // Create floating "+100 Happiness" text
+                    let popText = document.createElement('div');
+                    popText.className = 'pop-text';
+                    popText.innerText = '+100 Happiness';
+                    popText.style.left = (e.clientX - 40) + 'px';
+                    popText.style.top = (e.clientY - 20) + 'px';
+                    document.body.appendChild(popText);
+                    setTimeout(() => popText.remove(), 1000);
+
+                    this.innerText = '💥';
+                    this.style.pointerEvents = 'none';
+                    setTimeout(() => this.remove(), 150);
+                };
+                container.appendChild(balloon);
+            }
+        }
+
+        // --- NEW: KA-CHOW MODE EASTER EGG ---
+        let mcQueenClicks = 0;
+        document.getElementById('mcqueenImg').addEventListener('click', function() {
+            initAudio(); mcQueenClicks++;
+            playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
+            if (mcQueenClicks === 5) {
+                document.body.classList.add('shake');
+                
+                // Huge Honk Sound
+                playTone(200, 'square', 0.6, 0.3);
+                setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
+                
+                // Visual Change
+                const title = document.getElementById('mcqueenTitle');
+                title.innerText = "⚡ KA-CHOW MODE ACTIVATED ⚡";
+                title.style.color = "#fbbf24";
+                title.style.fontSize = "18px";
+                title.style.fontWeight = "600";
+                
+                startCelebration(); // Explode confetti early
+                
+                setTimeout(() => document.body.classList.remove('shake'), 500);
+            }
+        });
+
+        // --- THE IMPOSSIBLE CONTINUE BUTTON ---
+        let impossibleClicks = 0;
+        const impossibleBtn = document.getElementById("impossibleContinueBtn");
+        if (impossibleBtn) {
+            impossibleBtn.addEventListener("click", function(e) {
+                impossibleClicks++; initAudio();
+                if (impossibleClicks === 1) {
+                    e.preventDefault(); playTone(600, 'triangle', 0.1);
+                    this.style.transform = "translateY(-40px) scale(0.7)"; this.innerText = "Wait, not yet...";
+                } else if (impossibleClicks === 2) {
+                    e.preventDefault(); playTone(700, 'triangle', 0.1);
+                    this.style.transform = "translateY(30px) scale(1.1)"; this.innerText = "Catch me! 🏃‍♂️";
+                } else if (impossibleClicks === 3) {
+                    e.preventDefault(); playTone(800, 'triangle', 0.1);
+                    this.style.transform = "translateY(0) scale(1)"; this.innerText = "Okay okay 😂 Continue";
+                } else {
+                    goToStep('step-6'); // Moves to Cake Room
+                }
+            });
+        }
+
+        // --- MICROPHONE BLOW DETECTION ---
+        let micStream = null;
+        document.getElementById("micBtn").addEventListener("click", async function(e) {
+            e.preventDefault();
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioCtx.createAnalyser();
+                const microphone = audioCtx.createMediaStreamSource(micStream);
+                microphone.connect(analyser);
+                analyser.fftSize = 256;
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                this.innerText = "Listening... Blow into your mic! 🌬️";
+                this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff165d";
+
+                function checkVolume() {
+                    if (candlesBlown) {
+                        micStream.getTracks().forEach(track => track.stop()); return;
+                    }
+                    analyser.getByteFrequencyData(dataArray);
+                    let sum = 0; for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
+                    let average = sum / dataArray.length;
+                    
+                    if (average > 110) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
+                }
+                checkVolume();
+            } catch (err) { alert("Microphone access blocked. No worries, just tap the fallback button!"); }
+        });
+
+        // --- CAKE INTERACTION ENGINE ---
+        let candlesBlown = false; let cakeCut = false;
         function blowOutCandles() {
-            initAudio();
-            playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
+            if (candlesBlown) return;
+            initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
             document.getElementById('theCake').classList.add('blown-out'); candlesBlown = true;
-            document.getElementById('blowBtn').classList.add('hidden');
+            document.getElementById('blowControls').classList.add('hidden');
             document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!";
             document.getElementById('swipeHint').classList.add('visible');
+            if (micStream) micStream.getTracks().forEach(track => track.stop()); 
         }
 
         const cakeStage = document.getElementById('cakeStage');
@@ -350,13 +516,12 @@
         function handleSwipe(e) {
             if (!candlesBlown || cakeCut) return;
             let currentY = e.touches ? e.touches[0].clientY : e.clientY;
-            if (currentY - startY > 50) cutCake();
+            if (currentY - startY > 70) cutCake(); 
         }
 
         function cutCake() {
             cakeCut = true; document.getElementById('swipeHint').classList.remove('visible');
-            playTone(1200, 'triangle', 0.1, 0.05);
-            document.getElementById('theCake').classList.add('sliced');
+            playTone(1200, 'triangle', 0.1, 0.05); document.getElementById('theCake').classList.add('sliced');
             document.getElementById('cakeInstruction').innerText = "Looks delicious!";
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
         }
@@ -365,19 +530,41 @@
         function triggerFinale() {
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
-            const finalStep = document.getElementById('step-7');
+            const finalStep = document.getElementById('step-8');
             if (finalStep) finalStep.classList.add('active');
             playSuccessMelody(); setTimeout(startCelebration, 200);
+            
+            setTimeout(triggerSecretEnding, 9000); // Secret ending after 9s
+        }
+
+        // --- SECRET ENDING ENGINE ---
+        function triggerSecretEnding() {
+            const canvas = document.getElementById('confettiCanvas');
+            if (canvas) canvas.style.display = 'none';
+            document.getElementById('step-8').classList.remove('active');
+            
+            const secretScreen = document.getElementById('step-9');
+            secretScreen.classList.add('active-ending');
+
+            const textToType = "Every line of code...\nEvery animation...\nEvery interaction...\n\nWas written just to make you smile today.\n\nHappy Birthday ❤️";
+            const target = document.getElementById('typewriter');
+            let i = 0;
+            
+            setTimeout(() => {
+                const interval = setInterval(() => {
+                    if (i < textToType.length) {
+                        if(textToType.charAt(i) === '\n') { target.innerHTML += "<br>"; } 
+                        else { target.innerHTML += textToType.charAt(i); playTone(500 + Math.random()*50, 'sine', 0.02, 0.01); }
+                        i++;
+                    } else { clearInterval(interval); }
+                }, 80); 
+            }, 2000); 
         }
 
         // --- AUDIO ENGINE ---
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let actx = null;
-
-        function initAudio() { 
-            try { if (!actx && AudioContext) actx = new AudioContext(); if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {}
-        }
-
+        function initAudio() { try { if (!actx && AudioContext) actx = new AudioContext(); if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {} }
         function playTone(freq, type, duration, vol=0.05) {
             try {
                 if (!actx) return; const osc = actx.createOscillator(); const gain = actx.createGain();
@@ -388,23 +575,20 @@
                 osc.start(); osc.stop(actx.currentTime + duration);
             } catch (e) {}
         }
-
-        function playSuccessMelody() {
-            playTone(523.25, 'sine', 0.5, 0.04); setTimeout(() => playTone(659.25, 'sine', 0.5, 0.04), 120); setTimeout(() => playTone(783.99, 'sine', 0.8, 0.06), 240); 
-        }
-
+        function playSuccessMelody() { playTone(523.25, 'sine', 0.5, 0.04); setTimeout(() => playTone(659.25, 'sine', 0.5, 0.04), 120); setTimeout(() => playTone(783.99, 'sine', 0.8, 0.06), 240); }
         function playErrorSound() { playTone(240, 'sine', 0.3, 0.08); setTimeout(() => playTone(190, 'sine', 0.4, 0.08), 120); }
 
-        // --- CELEBRATION ORBS ---
+        // --- PHYSICS-ENABLED CELEBRATION ORBS ---
+        let mouseX = -1000, mouseY = -1000;
+        window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+        window.addEventListener('touchmove', e => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
+
         function startCelebration() {
             const canvas = document.getElementById('confettiCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
+            if(!canvas) return; const ctx = canvas.getContext('2d');
             canvas.style.display = 'block'; canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
-            const particles = [];
-            const colors = ['#ffffff', '#ff9a9e', '#a18cd1', '#fbc2eb', '#ff4757', '#70a1ff'];
-
+            const particles = []; const colors = ['#ffffff', '#ff9a9e', '#a18cd1', '#fbc2eb', '#ff4757', '#70a1ff'];
             for(let i=0; i<80; i++) { 
                 particles.push({
                     x: Math.random() * canvas.width, y: canvas.height + Math.random() * 300,
@@ -413,10 +597,16 @@
                 });
             }
 
+            const startTime = Date.now();
+
             function animate() {
+                if (Date.now() - startTime > 12000 || canvas.style.display === 'none') { canvas.style.display = 'none'; return; }
                 requestAnimationFrame(animate); ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
                     p.y -= p.speed; p.x += p.drift;
+                    const dx = p.x - mouseX; const dy = p.y - mouseY;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 120) { p.x += (dx / dist) * 8; p.y += (dy / dist) * 8; }
                     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                     ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
                     ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
@@ -425,11 +615,7 @@
             }
             animate();
         }
-        
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('confettiCanvas');
-            if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        });
+        window.addEventListener('resize', () => { const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }});
     </script>
 </body>
 </html>
