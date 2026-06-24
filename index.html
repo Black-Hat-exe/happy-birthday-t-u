@@ -11,7 +11,7 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     
-    <meta name="theme-color" content="#1a2a6c">
+    <meta name="theme-color" content="#0a060e">
     <title>A Special Surprise</title>
 
     <link rel="preload" href="mcqueen.jpg" as="image">
@@ -23,12 +23,18 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"></noscript>
     
     <style>
-        :root { --color1: rgba(79, 29, 74, 0.4); --color2: rgba(29, 43, 100, 0.5); --color3: rgba(48, 24, 71, 0.4); }
+        :root { 
+            /* Rich, deep luxury colors for the ambient background mesh */
+            --color1: rgba(43, 19, 49, 0.5); 
+            --color2: rgba(20, 10, 25, 0.6); 
+            --color3: rgba(10, 6, 14, 0.5); 
+        }
 
         body, html {
             margin: 0; padding: 0; height: 100vh; height: 100dvh; width: 100vw;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #050505; color: #ffffff; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle at top, #2b1331 0%, #0a060e 100%);
+            color: #ffffff; display: flex; justify-content: center; align-items: center;
             overflow: hidden; -webkit-font-smoothing: antialiased;
             user-select: none; -webkit-user-select: none; perspective: 1000px; 
         }
@@ -56,8 +62,8 @@
         .step-container.active { display: flex; animation: silkenFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes silkenFadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* 🌟 NEW: WAX SEAL ENVELOPE CSS 🌟 */
-        .envelope-wrapper { position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6)); }
+        /* WAX SEAL ENVELOPE CSS */
+        .envelope-wrapper { position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); }
         .envelope-body { position: absolute; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; backdrop-filter: blur(20px); display: flex; justify-content: center; align-items: center; z-index: 2; overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.5); }
         .envelope-lines { width: 90%; height: 80%; background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.03) 15px, rgba(255,255,255,0.03) 30px); border-radius: 8px; }
         .envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: rgba(255, 255, 255, 0.05); clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 3; backdrop-filter: blur(10px); border-top-left-radius: 12px; border-top-right-radius: 12px; }
@@ -67,11 +73,11 @@
         .envelope-wrapper:hover .wax-seal { transform: translate(-50%, -50%) scale(1.08); }
         .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
         .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; filter: blur(4px); }
-        .envelope-instruction { margin-top: 50px; color: #4ade80; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 500; }
+        .envelope-instruction { margin-top: 40px; color: #d4af37; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 600; opacity: 0.8; }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.03); padding: 40px 30px; border-radius: 28px; 
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(20, 10, 25, 0.4); padding: 40px 30px; border-radius: 28px; 
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; 
@@ -80,12 +86,12 @@
 
         .glass-card::-webkit-scrollbar { width: 5px; } .glass-card::-webkit-scrollbar-track { background: transparent; } .glass-card::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
-        h1 { font-weight: 300; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; }
-        h2 { font-weight: 400; font-size: 20px; margin-bottom: 15px; letter-spacing: -0.3px; }
+        h1 { font-weight: 300; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; color: #ffffff; }
+        h2 { font-weight: 400; font-size: 20px; margin-bottom: 15px; letter-spacing: -0.3px; color: #ffffff; }
         p { color: rgba(255, 255, 255, 0.7); line-height: 1.6; font-size: 15px; margin-bottom: 25px; font-weight: 300; }
 
-        .input-group { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 4px; margin-bottom: 20px; transition: all 0.4s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); }
-        .input-group:focus-within { background: rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.3); }
+        .input-group { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 4px; margin-bottom: 20px; transition: all 0.4s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.4); }
+        .input-group:focus-within { background: rgba(0, 0, 0, 0.5); border-color: #d4af37; }
         input { background: transparent; border: none; color: #fff; font-family: inherit; font-size: 16px; width: 90%; padding: 12px; outline: none; text-align: center; }
         
         button {
@@ -102,11 +108,11 @@
         .error { color: #ff6b6b; font-size: 13px; margin-top: 10px; opacity: 0; transition: opacity 0.3s; height: 18px; }
         .error.show { opacity: 1; }
 
-        .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
         .gift-box:active { transform: scale(0.9); }
 
         .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
-        .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; }
+        .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.6); cursor: pointer; }
         
         .step-container.active .drive-in { animation: driveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes driveIn { 0% { transform: translateX(-150%) skewX(15deg); opacity: 0; } 80% { transform: translateX(5%) skewX(-5deg); opacity: 1; } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
@@ -114,13 +120,13 @@
         .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; transition: color 0.3s; }
         .mcqueen-text { color: #ff4757; } .doc-text { color: #70a1ff; }
         .car-quote { font-style: italic; color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
-        .personal-message { background: rgba(0, 0, 0, 0.2); border-left: 3px solid rgba(255, 255, 255, 0.4); padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left; }
+        .personal-message { background: rgba(0, 0, 0, 0.2); border-left: 3px solid #d4af37; padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left; }
         .personal-message p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; }
-        .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #ffffff; text-align: right; }
+        .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #d4af37; text-align: right; }
 
-        .balloon { position: absolute; font-size: 35px; cursor: pointer; z-index: 50; transition: transform 0.1s; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); touch-action: manipulation; }
+        .balloon { position: absolute; font-size: 35px; cursor: pointer; z-index: 50; transition: transform 0.1s; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); touch-action: manipulation; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity: 0; } 10% { opacity: 1; } 50% { transform: translateY(-40vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity: 1; } }
-        .pop-text { position: absolute; color: #4ade80; font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
+        .pop-text { position: absolute; color: #d4af37; font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
         .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
@@ -135,7 +141,7 @@
         .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
         .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
 
-        .swipe-hint { font-size: 12px; color: #4ade80; letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+        .swipe-hint { font-size: 12px; color: #d4af37; letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
@@ -209,7 +215,7 @@
             <div class="glass-card">
                 <h2>Choose a Box 🎁</h2>
                 <p>The best surprises aren't always in the first box. You'll need to open these to find what you're really looking for.</p>
-                <div id="box-feedback" style="min-height: 20px; margin-bottom: 25px; color: #4ade80; font-size: 14px; font-weight: 500;"></div>
+                <div id="box-feedback" style="min-height: 20px; margin-bottom: 25px; color: #d4af37; font-size: 14px; font-weight: 500;"></div>
                 
                 <div style="margin-bottom: 20px;">
                     <div class="gift-box" onclick="openBox(this)">🎁</div>
@@ -289,7 +295,7 @@
                 </div>
 
                 <div id="blowControls">
-                    <button id="micBtn" style="background: rgba(74, 222, 128, 0.2); border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">Enable Mic to Blow 🎤</button>
+                    <button id="micBtn" style="background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); color: #d4af37;">Enable Mic to Blow 🎤</button>
                     <button id="blowBtn" class="ghost-btn" onclick="blowOutCandles()">Or click here to blow 🌬️</button>
                 </div>
                 <button id="proceedToFinalBtn" class="hidden ghost-btn" onclick="goToStep('step-7')">Grab a slice and Continue</button>
@@ -312,18 +318,18 @@
                 <h1 style="font-size: 24px;">End of experience. Beginning of another great year. 🎉</h1>
                 <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Every line of code on this page was written with one goal—to make you smile today. I hope this little surprise made your birthday a bit more memorable. Wishing you happiness, success, and countless wonderful moments in the year ahead.</p>
                 
-                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
                     
                     <form id="feedbackForm" action="https://formsubmit.co/18b5331f98d1200b354a8504bae8f419" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
                         
-                        <input type="text" name="Name" placeholder="Your Name" required style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
-                        <input type="email" name="Email" placeholder="Your Email (optional)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
-                        <textarea name="Message" placeholder="What did you think?..." rows="2" required style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none; resize: none;"></textarea>
+                        <input type="text" name="Name" placeholder="Your Name" required style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
+                        <input type="email" name="Email" placeholder="Your Email (optional)" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
+                        <textarea name="Message" placeholder="What did you think?..." rows="2" required style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none; resize: none;"></textarea>
                         
-                        <button type="submit" style="padding: 12px; font-size: 14px; background: #4ade80; color: #000; box-shadow: none; margin-bottom: 0;">Send Message 💌</button>
+                        <button type="submit" style="padding: 12px; font-size: 14px; background: #d4af37; color: #000; box-shadow: none; margin-bottom: 0;">Send Message 💌</button>
                     </form>
                 </div>
 
@@ -340,17 +346,9 @@
     </div>
 
     <script>
-        console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tEngineered by M. Ertaza\n\n", "color: #050505; background: #4ade80; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
+        console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tEngineered by M. Ertaza\n\n", "color: #050505; background: #d4af37; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
 
         let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
-
-        const hour = new Date().getHours();
-        const root = document.documentElement;
-        if (hour >= 6 && hour < 12) {
-            root.style.setProperty('--color1', 'rgba(255, 154, 158, 0.4)'); root.style.setProperty('--color2', 'rgba(254, 207, 239, 0.5)'); root.style.setProperty('--color3', 'rgba(253, 191, 105, 0.4)');
-        } else if (hour >= 12 && hour < 18) {
-            root.style.setProperty('--color1', 'rgba(161, 140, 209, 0.4)'); root.style.setProperty('--color2', 'rgba(251, 194, 235, 0.5)'); root.style.setProperty('--color3', 'rgba(118, 75, 162, 0.4)');
-        }
 
         window.addEventListener("deviceorientation", (e) => {
             const cards = document.querySelectorAll('.glass-card');
@@ -378,7 +376,6 @@
             }
         }
 
-        // 🌟 NEW: WAX SEAL CLICK EVENT 🌟
         document.getElementById('envelopeWrapper').addEventListener('click', function() {
             if (this.classList.contains('open')) return;
             
@@ -395,33 +392,32 @@
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
 
         function checkPassword() {
-    initAudio(); 
-    const input = document.getElementById("secretInput"); 
-    const errorMsg = document.getElementById("errorMsg");
-    const attempt = input.value.toLowerCase().trim(); 
-    if (attempt === "") return;
-    
-    // The dynamic time-zone-aware code replaces the old hardcoded line here:
-    const correctAnswer = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase(); 
-    
-    if (attempt === correctAnswer) {
-        errorMsg.classList.remove("show"); 
-        input.blur(); 
-        playSuccessMelody(); 
-        securityUnlocked = true; 
-        goToStep('step-3'); 
-    } else {
-        playErrorSound(); 
-        errorMsg.classList.add("show");
-        const group = document.querySelector('.input-group');
-        if(group) { 
-            group.style.transform = 'translateX(-8px)'; 
-            setTimeout(() => group.style.transform = 'translateX(8px)', 100); 
-            setTimeout(() => group.style.transform = 'translateX(-4px)', 200); 
-            setTimeout(() => group.style.transform = 'translateX(0)', 300); 
+            initAudio(); 
+            const input = document.getElementById("secretInput"); 
+            const errorMsg = document.getElementById("errorMsg");
+            const attempt = input.value.toLowerCase().trim(); 
+            if (attempt === "") return;
+            
+            const correctAnswer = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase(); 
+            
+            if (attempt === correctAnswer) {
+                errorMsg.classList.remove("show"); 
+                input.blur(); 
+                playSuccessMelody(); 
+                securityUnlocked = true; 
+                goToStep('step-3'); 
+            } else {
+                playErrorSound(); 
+                errorMsg.classList.add("show");
+                const group = document.querySelector('.input-group');
+                if(group) { 
+                    group.style.transform = 'translateX(-8px)'; 
+                    setTimeout(() => group.style.transform = 'translateX(8px)', 100); 
+                    setTimeout(() => group.style.transform = 'translateX(-4px)', 200); 
+                    setTimeout(() => group.style.transform = 'translateX(0)', 300); 
+                }
+            }
         }
-    }
-}
         document.getElementById("unlockBtn").addEventListener("click", checkPassword);
         document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
@@ -645,7 +641,7 @@
             if(!canvas) return; const ctx = canvas.getContext('2d');
             canvas.style.display = 'block'; canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
-            const particles = []; const colors = ['#ffffff', '#ff9a9e', '#a18cd1', '#fbc2eb', '#ff4757', '#70a1ff'];
+            const particles = []; const colors = ['#ffffff', '#d4af37', '#a18cd1', '#fbc2eb', '#ff4757', '#70a1ff'];
             for(let i=0; i<80; i++) { 
                 particles.push({
                     x: Math.random() * canvas.width, y: canvas.height + Math.random() * 300,
@@ -664,7 +660,6 @@
                     const dx = p.x - mouseX; const dy = p.y - mouseY;
                     const dist = Math.sqrt(dx*dx + dy*dy);
                     
-                    // 🌟 NEW: NAN MATH BUG FIX 🌟
                     if(dist > 0 && dist < 120) { p.x += (dx / dist) * 8; p.y += (dy / dist) * 8; }
                     
                     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -677,32 +672,5 @@
         }
         window.addEventListener('resize', () => { const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }});
     </script>
-    <script>
-  function setTimeBasedBackground() {
-      const hour = new Date().getHours();
-      const body = document.body;
-
-      if (hour >= 6 && hour < 17) {
-          // Morning/Daytime (6 AM to 5 PM): Premium Cream & Soft Gold
-          body.style.background = "linear-gradient(135deg, #fdfbfb 0%, #e2d1c3 100%)";
-      } 
-      else if (hour >= 17 && hour < 20) {
-          // Evening (5 PM to 8 PM): Deep Sunset Crimson & Gold
-          body.style.background = "linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%)";
-      } 
-      else {
-          // Night (8 PM to 6 AM): Midnight Blue & Dark Purple (Like a luxury watch box)
-          body.style.background = "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)";
-      }
-      
-      // Ensure the background covers the whole screen perfectly
-      body.style.minHeight = "100vh";
-      body.style.margin = "0";
-      body.style.backgroundAttachment = "fixed";
-  }
-
-  // Run the function when the page loads
-  setTimeBasedBackground();
-</script>
 </body>
 </html>
