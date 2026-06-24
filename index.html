@@ -2,22 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta property="og:title" content="A Special Birthday Surprise 🎁">
-    <meta property="og:description" content="I engineered a custom digital experience just for you. Tap to open!">
-    <meta property="og:image" content="https://black-hat-exe.github.io/happy-birthday-t-u/mcqueen.jpg">
+    <meta property="og:title" content="A Special Birthday Surprise For You 🎁">
+    <meta property="og:description" content="You have received a secured digital gift. Tap to unwrap your surprise!">
+    <meta property="og:image" content="https://black-hat-exe.github.io/happy-birthday-t-u/gift.jpg">
     <meta property="og:url" content="https://black-hat-exe.github.io/happy-birthday-t-u/">
     <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <meta name="theme-color" content="#1a2a6c">
     <title>A Special Surprise</title>
 
     <link rel="preload" href="mcqueen.jpg" as="image">
     <link rel="preload" href="doc.jpg" as="image">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"></noscript>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-
         :root { --color1: rgba(79, 29, 74, 0.4); --color2: rgba(29, 43, 100, 0.5); --color3: rgba(48, 24, 71, 0.4); }
 
         body, html {
@@ -47,9 +52,22 @@
         @keyframes breathe { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
 
         .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .step-container { display: none; width: 100%; justify-content: center; align-items: center; transform-style: preserve-3d; }
+        .step-container { display: none; width: 100%; justify-content: center; align-items: center; transform-style: preserve-3d; flex-direction: column; }
         .step-container.active { display: flex; animation: silkenFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes silkenFadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* 🌟 NEW: WAX SEAL ENVELOPE CSS 🌟 */
+        .envelope-wrapper { position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6)); }
+        .envelope-body { position: absolute; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; backdrop-filter: blur(20px); display: flex; justify-content: center; align-items: center; z-index: 2; overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.5); }
+        .envelope-lines { width: 90%; height: 80%; background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,255,0.03) 15px, rgba(255,255,255,0.03) 30px); border-radius: 8px; }
+        .envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: rgba(255, 255, 255, 0.05); clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 3; backdrop-filter: blur(10px); border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .envelope-flap::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-top: 1px solid rgba(255,255,255,0.2); clip-path: polygon(0 0, 50% 100%, 100% 0); }
+        .wax-seal { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 65px; background: radial-gradient(circle at 30% 30%, #ff4757, #8b0000); border-radius: 50%; z-index: 4; display: flex; justify-content: center; align-items: center; font-family: 'Times New Roman', serif; font-size: 26px; color: #ffb8b8; font-weight: bold; text-shadow: -1px -1px 0 #5c0000, 1px 1px 0 #ff7a7a; box-shadow: 0 5px 20px rgba(255, 71, 87, 0.4), inset 0 0 15px rgba(0,0,0,0.6); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; }
+        .wax-seal::after { content: ''; position: absolute; width: 50px; height: 50px; border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 50%; }
+        .envelope-wrapper:hover .wax-seal { transform: translate(-50%, -50%) scale(1.08); }
+        .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+        .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; filter: blur(4px); }
+        .envelope-instruction { margin-top: 50px; color: #4ade80; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 500; }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.03); padding: 40px 30px; border-radius: 28px; 
@@ -106,8 +124,12 @@
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
         .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
-        .flame { transform-origin: bottom center; animation: flicker 0.6s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; }
-        @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); opacity: 0.9; } 100% { transform: scale(1.1) rotate(2deg); opacity: 1; } }
+        .flame { animation: flicker 0.12s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; filter: drop-shadow(0 0 6px rgba(255, 123, 0, 0.8)); }
+        @keyframes flicker { 
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; filter: drop-shadow(0 0 4px rgba(255, 123, 0, 0.6)); } 
+            50% { transform: scale(1.05) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 123, 0, 1)); }
+            100% { transform: scale(0.95) rotate(3deg); opacity: 0.8; filter: drop-shadow(0 0 3px rgba(255, 123, 0, 0.5)); } 
+        }
         .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
         .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
@@ -141,10 +163,21 @@
     <div class="watermark">Engineered by M. Ertaza</div>
 
     <div class="ui-layer">
-        <div id="step-1" class="step-container active">
+        <div id="step-0" class="step-container active">
+            <div class="envelope-wrapper" id="envelopeWrapper">
+                <div class="envelope-body">
+                    <div class="envelope-lines"></div>
+                </div>
+                <div class="envelope-flap"></div>
+                <div class="wax-seal" id="waxSeal">M.E</div>
+            </div>
+            <div class="envelope-instruction">Tap to break seal</div>
+        </div>
+
+        <div id="step-1" class="step-container">
             <div class="glass-card">
                 <h1>Hey there 👋</h1>
-                <p>Someone has crafted a very special digital experience just for you. Are you ready to see what it is?</p>
+                <p>This isn't just a birthday message. It's a little journey made especially for you.</p>
                 <button id="startBtn">Begin Experience</button>
             </div>
         </div>
@@ -152,7 +185,7 @@
         <div id="step-2" class="step-container">
             <div class="glass-card">
                 <h2>Security Check</h2>
-                <p>To ensure this arrives at the perfect moment, please answer one simple question:<br><br><span style="color:#fff; font-weight: 400;">What day of the week is it today?</span></p>
+                <p>Every good surprise needs a tiny challenge first. Let's see if you're paying attention today:<br><br><span style="color:#fff; font-weight: 400;">What day of the week is it?</span></p>
                 <div class="input-group">
                     <input type="text" id="secretInput" placeholder="Enter the day..." autocomplete="off">
                 </div>
@@ -164,7 +197,7 @@
         <div id="step-3" class="step-container">
             <div class="glass-card">
                 <h2>Wait a second...</h2>
-                <p>Before I show you the surprise, I need to know... Are you actually excited for this?</p>
+                <p>Before we proceed to the actual gift... Are you truly excited for this?</p>
                 <div class="btn-row">
                     <button id="yesBtnTease">YES!</button>
                     <button id="noBtn">No</button>
@@ -175,7 +208,7 @@
         <div id="step-4" class="step-container">
             <div class="glass-card">
                 <h2>Choose a Box 🎁</h2>
-                <p>There are three boxes. You have to open them all to find the real gift.</p>
+                <p>The best surprises aren't always in the first box. You'll need to open these to find what you're really looking for.</p>
                 <div id="box-feedback" style="min-height: 20px; margin-bottom: 25px; color: #4ade80; font-size: 14px; font-weight: 500;"></div>
                 
                 <div style="margin-bottom: 20px;">
@@ -190,7 +223,7 @@
 
         <div id="step-5" class="step-container" style="position: relative;">
             <div class="glass-card" style="max-height: 85dvh; overflow-y: auto; z-index: 10;">
-                <h1>Happy Birthday!</h1>
+                <h1 style="font-size: 24px;">Today's main character has officially arrived. Happy Birthday! 🎉</h1>
                 
                 <div class="car-container">
                     <img src="mcqueen.jpg" id="mcqueenImg" class="car-image drive-in" alt="Lightning McQueen">
@@ -205,9 +238,12 @@
                 </div>
                 
                 <div class="personal-message">
-                    <p>Dear Friend,</p>
-                    <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.Anyone can send a birthday message. I wanted to create a moment instead—something you could click through, smile at, and hopefully remember long after today is over.</p>
-                    <div class="signature">- M. Ertaza</div>
+                    <p>To someone who deserves a great day,</p>
+                    <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.</p>
+                    <div class="signature">
+                        — M. Ertaza<br>
+                        <span style="font-size: 11px; opacity: 0.6; font-style: italic;">The person responsible for all the buttons you clicked.</span>
+                    </div>
                 </div>
                 
                 <button id="impossibleContinueBtn" style="margin-top: 15px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">Continue</button>
@@ -218,7 +254,7 @@
         <div id="step-6" class="step-container">
             <div class="glass-card">
                 <h2>Make a Wish!</h2>
-                <p id="cakeInstruction">Blow out the candles before we slice it!</p>
+                <p id="cakeInstruction">One wish. No pressure. Blow out the candles when you're ready.</p>
                 
                 <div class="cake-stage" id="cakeStage">
                     <svg width="240" height="200" viewBox="0 0 240 200" id="theCake">
@@ -233,8 +269,17 @@
                                 <path d="M 75 40 Q 97 60 120 40 Q 142 60 165 40" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
                                 <rect x="95" y="10" width="6" height="30" fill="#ffffff" />
                                 <rect x="139" y="10" width="6" height="30" fill="#ffffff" />
-                                <path class="flame" d="M 98 8 Q 104 -5 98 -12 Q 92 -5 98 8" fill="#ffdd59" />
-                                <path class="flame" d="M 142 8 Q 148 -5 142 -12 Q 136 -5 142 8" fill="#ffdd59" />
+                                
+                                <g class="flame" style="transform-origin: 98px 8px;">
+                                    <path d="M 98 8 Q 106 -5 98 -16 Q 90 -5 98 8" fill="#ff7b00" />
+                                    <path d="M 98 8 Q 102 -2 98 -10 Q 94 -2 98 8" fill="#ffdd59" />
+                                    <path d="M 98 8 Q 100 0 98 -5 Q 96 0 98 8" fill="#ffffff" />
+                                </g>
+                                <g class="flame" style="transform-origin: 142px 8px;">
+                                    <path d="M 142 8 Q 150 -5 142 -16 Q 134 -5 142 8" fill="#ff7b00" />
+                                    <path d="M 142 8 Q 146 -2 142 -10 Q 138 -2 142 8" fill="#ffdd59" />
+                                    <path d="M 142 8 Q 144 0 142 -5 Q 140 0 142 8" fill="#ffffff" />
+                                </g>
                             </g>
                         </defs>
                         <use href="#cake-drawing" clip-path="url(#left-clip)" id="cake-left" class="cake-half" />
@@ -253,8 +298,8 @@
 
         <div id="step-7" class="step-container">
             <div class="glass-card">
-                <h2>Just one last thing...</h2>
-                <p>Did you like your gift?</p>
+                <h2>Be honest...</h2>
+                <p>Was it worth all those buttons?</p>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
                     <button onclick="triggerFinale()">Yes</button>
                     <button onclick="triggerFinale()">Absolutely Yes</button>
@@ -264,14 +309,13 @@
 
         <div id="step-8" class="step-container">
             <div class="glass-card">
-                <h1>Mission accomplished. 🎉</h1>
+                <h1 style="font-size: 24px;">End of experience. Beginning of another great year. 🎉</h1>
                 <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Every line of code on this page was written with one goal—to make you smile today. I hope this little surprise made your birthday a bit more memorable. Wishing you happiness, success, and countless wonderful moments in the year ahead.</p>
-                <p style="font-size: 18px; font-weight: 500; color: #4ade80; margin: 20px 0;">Happy Birthday! 🎂❤️</p>
                 
                 <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
                     
-                   <form id="feedbackForm" action="https://formsubmit.co/18b5331f98d1200b354a8504bae8f419" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+                    <form id="feedbackForm" action="https://formsubmit.co/18b5331f98d1200b354a8504bae8f419" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
                         
@@ -296,7 +340,9 @@
     </div>
 
     <script>
-        console.log("%c\n\n\tEngineered by M. Ertaza\n\tUnauthorized cloning strictly prohibited.\n\n", "color: #050505; background: #4ade80; font-size: 16px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
+        console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tEngineered by M. Ertaza\n\n", "color: #050505; background: #4ade80; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
+
+        let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
 
         const hour = new Date().getHours();
         const root = document.documentElement;
@@ -318,6 +364,10 @@
         }, true);
 
         function goToStep(stepId) {
+            if (stepId === 'step-3' && !securityUnlocked) { console.warn("Access Denied: Password required."); return; }
+            if (stepId === 'step-5' && !allBoxesOpened) { console.warn("Access Denied: Open all boxes first."); return; }
+            if (stepId === 'step-7' && !isCakeSliced) { console.warn("Access Denied: Cake must be sliced."); return; }
+            
             initAudio(); playTone(440, 'sine', 0.08, 0.03); 
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
@@ -327,14 +377,30 @@
                 if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); }
             }
         }
+
+        // 🌟 NEW: WAX SEAL CLICK EVENT 🌟
+        document.getElementById('envelopeWrapper').addEventListener('click', function() {
+            if (this.classList.contains('open')) return;
+            
+            initAudio();
+            playTone(800, 'square', 0.05, 0.1);
+            setTimeout(() => playTone(1200, 'triangle', 0.05, 0.1), 50);
+            setTimeout(() => playTone(600, 'square', 0.08, 0.1), 100);
+
+            this.classList.add('open');
+            
+            setTimeout(() => { goToStep('step-1'); }, 1200); 
+        });
+
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
 
         function checkPassword() {
             initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
             const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
-            const correctAnswer = "monday"; 
+            const correctAnswer = "wednesday"; 
             if (attempt === correctAnswer) {
-                errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); goToStep('step-3'); 
+                errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); 
+                securityUnlocked = true; goToStep('step-3'); 
             } else {
                 playErrorSound(); errorMsg.classList.add("show");
                 const group = document.querySelector('.input-group');
@@ -362,18 +428,18 @@
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
         noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 
-        let boxesOpened = 0;
         function openBox(el) {
             if (el.style.pointerEvents === 'none') return;
-            boxesOpened++;
-            initAudio(); playTone(600 + (boxesOpened*100), 'triangle', 0.1);
+            boxesOpenedCount++;
+            initAudio(); playTone(600 + (boxesOpenedCount*100), 'triangle', 0.1);
             el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)';
             const feedback = document.getElementById('box-feedback');
             
-            if (boxesOpened === 1) { feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; el.innerText = "🌟"; }
-            else if (boxesOpened === 2) { feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; el.innerText = "⚡"; }
-            else if (boxesOpened === 3) {
+            if (boxesOpenedCount === 1) { feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; el.innerText = "🌟"; }
+            else if (boxesOpenedCount === 2) { feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; el.innerText = "⚡"; }
+            else if (boxesOpenedCount === 3) {
                 feedback.innerText = "You found the real surprise! 🎉"; el.innerText = "🎉";
+                allBoxesOpened = true; 
                 document.getElementById('boxContinueBtn').classList.remove('hidden'); playSuccessMelody();
             }
         }
@@ -382,6 +448,8 @@
 
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
+            const popMessages = ["+100 Happiness", "+50 Birthday Luck", "+1 Legendary Memory", "Achievement Unlocked: Balloon Menace", "+3 Ka-Chows"];
+            
             for(let i=0; i<6; i++) {
                 let balloon = document.createElement('div');
                 balloon.innerText = '🎈'; balloon.className = 'balloon';
@@ -390,7 +458,8 @@
                 
                 balloon.onclick = function(e) {
                     initAudio(); playTone(900, 'triangle', 0.05); 
-                    let popText = document.createElement('div'); popText.className = 'pop-text'; popText.innerText = '+100 Happiness';
+                    let popText = document.createElement('div'); popText.className = 'pop-text'; 
+                    popText.innerText = popMessages[Math.floor(Math.random() * popMessages.length)];
                     popText.style.left = (e.clientX - 40) + 'px'; popText.style.top = (e.clientY - 20) + 'px';
                     document.body.appendChild(popText); setTimeout(() => popText.remove(), 1000);
                     this.innerText = '💥'; this.style.pointerEvents = 'none'; setTimeout(() => this.remove(), 150);
@@ -404,7 +473,9 @@
             initAudio(); mcQueenClicks++; playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
             if (mcQueenClicks === 5) {
                 document.body.classList.add('shake'); playTone(200, 'square', 0.6, 0.3); setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
-                const title = document.getElementById('mcqueenTitle'); title.innerText = "⚡ KA-CHOW MODE ACTIVATED ⚡"; title.style.color = "#fbbf24"; title.style.fontSize = "18px"; title.style.fontWeight = "600";
+                const title = document.getElementById('mcqueenTitle'); 
+                title.innerText = "⚡ SPEED LIMIT REMOVED. PROCEED RESPONSIBLY. ⚡"; 
+                title.style.color = "#fbbf24"; title.style.fontSize = "14px"; title.style.fontWeight = "600";
                 startCelebration(); setTimeout(() => document.body.classList.remove('shake'), 500);
             }
         });
@@ -440,7 +511,7 @@
                     let sum = 0; for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
                     let average = sum / dataArray.length;
                     
-                    if (average > 110) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
+                    if (average > 65) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
                 }
                 checkVolume();
             } catch (err) { alert("Microphone access blocked. No worries, just tap the fallback button!"); }
@@ -466,7 +537,8 @@
         }
 
         function cutCake() {
-            cakeCut = true; document.getElementById('swipeHint').classList.remove('visible');
+            cakeCut = true; isCakeSliced = true; 
+            document.getElementById('swipeHint').classList.remove('visible');
             playTone(1200, 'triangle', 0.1, 0.05); document.getElementById('theCake').classList.add('sliced');
             document.getElementById('cakeInstruction').innerText = "Looks delicious!";
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
@@ -475,52 +547,35 @@
         let secretEndingTimer;
 
         function triggerFinale() {
+            if (!isCakeSliced) { console.warn("Access Denied."); return; } 
+            
             const steps = document.querySelectorAll('.step-container');
             steps.forEach(step => step.classList.remove('active'));
             const finalStep = document.getElementById('step-8');
             if (finalStep) finalStep.classList.add('active');
             playSuccessMelody(); setTimeout(startCelebration, 200);
             
-            // Set default timer, giving them 20 seconds to interact before it auto-triggers
             secretEndingTimer = setTimeout(triggerSecretEnding, 20000); 
         }
 
-        // --- NEW AJAX FORM LOGIC ---
         const feedbackForm = document.getElementById('feedbackForm');
         if (feedbackForm) {
-            // BUG FIX: If they tap into ANY input box to start typing, CANCEL the auto-timer immediately.
-            feedbackForm.addEventListener('focusin', () => {
-                clearTimeout(secretEndingTimer);
-            });
-
+            feedbackForm.addEventListener('focusin', () => { clearTimeout(secretEndingTimer); });
             feedbackForm.addEventListener('submit', function(e) {
-                e.preventDefault(); // Stop standard HTML page reload
-                clearTimeout(secretEndingTimer); // Double check timer is dead
-                
+                e.preventDefault(); 
+                clearTimeout(secretEndingTimer); 
                 const btn = this.querySelector('button[type="submit"]');
-                btn.innerText = "Sending... 🚀";
-                btn.disabled = true;
+                btn.innerText = "Sending... 🚀"; btn.disabled = true;
 
-                // Submit silently using AJAX Fetch
-                fetch(this.action, {
-                    method: "POST",
-                    body: new FormData(this),
-                    headers: { 'Accept': 'application/json' }
-                }).then(response => {
-                    triggerSecretEnding(); // Reward them with the cinematic ending
-                }).catch(error => {
-                    triggerSecretEnding(); // Trigger anyway if their internet glitches
-                });
+                fetch(this.action, { method: "POST", body: new FormData(this), headers: { 'Accept': 'application/json' }
+                }).then(response => { triggerSecretEnding(); }).catch(error => { triggerSecretEnding(); });
             });
         }
 
-        // --- OVERRIDE REPLAY BUTTON TO TRIGGER ENDING ---
         const replayBtn = document.getElementById('replayBtn');
         if(replayBtn) {
             replayBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                clearTimeout(secretEndingTimer);
-                triggerSecretEnding();
+                e.preventDefault(); clearTimeout(secretEndingTimer); triggerSecretEnding();
             });
         }
 
@@ -532,7 +587,7 @@
             const secretScreen = document.getElementById('step-9');
             secretScreen.classList.add('active-ending');
 
-            const textToType = "Every line of code...\nEvery animation...\nEvery interaction...\n\nWas written just to make you smile today.\n\nHappy Birthday ❤️";
+            const textToType = "For a few minutes today, I wanted the internet to be about you.\n\nEvery line of code...\nEvery animation...\nEvery interaction...\n\nWas written just to make you smile today.\n\nHappy Birthday ❤️";
             const target = document.getElementById('typewriter');
             let i = 0;
             
@@ -544,7 +599,6 @@
                         i++;
                     } else { 
                         clearInterval(interval); 
-                        // Reveal the escape button 2 seconds after text finishes
                         setTimeout(() => { document.getElementById('trueReloadBtn').style.display = 'block'; }, 2000);
                     }
                 }, 80); 
@@ -594,7 +648,10 @@
                     p.y -= p.speed; p.x += p.drift;
                     const dx = p.x - mouseX; const dy = p.y - mouseY;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    if(dist < 120) { p.x += (dx / dist) * 8; p.y += (dy / dist) * 8; }
+                    
+                    // 🌟 NEW: NAN MATH BUG FIX 🌟
+                    if(dist > 0 && dist < 120) { p.x += (dx / dist) * 8; p.y += (dy / dist) * 8; }
+                    
                     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                     ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
                     ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
