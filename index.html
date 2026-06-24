@@ -395,18 +395,33 @@
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
 
         function checkPassword() {
-            initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
-            const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
-            const correctAnswer = "wednesday"; 
-            if (attempt === correctAnswer) {
-                errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); 
-                securityUnlocked = true; goToStep('step-3'); 
-            } else {
-                playErrorSound(); errorMsg.classList.add("show");
-                const group = document.querySelector('.input-group');
-                if(group) { group.style.transform = 'translateX(-8px)'; setTimeout(() => group.style.transform = 'translateX(8px)', 100); setTimeout(() => group.style.transform = 'translateX(-4px)', 200); setTimeout(() => group.style.transform = 'translateX(0)', 300); }
-            }
+    initAudio(); 
+    const input = document.getElementById("secretInput"); 
+    const errorMsg = document.getElementById("errorMsg");
+    const attempt = input.value.toLowerCase().trim(); 
+    if (attempt === "") return;
+    
+    // The dynamic time-zone-aware code replaces the old hardcoded line here:
+    const correctAnswer = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase(); 
+    
+    if (attempt === correctAnswer) {
+        errorMsg.classList.remove("show"); 
+        input.blur(); 
+        playSuccessMelody(); 
+        securityUnlocked = true; 
+        goToStep('step-3'); 
+    } else {
+        playErrorSound(); 
+        errorMsg.classList.add("show");
+        const group = document.querySelector('.input-group');
+        if(group) { 
+            group.style.transform = 'translateX(-8px)'; 
+            setTimeout(() => group.style.transform = 'translateX(8px)', 100); 
+            setTimeout(() => group.style.transform = 'translateX(-4px)', 200); 
+            setTimeout(() => group.style.transform = 'translateX(0)', 300); 
         }
+    }
+}
         document.getElementById("unlockBtn").addEventListener("click", checkPassword);
         document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
@@ -662,5 +677,32 @@
         }
         window.addEventListener('resize', () => { const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }});
     </script>
+    <script>
+  function setTimeBasedBackground() {
+      const hour = new Date().getHours();
+      const body = document.body;
+
+      if (hour >= 6 && hour < 17) {
+          // Morning/Daytime (6 AM to 5 PM): Premium Cream & Soft Gold
+          body.style.background = "linear-gradient(135deg, #fdfbfb 0%, #e2d1c3 100%)";
+      } 
+      else if (hour >= 17 && hour < 20) {
+          // Evening (5 PM to 8 PM): Deep Sunset Crimson & Gold
+          body.style.background = "linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%)";
+      } 
+      else {
+          // Night (8 PM to 6 AM): Midnight Blue & Dark Purple (Like a luxury watch box)
+          body.style.background = "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)";
+      }
+      
+      // Ensure the background covers the whole screen perfectly
+      body.style.minHeight = "100vh";
+      body.style.margin = "0";
+      body.style.backgroundAttachment = "fixed";
+  }
+
+  // Run the function when the page loads
+  setTimeBasedBackground();
+</script>
 </body>
 </html>
