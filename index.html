@@ -141,11 +141,11 @@
         .pop-text { position: absolute; color: var(--accent); font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
-        /* 3D CAKE STYLES */
-        .cake-stage { position: relative; width: 100%; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
-        #cake3DCanvas { width: 240px; height: 220px; outline: none; touch-action: none; }
+        /* THE NEW TRUE 3D CAKE CANVAS */
+        .cake-stage { position: relative; width: 100%; height: 260px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; overflow: visible; }
+        #cake3DCanvas { width: 100%; height: 100%; outline: none; touch-action: none; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.5)); }
         
-        .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -15px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+        .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
@@ -443,86 +443,7 @@
             }
         });
 
-        // --- 3. NEW: 3D CAKE & KNIFE LOGIC ---
-        const cCanvas = document.getElementById('cake3DCanvas');
-        const cScene = new THREE.Scene();
-        const cCamera = new THREE.PerspectiveCamera(45, 240/220, 0.1, 100);
-        cCamera.position.set(0, 3.5, 6.5);
-        cCamera.lookAt(0, 0.5, 0);
-        const cRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true });
-        cRenderer.setSize(240, 220);
-
-        const cAmbient = new THREE.AmbientLight(0xffffff, 0.8); cScene.add(cAmbient);
-        const cDirLight = new THREE.DirectionalLight(0xffffff, 0.6); cDirLight.position.set(5, 10, 5); cScene.add(cDirLight);
-
-        const leftCakeGroup = new THREE.Group(); const rightCakeGroup = new THREE.Group();
-        cScene.add(leftCakeGroup); cScene.add(rightCakeGroup);
-
-        const spongeMat = new THREE.MeshStandardMaterial({ color: 0xfbc2eb, roughness: 0.9 });
-        const icingMat = new THREE.MeshStandardMaterial({ color: 0xa18cd1, roughness: 0.4 });
-        
-        // Build 3D Cake Halves using Math.PI sweeps
-        const leftSponge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1.2, 32, 1, false, Math.PI/2, Math.PI), spongeMat);
-        const leftIcing = new THREE.Mesh(new THREE.CylinderGeometry(1.65, 1.65, 0.3, 32, 1, false, Math.PI/2, Math.PI), icingMat);
-        leftIcing.position.y = 0.6; leftCakeGroup.add(leftSponge); leftCakeGroup.add(leftIcing);
-
-        const rightSponge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1.2, 32, 1, false, -Math.PI/2, Math.PI), spongeMat);
-        const rightIcing = new THREE.Mesh(new THREE.CylinderGeometry(1.65, 1.65, 0.3, 32, 1, false, -Math.PI/2, Math.PI), icingMat);
-        rightIcing.position.y = 0.6; rightCakeGroup.add(rightSponge); rightCakeGroup.add(rightIcing);
-
-        // 3D Candle & Flame
-        const candleGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 16);
-        const candleMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const cCandle = new THREE.Mesh(candleGeo, candleMat);
-        cCandle.position.set(-0.2, 1.1, 0); // Put on left slice
-        leftCakeGroup.add(cCandle);
-
-        const cFlameGeo = new THREE.SphereGeometry(0.12, 16, 16);
-        const cFlameMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-        const cFlame = new THREE.Mesh(cFlameGeo, cFlameMat);
-        cFlame.position.set(-0.2, 1.6, 0);
-        const cFlameLight = new THREE.PointLight(0xffaa00, 1.5, 5);
-        cFlame.add(cFlameLight);
-        leftCakeGroup.add(cFlame);
-
-        // 3D Knife
-        const knifeGroup = new THREE.Group();
-        const bladeGeo = new THREE.BoxGeometry(0.04, 1.8, 0.4);
-        const bladeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.8, roughness: 0.2 });
-        const blade = new THREE.Mesh(bladeGeo, bladeMat);
-        const handleGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 16);
-        const handleMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
-        const handle = new THREE.Mesh(handleGeo, handleMat);
-        handle.position.y = 1.3; blade.position.y = 0;
-        knifeGroup.add(blade); knifeGroup.add(handle);
-        knifeGroup.position.set(0, 3.5, 0.5); // Starts high above
-        knifeGroup.rotation.x = Math.PI / 6; // Angled down
-        knifeGroup.visible = false; // Hidden until candles blown
-        cScene.add(knifeGroup);
-
-        let cakeActive = true; let isSlicingAnim = false;
-        function animateCake() {
-            if(!cakeActive) return; requestAnimationFrame(animateCake);
-            
-            // Flicker flame
-            if(cFlame.visible) {
-                cFlame.scale.setScalar(1 + Math.random() * 0.1);
-                cFlameLight.intensity = 1.2 + Math.random() * 0.5;
-            }
-
-            // Animate physical split
-            if(isSlicingAnim) {
-                if(leftCakeGroup.position.x > -1.0) leftCakeGroup.position.x -= 0.05;
-                if(rightCakeGroup.position.x < 1.0) rightCakeGroup.position.x += 0.05;
-                if(knifeGroup.position.y > -0.5) knifeGroup.position.y -= 0.1;
-                knifeGroup.rotation.x += 0.03; // Knife falls flat
-            }
-
-            cRenderer.render(cScene, cCamera);
-        }
-        animateCake();
-
-        // --- 4. TIME CAPSULE LOGIC ---
+        // --- 3. TIME CAPSULE LOGIC ---
         let timeCapsuleUnlocked = false; const targetDate = new Date(2026, 7, 12, 0, 0, 0).getTime();
         function checkTimeVault() {
             const now = new Date().getTime(); const distance = targetDate - now;
@@ -546,7 +467,7 @@
         });
         document.getElementById('vaultEnterBtn').addEventListener('click', () => { initAudio(); playTone(800, 'triangle', 0.1); document.getElementById('step-vault').classList.remove('active'); document.getElementById('step-0').classList.add('active'); });
 
-        // --- 5. THE 3D CRYSTAL REVEAL ---
+        // --- 4. THE 3D CRYSTAL REVEAL ---
         let crystalRenderer, crystalScene, crystalCamera, crystalMesh; let crystalActive = false;
         function initCrystal() {
             const cryCanvas = document.getElementById('crystalCanvas'); cryCanvas.style.display = 'block';
@@ -560,7 +481,7 @@
         }
         function animateCrystal() { if(!crystalActive) return; requestAnimationFrame(animateCrystal); crystalMesh.rotation.x += 0.01; crystalMesh.rotation.y += 0.02; crystalRenderer.render(crystalScene, crystalCamera); }
 
-        // --- 6. CORE LOGIC ---
+        // --- 5. CORE LOGIC ---
         let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
 
         window.addEventListener("deviceorientation", (e) => {
@@ -659,7 +580,108 @@
             });
         }
 
-        // --- 7. CAKE BLOW & 3D SLICING LOGIC ---
+        // --- 6. THE HIGH-FIDELITY BEVELED 3D CAKE ---
+        const cCanvas = document.getElementById('cake3DCanvas');
+        const cScene = new THREE.Scene();
+        const cCamera = new THREE.PerspectiveCamera(45, cCanvas.clientWidth / cCanvas.clientHeight, 0.1, 100);
+        cCamera.position.set(0, 5, 8); cCamera.lookAt(0, 0, 0);
+        const cRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true });
+        cRenderer.setSize(cCanvas.clientWidth, cCanvas.clientHeight);
+
+        const cAmbient = new THREE.AmbientLight(0xffffff, 0.8); cScene.add(cAmbient);
+        const cDirLight = new THREE.DirectionalLight(0xffffff, 0.6); cDirLight.position.set(5, 10, 5); cScene.add(cDirLight);
+
+        // Premium Soft Materials
+        const frostingMat = new THREE.MeshPhysicalMaterial({ color: 0xa18cd1, roughness: 0.6, clearcoat: 0.2 });
+        const spongeMat = new THREE.MeshStandardMaterial({ color: 0xfbc2eb, roughness: 0.9 });
+        const plateMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.5, opacity: 0.8, roughness: 0.1 });
+
+        // Glass Plate
+        const plateGeo = new THREE.CylinderGeometry(2.2, 2.2, 0.1, 64);
+        const plate = new THREE.Mesh(plateGeo, plateMat); plate.position.y = -0.55; cScene.add(plate);
+
+        // Extrude Settings for smooth, beautiful beveled edges
+        const extrudeSettings = { depth: 1, bevelEnabled: true, bevelSegments: 4, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 };
+        
+        // Math for the perfect 🍰 45-degree wedge
+        const sliceStart = Math.PI / 8; const sliceEnd = Math.PI * 3 / 8;
+
+        // Draw the Slice Vector Path
+        const sliceShape = new THREE.Shape();
+        sliceShape.moveTo(0, 0); sliceShape.arc(0, 0, 1.5, sliceStart, sliceEnd, false); sliceShape.lineTo(0, 0);
+        const sliceGeo = new THREE.ExtrudeGeometry(sliceShape, extrudeSettings);
+        sliceGeo.rotateX(-Math.PI / 2); // Lay it flat
+
+        // Draw the Main Cake Vector Path
+        const mainShape = new THREE.Shape();
+        mainShape.moveTo(0, 0); mainShape.arc(0, 0, 1.5, sliceEnd, Math.PI * 2 + sliceStart, false); mainShape.lineTo(0, 0);
+        const mainGeo = new THREE.ExtrudeGeometry(mainShape, extrudeSettings);
+        mainGeo.rotateX(-Math.PI / 2);
+
+        // Build the Mesh Groups
+        const mainCakeGroup = new THREE.Mesh(mainGeo, frostingMat);
+        const sliceGroup = new THREE.Group();
+        const sliceMesh = new THREE.Mesh(sliceGeo, frostingMat);
+        sliceGroup.add(sliceMesh);
+        
+        // The 3D Candle
+        const candleGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.6, 16);
+        const candleMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const candle = new THREE.Mesh(candleGeo, candleMat);
+        candle.position.set(0.8, 1.3, 0.8); // Position on the slice
+        sliceGroup.add(candle);
+
+        // The 3D Flame Particle
+        const flameGeo = new THREE.SphereGeometry(0.08, 16, 16);
+        const flameMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+        const cFlame = new THREE.Mesh(flameGeo, flameMat);
+        cFlame.position.set(0.8, 1.7, 0.8);
+        const cFlameLight = new THREE.PointLight(0xffaa00, 1.5, 5);
+        cFlame.add(cFlameLight);
+        sliceGroup.add(cFlame);
+
+        cScene.add(mainCakeGroup); cScene.add(sliceGroup);
+
+        // The Sleek Silver Knife
+        const knifeGroup = new THREE.Group();
+        const bladeGeo = new THREE.BoxGeometry(0.02, 1.8, 0.3);
+        const bladeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.1 });
+        const blade = new THREE.Mesh(bladeGeo, bladeMat);
+        const handleGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.6, 16);
+        const handleMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+        const handle = new THREE.Mesh(handleGeo, handleMat);
+        handle.position.y = 1.2; blade.position.y = 0;
+        knifeGroup.add(blade); knifeGroup.add(handle);
+        knifeGroup.position.set(0, 4, 0); // Hide high up
+        knifeGroup.rotation.x = Math.PI / 4; 
+        knifeGroup.visible = false;
+        cScene.add(knifeGroup);
+
+        let cakeActive = true; let isSlicingAnim = false;
+        function animateCake() {
+            if(!cakeActive) return; requestAnimationFrame(animateCake);
+            
+            // Flicker the flame beautifully
+            if(cFlame.visible) {
+                cFlame.scale.setScalar(1 + Math.random() * 0.15);
+                cFlameLight.intensity = 1.2 + Math.random() * 0.5;
+            }
+
+            // The Cinematic Slicing Animation
+            if(isSlicingAnim) {
+                // Slice physically slides forward and out
+                if(sliceGroup.position.x < 0.6) sliceGroup.position.x += 0.02;
+                if(sliceGroup.position.z < 0.6) sliceGroup.position.z += 0.02;
+                // Knife falls away
+                if(knifeGroup.position.y > -2) knifeGroup.position.y -= 0.1;
+                knifeGroup.rotation.x += 0.03; 
+            }
+
+            cRenderer.render(cScene, cCamera);
+        }
+        animateCake();
+
+        // CAKE BLOWING & SLICING LOGIC
         let micStream = null;
         document.getElementById("micBtn").addEventListener("click", async function(e) {
             e.preventDefault();
@@ -685,12 +707,12 @@
         function blowOutCandles() {
             if (candlesBlown) return; initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
             
-            // Extinguish 3D Flame & Summon Knife
+            // Extinguish flame and summon knife
             cFlame.visible = false; cFlameLight.intensity = 0;
             knifeGroup.visible = true;
 
             candlesBlown = true;
-            document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now grab the knife and swipe down to slice!"; document.getElementById('swipeHint').classList.add('visible');
+            document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down to slice!"; document.getElementById('swipeHint').classList.add('visible');
             if (micStream) micStream.getTracks().forEach(track => track.stop()); 
         }
 
@@ -705,24 +727,24 @@
             let currentY = e.touches ? e.touches[0].clientY : e.clientY;
             let delta = currentY - startY;
             
-            // Map the physical swipe to the 3D Knife dropping
-            if(delta > 0) {
-                knifeGroup.position.y = 3.5 - (delta * 0.02);
+            // Map physical swipe to knife dropping
+            if(delta > 0 && knifeGroup.position.y > 1) {
+                knifeGroup.position.y = 4 - (delta * 0.02);
             }
-            
-            // If knife hits the bottom, trigger slice
-            if (knifeGroup.position.y < 0.5) cutCake(); 
+            if (delta > 150) cutCake(); 
         }
 
         function cutCake() {
             cakeCut = true; isCakeSliced = true; document.getElementById('swipeHint').classList.remove('visible');
             playTone(1200, 'triangle', 0.1, 0.05); 
-            isSlicingAnim = true; // Tells the 3D renderer to split the cake
+            
+            isSlicingAnim = true; // Triggers the slide-out in the render loop
+
             document.getElementById('cakeInstruction').innerText = "Looks delicious!";
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 800);
         }
 
-        // --- 8. ENDING & SECRETS ---
+        // --- 7. ENDING & SECRETS ---
         let secretEndingTimer;
         function triggerFinale() {
             if (!isCakeSliced) return; 
@@ -810,6 +832,7 @@
         window.addEventListener('resize', () => { 
             gCamera.aspect = window.innerWidth / window.innerHeight; gCamera.updateProjectionMatrix(); gRenderer.setSize(window.innerWidth, window.innerHeight);
             if(eCamera && eRenderer) { eCamera.aspect = window.innerWidth / window.innerHeight; eCamera.updateProjectionMatrix(); eRenderer.setSize(window.innerWidth, window.innerHeight); }
+            if(cCamera && cRenderer) { const cCanvas = document.getElementById('cake3DCanvas'); cCamera.aspect = cCanvas.clientWidth / cCanvas.clientHeight; cCamera.updateProjectionMatrix(); cRenderer.setSize(cCanvas.clientWidth, cCanvas.clientHeight); }
             const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         });
     </script>
