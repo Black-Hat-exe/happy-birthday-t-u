@@ -14,9 +14,10 @@
     <meta name="theme-color" content="#0a0310">
     <title>Siena's Little Corner of the Internet ✨</title>
 
-    <!-- Invisible Read Receipt Script -->
-    <script data-goatcounter="https://ertaza-siena.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://ertaza-siena.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <link rel="preload" href="mcqueen.jpg" as="image">
     <link rel="preload" href="doc.jpg" as="image">
@@ -28,18 +29,17 @@
     
     <style>
         :root { 
-            /* Magical twilight colors for the ambient background mesh */
-            --color1: rgba(182, 49, 133, 0.4); /* Vibrant Rose/Magenta */
-            --color2: rgba(62, 33, 145, 0.45); /* Deep Violet */
-            --color3: rgba(255, 126, 103, 0.25); /* Soft Coral/Peach */
-            --accent: #f2c98a; /* Soft Champagne Gold */
+            --color1: rgba(182, 49, 133, 0.4); 
+            --color2: rgba(62, 33, 145, 0.45); 
+            --color3: rgba(255, 126, 103, 0.25); 
+            --accent: #f2c98a; 
             --accent-glow: rgba(242, 201, 138, 0.3);
         }
 
         body, html {
             margin: 0; padding: 0; height: 100vh; height: 100dvh; width: 100vw;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at top, #1e0b29 0%, #0a0310 100%);
+            background: #050108; 
             color: #fdfbfd; display: flex; justify-content: center; align-items: center;
             overflow: hidden; -webkit-font-smoothing: antialiased;
             user-select: none; -webkit-user-select: none; perspective: 1000px; 
@@ -56,91 +56,48 @@
             filter: blur(60px); z-index: 1; transition: background 2s ease;
             animation: breathe 12s ease-in-out infinite alternate;
         }
+        @keyframes breathe { 0% { transform: scale(1) translate(0, 0); opacity: 0.8; } 100% { transform: scale(1.1) translate(-2%, 2%); opacity: 1; } }
+
+        #galaxyCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+        
         .film-grain {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-            z-index: 2; pointer-events: none;
+            z-index: 3; pointer-events: none;
         }
-        @keyframes breathe { 0% { transform: scale(1) translate(0, 0); opacity: 0.8; } 100% { transform: scale(1.1) translate(-2%, 2%); opacity: 1; } }
 
-        .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
+        .ui-layer.fade-out { opacity: 0; pointer-events: none; }
+
         .step-container { display: none; width: 100%; justify-content: center; align-items: center; transform-style: preserve-3d; flex-direction: column; }
         .step-container.active { display: flex; animation: silkenFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes silkenFadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* --- REDESIGNED BEAUTIFUL ENVELOPE --- */
-        .envelope-wrapper { 
-            position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; 
-            filter: drop-shadow(0 15px 35px rgba(182, 49, 133, 0.3)); /* Soft glowing shadow */
-            animation: floatEnv 4s ease-in-out infinite; 
-        }
+        /* TIME VAULT STYLES */
+        .vault-timer { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: var(--accent); margin: 20px 0; font-family: monospace; text-shadow: 0 0 15px var(--accent-glow); }
+        .vault-lock { font-size: 40px; margin-bottom: 10px; cursor: pointer; transition: transform 0.2s; }
+        .vault-lock:active { transform: scale(0.9); }
+
+        /* WAX SEAL ENVELOPE CSS */
+        .envelope-wrapper { position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; filter: drop-shadow(0 15px 35px rgba(182, 49, 133, 0.3)); animation: floatEnv 4s ease-in-out infinite; }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-        
-        .envelope-body { 
-            position: absolute; width: 100%; height: 100%; 
-            background: rgba(255, 255, 255, 0.05); border-radius: 12px; 
-            backdrop-filter: blur(15px); z-index: 1; overflow: hidden; 
-        }
-        
-        .envelope-paper {
-            position: absolute; top: 10%; left: 5%; width: 90%; height: 80%;
-            background: linear-gradient(135deg, #fdf8f5, #f3e8e0);
-            border-radius: 8px; z-index: 2;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            display: flex; justify-content: center; align-items: flex-start;
-            padding-top: 25px; box-sizing: border-box;
-        }
-        /* Paper lines to make it look like a real letter */
-        .envelope-paper::before {
-            content: ''; width: 60%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px;
-            box-shadow: 0 15px 0 rgba(0,0,0,0.1), 0 30px 0 rgba(0,0,0,0.1), 0 45px 0 rgba(0,0,0,0.1);
-        }
-        
-        /* The geometric folds of the envelope */
+        .envelope-body { position: absolute; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.05); border-radius: 12px; backdrop-filter: blur(15px); z-index: 1; overflow: hidden; }
+        .envelope-paper { position: absolute; top: 10%; left: 5%; width: 90%; height: 80%; background: linear-gradient(135deg, #fdf8f5, #f3e8e0); border-radius: 8px; z-index: 2; box-shadow: 0 0 15px rgba(0,0,0,0.2); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); display: flex; justify-content: center; align-items: flex-start; padding-top: 25px; box-sizing: border-box; }
+        .envelope-paper::before { content: ''; width: 60%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; box-shadow: 0 15px 0 rgba(0,0,0,0.1), 0 30px 0 rgba(0,0,0,0.1), 0 45px 0 rgba(0,0,0,0.1); }
         .envelope-fold-left { position: absolute; top: 0; left: 0; width: 100%; height: 100%; clip-path: polygon(0 0, 50% 50%, 0 100%); background: rgba(255, 255, 255, 0.08); z-index: 3; border-right: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); }
         .envelope-fold-right { position: absolute; top: 0; left: 0; width: 100%; height: 100%; clip-path: polygon(100% 0, 50% 50%, 100% 100%); background: rgba(255, 255, 255, 0.04); z-index: 3; border-left: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); }
         .envelope-fold-bottom { position: absolute; top: 0; left: 0; width: 100%; height: 100%; clip-path: polygon(0 100%, 50% 50%, 100% 100%); background: rgba(255, 255, 255, 0.06); z-index: 4; border-top: 1px solid rgba(255,255,255,0.15); border-radius: 0 0 12px 12px; backdrop-filter: blur(5px); }
-        
-        .envelope-flap { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 60%; 
-            background: rgba(255, 255, 255, 0.1); 
-            clip-path: polygon(0 0, 50% 100%, 100% 0); 
-            transform-origin: top; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
-            z-index: 5; backdrop-filter: blur(10px); border-radius: 12px 12px 0 0; 
-        }
+        .envelope-flap { position: absolute; top: 0; left: 0; width: 100%; height: 60%; background: rgba(255, 255, 255, 0.1); clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 5; backdrop-filter: blur(10px); border-radius: 12px 12px 0 0; }
         .envelope-flap::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-top: 1px solid rgba(255,255,255,0.3); clip-path: polygon(0 0, 50% 100%, 100% 0); }
-        
-        /* Beautiful Golden Seal */
-        .wax-seal { 
-            position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); 
-            width: 65px; height: 65px; 
-            background: radial-gradient(circle at 30% 30%, #f2c98a, #b38b4d); 
-            border-radius: 50%; z-index: 6; display: flex; justify-content: center; align-items: center; 
-            font-size: 26px; color: #4a3311; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); 
-            box-shadow: 0 8px 20px rgba(242, 201, 138, 0.3), inset 0 0 12px rgba(0,0,0,0.2); 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; 
-        }
+        .wax-seal { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 65px; background: radial-gradient(circle at 30% 30%, #f2c98a, #b38b4d); border-radius: 50%; z-index: 6; display: flex; justify-content: center; align-items: center; font-size: 26px; color: #4a3311; text-shadow: 1px 1px 0 rgba(255,255,255,0.4); box-shadow: 0 8px 20px rgba(242, 201, 138, 0.3), inset 0 0 12px rgba(0,0,0,0.2); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; }
         .wax-seal::after { content: ''; position: absolute; width: 50px; height: 50px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; }
         .envelope-wrapper:hover .wax-seal { transform: translate(-50%, -50%) scale(1.08); }
-        
-        /* Opening Animations */
         .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 2; }
         .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; filter: blur(4px); }
         .envelope-wrapper.open .envelope-paper { transform: translateY(-40px); z-index: 4; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        /* -------------------------------------- */
-
         .envelope-instruction { margin-top: 40px; color: var(--accent); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 600; opacity: 0.8; line-height: 1.5; text-align: center; }
 
-        .glass-card {
-            background: rgba(20, 15, 30, 0.35); padding: 40px 30px; border-radius: 28px; 
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(30px) saturate(140%); -webkit-backdrop-filter: blur(30px) saturate(140%); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; 
-            transition: transform 0.1s ease-out; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
-        }
-
+        .glass-card { background: rgba(20, 15, 30, 0.35); padding: 40px 30px; border-radius: 28px; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.08); max-width: 440px; width: 85%; text-align: center; box-sizing: border-box; position: relative; transition: transform 0.1s ease-out; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.15) transparent; z-index: 20; }
         .glass-card::-webkit-scrollbar { width: 5px; } .glass-card::-webkit-scrollbar-track { background: transparent; } .glass-card::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
 
         h1 { font-weight: 400; letter-spacing: -0.5px; margin-top: 0; font-size: 28px; margin-bottom: 15px; color: #ffffff; }
@@ -151,10 +108,7 @@
         .input-group:focus-within { background: rgba(0, 0, 0, 0.4); border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         input { background: transparent; border: none; color: #fff; font-family: inherit; font-size: 16px; width: 90%; padding: 12px; outline: none; text-align: center; }
         
-        button {
-            background: #fdf8f5; color: #1a0b26; border: none; padding: 16px 30px; font-size: 15px; font-weight: 500; font-family: inherit;
-            cursor: pointer; width: 100%; border-radius: 14px; transition: all 0.2s; box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); margin-bottom: 10px; touch-action: manipulation; 
-        }
+        button { background: #fdf8f5; color: #1a0b26; border: none; padding: 16px 30px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; width: 100%; border-radius: 14px; transition: all 0.2s; box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); margin-bottom: 10px; touch-action: manipulation; }
         button:active { transform: scale(0.96); }
 
         .btn-row { display: flex; gap: 15px; justify-content: center; position: relative; flex-direction: column; }
@@ -168,12 +122,13 @@
         .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); }
         .gift-box:active { transform: scale(0.9); }
 
+        /* 3D Crystal Reveal Container */
+        #crystalCanvas { width: 120px; height: 120px; margin: 0 auto; display: none; cursor: pointer; animation: floatEnv 3s ease-in-out infinite; filter: drop-shadow(0 0 20px var(--accent-glow)); }
+        
         .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
         .car-image { width: 100%; max-width: 250px; height: auto; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer; }
-        
         .step-container.active .drive-in { animation: driveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes driveIn { 0% { transform: translateX(-150%) skewX(15deg); opacity: 0; } 80% { transform: translateX(5%) skewX(-5deg); opacity: 1; } 100% { transform: translateX(0) skewX(0); opacity: 1; } }
-
         .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; transition: color 0.3s; }
         .mcqueen-text { color: #ff6b8f; } .doc-text { color: #8ba4f9; }
         .car-quote { font-style: italic; color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
@@ -189,66 +144,65 @@
 
         .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
         .flame { animation: flicker 0.12s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; filter: drop-shadow(0 0 6px rgba(255, 123, 0, 0.8)); }
-        @keyframes flicker { 
-            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; filter: drop-shadow(0 0 4px rgba(255, 123, 0, 0.6)); } 
-            50% { transform: scale(1.05) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 123, 0, 1)); }
-            100% { transform: scale(0.95) rotate(3deg); opacity: 0.8; filter: drop-shadow(0 0 3px rgba(255, 123, 0, 0.5)); } 
-        }
+        @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); opacity: 0.9; filter: drop-shadow(0 0 4px rgba(255, 123, 0, 0.6)); } 50% { transform: scale(1.05) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 123, 0, 1)); } 100% { transform: scale(0.95) rotate(3deg); opacity: 0.8; filter: drop-shadow(0 0 3px rgba(255, 123, 0, 0.5)); } }
         .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
         .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
         .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
-
         .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
-        #step-9 {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #050108; z-index: 9999;
-            display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            opacity: 0; transition: opacity 2s ease;
-        }
+        #step-9 { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #050108; z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity 2s ease; }
         #step-9.active-ending { display: flex; opacity: 1; }
         .secret-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; color: #fff; line-height: 2; font-weight: 400; max-width: 80%; }
         .caret { display: inline-block; width: 8px; height: 18px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Australia Easter Egg Overlay */
-        #aus-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(10, 3, 16, 0.95); z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.8s ease; text-align: center;
-            backdrop-filter: blur(15px);
-        }
-        #aus-overlay.show { opacity: 1; pointer-events: auto; }
-        .aus-text { font-size: 18px; color: #fff; line-height: 2; font-weight: 300; letter-spacing: 1px; }
+        /* 3D EARTH OVERLAY CSS */
+        #earth-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 1, 8, 0.85); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; backdrop-filter: blur(10px); }
+        #earth-overlay.show { opacity: 1; pointer-events: auto; }
+        #earthCanvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; outline: none; }
+        .earth-text { position: absolute; top: 15%; z-index: 2; text-align: center; font-size: 16px; color: #fff; font-weight: 300; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); pointer-events: none; }
+        .earth-close-btn { position: absolute; bottom: 10%; z-index: 2; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 24px; border-radius: 20px; font-family: inherit; font-size: 14px; cursor: pointer; backdrop-filter: blur(5px); }
 
         .watermark { position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 16px; border-radius: 20px; font-size: 10px; color: rgba(255, 255, 255, 0.4); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; z-index: 1000; pointer-events: none; }
         @media (max-width: 350px) { .watermark { display: none; } }
-        #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 20; display: none; }
+        #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 15; display: none; }
     </style>
 </head>
 <body>
 
     <div class="ambient-mesh"></div>
+    <canvas id="galaxyCanvas"></canvas>
     <div class="film-grain"></div>
     <canvas id="confettiCanvas"></canvas>
     
-    <div id="aus-overlay" onclick="this.classList.remove('show')">
-        <div class="aus-text">
-            <div style="font-size: 40px; margin-bottom: 20px;">🌏</div>
-            Australia: 13,000 km away.<br><br>
-            This website somehow travelled further.<br><br>
-            <div style="font-size: 24px; margin-top: 20px;">❤️</div>
+    <div id="earth-overlay">
+        <div class="earth-text">
+            Pakistan to Australia.<br>13,000 km away.<br><br>
+            <span style="font-size: 12px; color: var(--accent);">(Swipe to spin the globe)</span>
         </div>
+        <canvas id="earthCanvas"></canvas>
+        <button class="earth-close-btn" onclick="closeEarth()">Return to Website</button>
     </div>
 
     <div class="watermark">Made for Siena. Built by Ertaza.</div>
 
-    <div class="ui-layer">
-        <div id="step-0" class="step-container active">
-            <!-- NEW ENVELOPE -->
+    <div class="ui-layer" id="mainUiLayer">
+
+        <div id="step-vault" class="step-container">
+            <div class="glass-card">
+                <div class="vault-lock" id="devLockIcon">🔒</div>
+                <h2>Time Capsule Locked</h2>
+                <p>This little corner of the internet is sealed until a very specific day.</p>
+                <div class="vault-timer" id="vaultTimer">00:00:00:00</div>
+                <p style="font-size: 12px; margin-top: 20px; opacity: 0.5;">Awaiting August 12, 2026</p>
+                <button id="vaultEnterBtn" class="hidden">The wait is over.</button>
+            </div>
+        </div>
+
+        <div id="step-0" class="step-container">
             <div class="envelope-wrapper" id="envelopeWrapper">
                 <div class="envelope-body"></div>
                 <div class="envelope-paper"></div>
@@ -258,7 +212,6 @@
                 <div class="envelope-flap"></div>
                 <div class="wax-seal" id="waxSeal">🌸</div>
             </div>
-            <!-- END NEW ENVELOPE -->
             <div class="envelope-instruction" id="envInstruction">Siena, this letter has been waiting for you.</div>
         </div>
 
@@ -305,7 +258,7 @@
                     <div class="gift-box" onclick="openBox(this)">🎁</div>
                 </div>
                 
-                <button id="boxContinueBtn" class="hidden ghost-btn" onclick="goToReveal()">See The Real Gift</button>
+                <canvas id="crystalCanvas" onclick="goToReveal()"></canvas>
             </div>
         </div>
 
@@ -357,7 +310,6 @@
                                 <path d="M 75 40 Q 97 60 120 40 Q 142 60 165 40" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
                                 <rect x="95" y="10" width="6" height="30" fill="#ffffff" />
                                 <rect x="139" y="10" width="6" height="30" fill="#ffffff" />
-                                
                                 <g class="flame" style="transform-origin: 98px 8px;">
                                     <path d="M 98 8 Q 106 -5 98 -16 Q 90 -5 98 8" fill="#ff7b00" />
                                     <path d="M 98 8 Q 102 -2 98 -10 Q 94 -2 98 8" fill="#ffdd59" />
@@ -406,15 +358,12 @@
                     <form id="feedbackForm" action="https://formsubmit.co/18b5331f98d1200b354a8504bae8f419" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
-                        
                         <input type="text" name="Name" placeholder="Your Name" required style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
                         <input type="email" name="Email" placeholder="Your Email (optional)" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none;">
                         <textarea name="Message" placeholder="What did you think?..." rows="2" required style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 10px; font-family: inherit; font-size: 14px; outline: none; resize: none;"></textarea>
-                        
                         <button type="submit" style="padding: 12px; font-size: 14px; background: var(--accent); color: #0a0310; box-shadow: none; margin-bottom: 0;">Send Message 💌</button>
                     </form>
                 </div>
-
                 <button id="replayBtn" class="ghost-btn" style="margin-top: 0;">Replay Experience</button>
             </div>
         </div>
@@ -430,152 +379,295 @@
     <script>
         console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tMade for Siena. Built by Ertaza.\n\n", "color: #0a0310; background: #f2c98a; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
 
-        let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
+        // --- 1. THE 3D GALAXY BACKGROUND ---
+        let galaxyActive = true;
+        const gCanvas = document.getElementById('galaxyCanvas');
+        const gScene = new THREE.Scene();
+        const gCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        gCamera.position.z = 40;
+        const gRenderer = new THREE.WebGLRenderer({ canvas: gCanvas, alpha: true, antialias: true });
+        gRenderer.setSize(window.innerWidth, window.innerHeight);
 
-        // --- AUSTRALIA EASTER EGG LOGIC ---
-        let bgClicks = 0;
-        let bgClickTimer;
-        document.addEventListener('click', (e) => {
-            // Ignore if clicking on interactive elements
-            if (e.target.closest('button, input, .gift-box, .envelope-wrapper, .car-image, .glass-card, form, textarea')) return;
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 5000;
+        const posArray = new Float32Array(starCount * 3);
+        const colorArray = new Float32Array(starCount * 3);
+        const starColors = [ new THREE.Color('#b63185'), new THREE.Color('#3e2191'), new THREE.Color('#ff7e67'), new THREE.Color('#f2c98a') ];
+
+        for(let i = 0; i < starCount * 3; i+=3) {
+            posArray[i] = (Math.random() - 0.5) * 150; posArray[i+1] = (Math.random() - 0.5) * 150; posArray[i+2] = (Math.random() - 0.5) * 150;
+            const rc = starColors[Math.floor(Math.random() * starColors.length)];
+            colorArray[i] = rc.r; colorArray[i+1] = rc.g; colorArray[i+2] = rc.b;
+        }
+
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        starGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+        const starMaterial = new THREE.PointsMaterial({ size: 0.12, vertexColors: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+        const starMesh = new THREE.Points(starGeometry, starMaterial);
+        gScene.add(starMesh);
+
+        function animateGalaxy() {
+            if(!galaxyActive) return;
+            requestAnimationFrame(animateGalaxy);
+            starMesh.rotation.y += 0.0005; starMesh.rotation.x += 0.0002;
+            gRenderer.render(gScene, gCamera);
+        }
+        animateGalaxy();
+
+        // --- 2. NEW: 3D EARTH (PAKISTAN TO AUSTRALIA) ---
+        let earthActive = false;
+        let eRenderer, eScene, eCamera, eControls;
+
+        function initEarth() {
+            const eCanvas = document.getElementById('earthCanvas');
+            eScene = new THREE.Scene();
+            eCamera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
+            eCamera.position.z = 4.5;
             
-            bgClicks++;
-            clearTimeout(bgClickTimer);
+            eRenderer = new THREE.WebGLRenderer({canvas: eCanvas, alpha: true, antialias: true});
+            eRenderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Orbit Controls for swiping
+            eControls = new THREE.OrbitControls(eCamera, eRenderer.domElement);
+            eControls.enableZoom = false; 
+            eControls.enablePan = false;
+            eControls.autoRotate = true;
+            eControls.autoRotateSpeed = 1.2;
+
+            // Wireframe Globe
+            const globeGeo = new THREE.SphereGeometry(1.5, 32, 32);
+            const globeMat = new THREE.MeshBasicMaterial({ color: 0x3e2191, wireframe: true, transparent: true, opacity: 0.4 });
+            const globe = new THREE.Mesh(globeGeo, globeMat);
+            eScene.add(globe);
+
+            // Math to map Lat/Lon to 3D Sphere
+            function get3DPoint(lat, lon, radius) {
+                const phi = (90 - lat) * (Math.PI / 180);
+                const theta = (lon + 180) * (Math.PI / 180);
+                const x = -(radius * Math.sin(phi) * Math.cos(theta));
+                const z = (radius * Math.sin(phi) * Math.sin(theta));
+                const y = (radius * Math.cos(phi));
+                return new THREE.Vector3(x, y, z);
+            }
+
+            // Approximate Coordinates: Pakistan (Lat 30, Lon 70), Australia (Lat -25, Lon 135)
+            const pK = get3DPoint(30, 70, 1.5);
+            const aU = get3DPoint(-25, 135, 1.5);
+
+            // Location Markers
+            const markerGeo = new THREE.SphereGeometry(0.04, 16, 16);
+            const markerMat = new THREE.MeshBasicMaterial({ color: 0xf2c98a });
+            const pKMesh = new THREE.Mesh(markerGeo, markerMat); pKMesh.position.copy(pK); eScene.add(pKMesh);
+            const aUMesh = new THREE.Mesh(markerGeo, markerMat); aUMesh.position.copy(aU); eScene.add(aUMesh);
+
+            // Glowing Connecting Arc
+            const midPoint = pK.clone().lerp(aU, 0.5).normalize().multiplyScalar(1.5 + 0.6); // Arc height
+            const curve = new THREE.QuadraticBezierCurve3(pK, midPoint, aU);
+            const points = curve.getPoints(50);
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xff7e67, linewidth: 3 });
+            const arcLine = new THREE.Line(lineGeo, lineMat);
+            eScene.add(arcLine);
+
+            earthActive = true;
+            animateEarth();
+        }
+
+        function animateEarth() {
+            if(!earthActive) return;
+            requestAnimationFrame(animateEarth);
+            eControls.update();
+            eRenderer.render(eScene, eCamera);
+        }
+
+        function closeEarth() {
+            document.getElementById('earth-overlay').classList.remove('show');
+            document.getElementById('mainUiLayer').classList.remove('fade-out');
+            earthActive = false; // Stop rendering earth
+            galaxyActive = true; // Resume galaxy
+            animateGalaxy();
+        }
+
+        // --- 7-CLICK EVENT TRIGGER ---
+        let bgClicks = 0; let bgClickTimer;
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('button, input, .gift-box, .envelope-wrapper, .car-image, .glass-card, form, textarea, canvas')) return;
+            bgClicks++; clearTimeout(bgClickTimer);
             bgClickTimer = setTimeout(() => { bgClicks = 0; }, 2000); 
             
             if (bgClicks === 7) {
-                const ausOverlay = document.getElementById('aus-overlay');
-                if(ausOverlay) {
-                    ausOverlay.classList.add('show');
-                    initAudio(); playTone(600, 'sine', 0.5, 0.1);
-                }
+                // Pause Galaxy to save phone battery
+                galaxyActive = false; 
+                
+                // Hide UI and Show Earth
+                document.getElementById('mainUiLayer').classList.add('fade-out');
+                const earthOverlay = document.getElementById('earth-overlay');
+                earthOverlay.classList.add('show');
+                initAudio(); playTone(600, 'sine', 0.5, 0.1);
+                
+                if(!eScene) { initEarth(); } else { earthActive = true; animateEarth(); }
                 bgClicks = 0;
             }
         });
-        // ----------------------------------
+
+        // --- 3. TIME CAPSULE LOGIC ---
+        let timeCapsuleUnlocked = false;
+        const targetDate = new Date(2026, 7, 12, 0, 0, 0).getTime(); // August 12, 2026
+        
+        function checkTimeVault() {
+            const now = new Date().getTime(); const distance = targetDate - now;
+            if (distance < 0) {
+                document.getElementById('vaultTimer').innerText = "00:00:00:00";
+                document.getElementById('vaultEnterBtn').classList.remove('hidden');
+                document.getElementById('devLockIcon').innerText = "🔓";
+                timeCapsuleUnlocked = true;
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById('vaultTimer').innerText = (days < 10 ? "0" + days : days) + ":" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            }
+        }
+
+        if(new Date().getTime() >= targetDate) {
+            document.getElementById('step-vault').classList.remove('active');
+            document.getElementById('step-0').classList.add('active');
+            timeCapsuleUnlocked = true;
+        } else {
+            document.getElementById('step-vault').classList.add('active');
+            setInterval(checkTimeVault, 1000); checkTimeVault();
+        }
+
+        // DEVELOPER BYPASS (Tap lock 5 times)
+        let devClicks = 0;
+        document.getElementById('devLockIcon').addEventListener('click', function() {
+            if(timeCapsuleUnlocked) return;
+            devClicks++;
+            if(devClicks === 5) {
+                playSuccessMelody(); this.innerText = "🔓";
+                document.getElementById('vaultTimer').innerText = "DEV UNLOCK";
+                document.getElementById('vaultEnterBtn').classList.remove('hidden');
+                timeCapsuleUnlocked = true;
+            }
+        });
+
+        document.getElementById('vaultEnterBtn').addEventListener('click', () => {
+            initAudio(); playTone(800, 'triangle', 0.1);
+            document.getElementById('step-vault').classList.remove('active');
+            document.getElementById('step-0').classList.add('active');
+        });
+
+        // --- 4. THE 3D CRYSTAL REVEAL ---
+        let crystalRenderer, crystalScene, crystalCamera, crystalMesh;
+        let crystalActive = false;
+        
+        function initCrystal() {
+            const cCanvas = document.getElementById('crystalCanvas'); cCanvas.style.display = 'block';
+            crystalScene = new THREE.Scene(); crystalCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100); crystalCamera.position.z = 5;
+            crystalRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true }); crystalRenderer.setSize(120, 120);
+
+            const geo = new THREE.IcosahedronGeometry(1.5, 0);
+            const mat = new THREE.MeshStandardMaterial({ color: 0xf2c98a, wireframe: true, transparent: true, opacity: 0.9 });
+            crystalMesh = new THREE.Mesh(geo, mat); crystalScene.add(crystalMesh);
+            const light = new THREE.PointLight(0xffffff, 2); light.position.set(2, 2, 2); crystalScene.add(light);
+
+            crystalActive = true; animateCrystal();
+        }
+
+        function animateCrystal() {
+            if(!crystalActive) return; requestAnimationFrame(animateCrystal);
+            crystalMesh.rotation.x += 0.01; crystalMesh.rotation.y += 0.02;
+            crystalRenderer.render(crystalScene, crystalCamera);
+        }
+
+        // --- 5. CORE LOGIC ---
+        let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
 
         window.addEventListener("deviceorientation", (e) => {
             const cards = document.querySelectorAll('.glass-card');
-            const tiltX = Math.min(Math.max(e.beta - 45, -20), 20); 
-            const tiltY = Math.min(Math.max(e.gamma, -20), 20); 
-            cards.forEach(card => {
-                if (card.parentElement.classList.contains('active')) {
-                    card.style.transform = `rotateX(${-tiltX/3}deg) rotateY(${tiltY/3}deg)`;
-                }
-            });
+            const tiltX = Math.min(Math.max(e.beta - 45, -20), 20); const tiltY = Math.min(Math.max(e.gamma, -20), 20); 
+            cards.forEach(card => { if (card.parentElement.classList.contains('active')) { card.style.transform = `rotateX(${-tiltX/3}deg) rotateY(${tiltY/3}deg)`; } });
         }, true);
 
         function goToStep(stepId) {
-            if (stepId === 'step-3' && !securityUnlocked) { console.warn("Access Denied: Password required."); return; }
-            if (stepId === 'step-5' && !allBoxesOpened) { console.warn("Access Denied: Open all boxes first."); return; }
-            if (stepId === 'step-7' && !isCakeSliced) { console.warn("Access Denied: Cake must be sliced."); return; }
+            if (stepId === 'step-0' && !timeCapsuleUnlocked) return;
+            if (stepId === 'step-3' && !securityUnlocked) { console.warn("Access Denied."); return; }
+            if (stepId === 'step-5' && !allBoxesOpened) { console.warn("Access Denied."); return; }
+            if (stepId === 'step-7' && !isCakeSliced) { console.warn("Access Denied."); return; }
             
             initAudio(); playTone(440, 'sine', 0.08, 0.03); 
-            const steps = document.querySelectorAll('.step-container');
-            steps.forEach(step => step.classList.remove('active'));
+            const steps = document.querySelectorAll('.step-container'); steps.forEach(step => step.classList.remove('active'));
             const nextStep = document.getElementById(stepId);
-            if (nextStep) {
-                nextStep.classList.add('active');
-                if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); }
-            }
+            if (nextStep) { nextStep.classList.add('active'); if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); } }
         }
 
         document.getElementById('envelopeWrapper').addEventListener('click', function() {
             if (this.classList.contains('open')) return;
-            
-            initAudio();
-            playTone(800, 'square', 0.05, 0.1);
-            setTimeout(() => playTone(1200, 'triangle', 0.05, 0.1), 50);
-            setTimeout(() => playTone(600, 'square', 0.08, 0.1), 100);
-
-            this.classList.add('open');
-            document.getElementById('envInstruction').innerHTML = "Welcome.<br><br>No one else was supposed to open this.<br><br>Just you.";
-            
+            initAudio(); playTone(800, 'square', 0.05, 0.1); setTimeout(() => playTone(1200, 'triangle', 0.05, 0.1), 50); setTimeout(() => playTone(600, 'square', 0.08, 0.1), 100);
+            this.classList.add('open'); document.getElementById('envInstruction').innerHTML = "Welcome.<br><br>No one else was supposed to open this.<br><br>Just you.";
             setTimeout(() => { goToStep('step-1'); }, 2000); 
         });
 
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
 
         function checkPassword() {
-            initAudio(); 
-            const input = document.getElementById("secretInput"); 
-            const errorMsg = document.getElementById("errorMsg");
-            const attempt = input.value.toLowerCase().trim(); 
-            if (attempt === "") return;
-            
+            initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
+            const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
             const correctAnswer = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase(); 
             
-            if (attempt === correctAnswer) {
-                errorMsg.classList.remove("show"); 
-                input.blur(); 
-                playSuccessMelody(); 
-                securityUnlocked = true; 
-                goToStep('step-3'); 
-            } else {
-                playErrorSound(); 
-                errorMsg.classList.add("show");
-                const group = document.querySelector('.input-group');
-                if(group) { 
-                    group.style.transform = 'translateX(-8px)'; 
-                    setTimeout(() => group.style.transform = 'translateX(8px)', 100); 
-                    setTimeout(() => group.style.transform = 'translateX(-4px)', 200); 
-                    setTimeout(() => group.style.transform = 'translateX(0)', 300); 
-                }
+            if (attempt === correctAnswer) { errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); securityUnlocked = true; goToStep('step-3'); } 
+            else {
+                playErrorSound(); errorMsg.classList.add("show"); const group = document.querySelector('.input-group');
+                if(group) { group.style.transform = 'translateX(-8px)'; setTimeout(() => group.style.transform = 'translateX(8px)', 100); setTimeout(() => group.style.transform = 'translateX(-4px)', 200); setTimeout(() => group.style.transform = 'translateX(0)', 300); }
             }
         }
-        document.getElementById("unlockBtn").addEventListener("click", checkPassword);
-        document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
+        document.getElementById("unlockBtn").addEventListener("click", checkPassword); document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
         let yesClickCount = 0;
         document.getElementById("yesBtnTease").addEventListener("click", function(e) {
-            e.preventDefault(); initAudio(); yesClickCount++;
-            playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
+            e.preventDefault(); initAudio(); yesClickCount++; playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
             if (yesClickCount === 1) { this.innerText = "Really?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
             else if (yesClickCount === 2) { this.innerText = "Really really?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
             else { yesClickCount = 0; this.innerText = "I promise"; goToStep('step-4'); }
         });
 
         const noBtn = document.getElementById('noBtn');
-        function dodge() {
-            const randomX = Math.floor(Math.random() * 160) - 80; const randomY = Math.floor(Math.random() * 100) - 50; 
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`; playTone(800, 'square', 0.05, 0.02);
-        }
-        noBtn.addEventListener('mouseover', dodge);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
-        noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
+        function dodge() { const randomX = Math.floor(Math.random() * 160) - 80; const randomY = Math.floor(Math.random() * 100) - 50; noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`; playTone(800, 'square', 0.05, 0.02); }
+        noBtn.addEventListener('mouseover', dodge); noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); }); noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 
         function openBox(el) {
             if (el.style.pointerEvents === 'none') return;
-            boxesOpenedCount++;
-            initAudio(); playTone(600 + (boxesOpenedCount*100), 'triangle', 0.1);
-            el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)';
-            const feedback = document.getElementById('box-feedback');
+            boxesOpenedCount++; initAudio(); playTone(600 + (boxesOpenedCount*100), 'triangle', 0.1);
+            el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)'; const feedback = document.getElementById('box-feedback');
             
             if (boxesOpenedCount === 1) { feedback.innerHTML = "⭐ You unlocked:<br>One good birthday wish."; el.innerText = "⭐"; }
             else if (boxesOpenedCount === 2) { feedback.innerHTML = "🌸 You found:<br>One extra smile."; el.innerText = "🌸"; }
             else if (boxesOpenedCount === 3) {
-                feedback.innerHTML = "You found what I actually wanted to give you."; el.innerText = "🎁";
-                allBoxesOpened = true; 
-                document.getElementById('boxContinueBtn').classList.remove('hidden'); playSuccessMelody();
+                feedback.innerHTML = "Click the gem to receive it."; el.style.display = 'none';
+                allBoxesOpened = true; initCrystal(); playSuccessMelody();
             }
         }
 
-        function goToReveal() { goToStep('step-5'); setTimeout(spawnBalloons, 500); }
+        function goToReveal() { 
+            if(!allBoxesOpened) return;
+            crystalActive = false; // Kill render loop for performance
+            playTone(1000, 'square', 0.1);
+            document.getElementById('crystalCanvas').style.transform = "scale(1.5)"; document.getElementById('crystalCanvas').style.opacity = "0";
+            setTimeout(() => { goToStep('step-5'); setTimeout(spawnBalloons, 500); }, 300);
+        }
 
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
             const popMessages = ["+1 Good Vibe", "+20 Birthday Energy", "+100 Smile Points", "Today's Main Character", "Australian Certified Birthday", "Level Up!", "Another year unlocked"];
             
             for(let i=0; i<6; i++) {
-                let balloon = document.createElement('div');
-                balloon.innerText = '🎈'; balloon.className = 'balloon';
+                let balloon = document.createElement('div'); balloon.innerText = '🎈'; balloon.className = 'balloon';
                 balloon.style.left = (Math.random() * 70 + 10) + '%'; balloon.style.bottom = '-60px'; balloon.style.pointerEvents = 'auto'; 
                 balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`; balloon.style.animationDelay = `${Math.random() * 2}s`;
-                
                 balloon.onclick = function(e) {
                     initAudio(); playTone(900, 'triangle', 0.05); 
-                    let popText = document.createElement('div'); popText.className = 'pop-text'; 
-                    popText.innerText = popMessages[Math.floor(Math.random() * popMessages.length)];
+                    let popText = document.createElement('div'); popText.className = 'pop-text'; popText.innerText = popMessages[Math.floor(Math.random() * popMessages.length)];
                     popText.style.left = (e.clientX - 40) + 'px'; popText.style.top = (e.clientY - 20) + 'px';
                     document.body.appendChild(popText); setTimeout(() => popText.remove(), 1000);
                     this.innerText = '💥'; this.style.pointerEvents = 'none'; setTimeout(() => this.remove(), 150);
@@ -589,15 +681,12 @@
             initAudio(); mcQueenClicks++; playTone(400 + (mcQueenClicks*50), 'sine', 0.1);
             if (mcQueenClicks === 5) {
                 document.body.classList.add('shake'); playTone(200, 'square', 0.6, 0.3); setTimeout(() => playTone(180, 'square', 0.8, 0.4), 100);
-                const title = document.getElementById('mcqueenTitle'); 
-                title.innerText = "⚡ SPEED LIMIT REMOVED. PROCEED RESPONSIBLY. ⚡"; 
-                title.style.color = "#fbbf24"; title.style.fontSize = "14px"; title.style.fontWeight = "600";
+                const title = document.getElementById('mcqueenTitle'); title.innerText = "⚡ SPEED LIMIT REMOVED. PROCEED RESPONSIBLY. ⚡"; title.style.color = "#fbbf24"; title.style.fontSize = "14px"; title.style.fontWeight = "600";
                 startCelebration(); setTimeout(() => document.body.classList.remove('shake'), 500);
             }
         });
 
-        let impossibleClicks = 0;
-        const impossibleBtn = document.getElementById("impossibleContinueBtn");
+        let impossibleClicks = 0; const impossibleBtn = document.getElementById("impossibleContinueBtn");
         if (impossibleBtn) {
             impossibleBtn.addEventListener("click", function(e) {
                 impossibleClicks++; initAudio();
@@ -607,64 +696,33 @@
                 else { goToStep('step-6'); }
             });
         }
-        
-let micStream = null;
+
+        // MOBILE MIC HACK
+        let micStream = null;
         document.getElementById("micBtn").addEventListener("click", async function(e) {
             e.preventDefault();
             try {
-                // Request raw audio without Apple/Samsung filters
-                const constraints = { 
-                    audio: {
-                        echoCancellation: false,
-                        noiseSuppression: false,
-                        autoGainControl: false
-                    } 
-                };
-                
+                const constraints = { audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } };
                 micStream = await navigator.mediaDevices.getUserMedia(constraints);
                 
-                // Crucial for iPhones: Use webkitAudioContext and explicitly wake it up
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                const audioCtx = new AudioCtx();
-                if (audioCtx.state === 'suspended') { await audioCtx.resume(); }
+                const audioCtx = new AudioCtx(); if (audioCtx.state === 'suspended') { await audioCtx.resume(); }
 
-                const analyser = audioCtx.createAnalyser();
-                const microphone = audioCtx.createMediaStreamSource(micStream);
-                microphone.connect(analyser); 
-                
-                analyser.fftSize = 256;
-                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                const analyser = audioCtx.createAnalyser(); const microphone = audioCtx.createMediaStreamSource(micStream);
+                microphone.connect(analyser); analyser.fftSize = 256; const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
                 this.innerText = "Listening... Blow or tap the mic! 🌬️"; 
-                this.style.background = "rgba(255, 22, 93, 0.2)"; 
-                this.style.borderColor = "rgba(255, 22, 93, 0.4)"; 
-                this.style.color = "#ff6b8f";
+                this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff6b8f";
 
                 function checkVolume() {
-                    if (candlesBlown) { 
-                        micStream.getTracks().forEach(track => track.stop()); 
-                        if (audioCtx.state !== 'closed') audioCtx.close();
-                        return; 
-                    }
-                    
+                    if (candlesBlown) { micStream.getTracks().forEach(track => track.stop()); if (audioCtx.state !== 'closed') audioCtx.close(); return; }
                     analyser.getByteFrequencyData(dataArray);
-                    
-                    // THE HACK: Only listen to the first 15 low-frequency bands (wind rumble)
-                    let lowFreqSum = 0; 
-                    for (let i = 0; i < 15; i++) { lowFreqSum += dataArray[i]; }
+                    let lowFreqSum = 0; for (let i = 0; i < 15; i++) { lowFreqSum += dataArray[i]; }
                     let averageLowFreq = lowFreqSum / 15;
-                    
-                    // Extremely low threshold to catch the breath before iOS/Samsung deletes it
-                    if (averageLowFreq > 25) { 
-                        blowOutCandles(); 
-                    } else { 
-                        requestAnimationFrame(checkVolume); 
-                    }
+                    if (averageLowFreq > 25) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
                 }
                 checkVolume();
-            } catch (err) { 
-                alert("Microphone blocked. No worries, just tap the fallback button!"); 
-            }
+            } catch (err) { alert("Microphone blocked. No worries, just tap the fallback button!"); }
         });
 
         let candlesBlown = false; let cakeCut = false;
@@ -687,24 +745,17 @@ let micStream = null;
         }
 
         function cutCake() {
-            cakeCut = true; isCakeSliced = true; 
-            document.getElementById('swipeHint').classList.remove('visible');
-            playTone(1200, 'triangle', 0.1, 0.05); document.getElementById('theCake').classList.add('sliced');
-            document.getElementById('cakeInstruction').innerText = "Looks delicious!";
+            cakeCut = true; isCakeSliced = true; document.getElementById('swipeHint').classList.remove('visible');
+            playTone(1200, 'triangle', 0.1, 0.05); document.getElementById('theCake').classList.add('sliced'); document.getElementById('cakeInstruction').innerText = "Looks delicious!";
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
         }
 
         let secretEndingTimer;
-
         function triggerFinale() {
-            if (!isCakeSliced) { console.warn("Access Denied."); return; } 
-            
-            const steps = document.querySelectorAll('.step-container');
-            steps.forEach(step => step.classList.remove('active'));
-            const finalStep = document.getElementById('step-8');
-            if (finalStep) finalStep.classList.add('active');
+            if (!isCakeSliced) return; 
+            const steps = document.querySelectorAll('.step-container'); steps.forEach(step => step.classList.remove('active'));
+            const finalStep = document.getElementById('step-8'); if (finalStep) finalStep.classList.add('active');
             playSuccessMelody(); setTimeout(startCelebration, 200);
-            
             secretEndingTimer = setTimeout(triggerSecretEnding, 20000); 
         }
 
@@ -712,60 +763,41 @@ let micStream = null;
         if (feedbackForm) {
             feedbackForm.addEventListener('focusin', () => { clearTimeout(secretEndingTimer); });
             feedbackForm.addEventListener('submit', function(e) {
-                e.preventDefault(); 
-                clearTimeout(secretEndingTimer); 
-                const btn = this.querySelector('button[type="submit"]');
-                btn.innerText = "Sending... 🚀"; btn.disabled = true;
-
-                fetch(this.action, { method: "POST", body: new FormData(this), headers: { 'Accept': 'application/json' }
-                }).then(response => { triggerSecretEnding(); }).catch(error => { triggerSecretEnding(); });
+                e.preventDefault(); clearTimeout(secretEndingTimer); 
+                const btn = this.querySelector('button[type="submit"]'); btn.innerText = "Sending... 🚀"; btn.disabled = true;
+                fetch(this.action, { method: "POST", body: new FormData(this), headers: { 'Accept': 'application/json' } }).then(response => { triggerSecretEnding(); }).catch(error => { triggerSecretEnding(); });
             });
         }
 
         const replayBtn = document.getElementById('replayBtn');
-        if(replayBtn) {
-            replayBtn.addEventListener('click', function(e) {
-                e.preventDefault(); clearTimeout(secretEndingTimer); triggerSecretEnding();
-            });
-        }
+        if(replayBtn) { replayBtn.addEventListener('click', function(e) { e.preventDefault(); clearTimeout(secretEndingTimer); triggerSecretEnding(); }); }
 
         function triggerSecretEnding() {
-            const canvas = document.getElementById('confettiCanvas');
-            if (canvas) canvas.style.display = 'none';
+            const canvas = document.getElementById('confettiCanvas'); if (canvas) canvas.style.display = 'none';
             document.getElementById('step-8').classList.remove('active');
-            
-            const secretScreen = document.getElementById('step-9');
-            secretScreen.classList.add('active-ending');
+            const secretScreen = document.getElementById('step-9'); secretScreen.classList.add('active-ending');
 
             const textToType = "For a few minutes today,\nI wanted one tiny corner of the internet\nto belong only to you.\n\nYou reached the end.\nWhich means...\nevery button worked.\nevery animation played.\nevery little idea made it here.\n\nIt wasn't perfect while I was making it.\nIt broke.\nA lot.\n\nBut I kept fixing it.\nBecause I wanted this page to exist.\nFor one person.\n\nHappy Birthday, Siena.";
             
-            const target = document.getElementById('typewriter');
-            let i = 0;
-            
+            const target = document.getElementById('typewriter'); let i = 0;
             setTimeout(() => {
                 const interval = setInterval(() => {
                     if (i < textToType.length) {
                         if(textToType.charAt(i) === '\n') { target.innerHTML += "<br>"; } 
                         else { target.innerHTML += textToType.charAt(i); playTone(500 + Math.random()*50, 'sine', 0.02, 0.01); }
                         i++;
-                    } else { 
-                        clearInterval(interval); 
-                        setTimeout(() => { document.getElementById('trueReloadBtn').style.display = 'block'; }, 2000);
-                    }
+                    } else { clearInterval(interval); setTimeout(() => { document.getElementById('trueReloadBtn').style.display = 'block'; }, 2000); }
                 }, 80); 
             }, 1000); 
         }
 
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let actx = null;
+        const AudioContext = window.AudioContext || window.webkitAudioContext; let actx = null;
         function initAudio() { try { if (!actx && AudioContext) actx = new AudioContext(); if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {} }
         function playTone(freq, type, duration, vol=0.05) {
             try {
                 if (!actx) return; const osc = actx.createOscillator(); const gain = actx.createGain();
-                osc.connect(gain); gain.connect(actx.destination);
-                osc.type = type; osc.frequency.setValueAtTime(freq, actx.currentTime);
-                gain.gain.setValueAtTime(vol, actx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
+                osc.connect(gain); gain.connect(actx.destination); osc.type = type; osc.frequency.setValueAtTime(freq, actx.currentTime);
+                gain.gain.setValueAtTime(vol, actx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
                 osc.start(); osc.stop(actx.currentTime + duration);
             } catch (e) {}
         }
@@ -777,10 +809,8 @@ let micStream = null;
         window.addEventListener('touchmove', e => { mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, {passive: true});
 
         function startCelebration() {
-            const canvas = document.getElementById('confettiCanvas');
-            if(!canvas) return; const ctx = canvas.getContext('2d');
+            const canvas = document.getElementById('confettiCanvas'); if(!canvas) return; const ctx = canvas.getContext('2d');
             canvas.style.display = 'block'; canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-
             const particles = []; const colors = ['#ffffff', '#f2c98a', '#a18cd1', '#fbc2eb', '#ff6b8f', '#8ba4f9'];
             for(let i=0; i<80; i++) { 
                 particles.push({
@@ -789,28 +819,26 @@ let micStream = null;
                     speed: Math.random() * 2 + 1, drift: Math.random() * 2 - 1, opacity: Math.random() * 0.6 + 0.4
                 });
             }
-
             const startTime = Date.now();
-
             function animate() {
                 if (Date.now() - startTime > 12000 || canvas.style.display === 'none') { canvas.style.display = 'none'; return; }
                 requestAnimationFrame(animate); ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
-                    p.y -= p.speed; p.x += p.drift;
-                    const dx = p.x - mouseX; const dy = p.y - mouseY;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    
+                    p.y -= p.speed; p.x += p.drift; const dx = p.x - mouseX; const dy = p.y - mouseY; const dist = Math.sqrt(dx*dx + dy*dy);
                     if(dist > 0 && dist < 120) { p.x += (dx / dist) * 8; p.y += (dy / dist) * 8; }
-                    
                     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity;
-                    ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
+                    ctx.fillStyle = p.color; ctx.globalAlpha = p.opacity; ctx.shadowBlur = 15; ctx.shadowColor = p.color; ctx.fill();
                     if(p.y < -20) { p.y = canvas.height + 20; p.x = Math.random() * canvas.width; }
                 });
             }
             animate();
         }
-        window.addEventListener('resize', () => { const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }});
+        
+        window.addEventListener('resize', () => { 
+            gCamera.aspect = window.innerWidth / window.innerHeight; gCamera.updateProjectionMatrix(); gRenderer.setSize(window.innerWidth, window.innerHeight);
+            if(eCamera && eRenderer) { eCamera.aspect = window.innerWidth / window.innerHeight; eCamera.updateProjectionMatrix(); eRenderer.setSize(window.innerWidth, window.innerHeight); }
+            const canvas = document.getElementById('confettiCanvas'); if(canvas && canvas.style.display === 'block') { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        });
     </script>
 </body>
 </html>
