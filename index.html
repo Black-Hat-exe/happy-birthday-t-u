@@ -607,30 +607,64 @@
                 else { goToStep('step-6'); }
             });
         }
-
-        let micStream = null;
+        
+let micStream = null;
         document.getElementById("micBtn").addEventListener("click", async function(e) {
             e.preventDefault();
             try {
-                micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                // Request raw audio without Apple/Samsung filters
+                const constraints = { 
+                    audio: {
+                        echoCancellation: false,
+                        noiseSuppression: false,
+                        autoGainControl: false
+                    } 
+                };
+                
+                micStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Crucial for iPhones: Use webkitAudioContext and explicitly wake it up
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new AudioCtx();
+                if (audioCtx.state === 'suspended') { await audioCtx.resume(); }
+
                 const analyser = audioCtx.createAnalyser();
                 const microphone = audioCtx.createMediaStreamSource(micStream);
-                microphone.connect(analyser); analyser.fftSize = 256;
+                microphone.connect(analyser); 
+                
+                analyser.fftSize = 256;
                 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-                this.innerText = "Listening... Blow into your mic! 🌬️"; this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff6b8f";
+                this.innerText = "Listening... Blow or tap the mic! 🌬️"; 
+                this.style.background = "rgba(255, 22, 93, 0.2)"; 
+                this.style.borderColor = "rgba(255, 22, 93, 0.4)"; 
+                this.style.color = "#ff6b8f";
 
                 function checkVolume() {
-                    if (candlesBlown) { micStream.getTracks().forEach(track => track.stop()); return; }
-                    analyser.getByteFrequencyData(dataArray);
-                    let sum = 0; for (let i = 0; i < dataArray.length; i++) { sum += dataArray[i]; }
-                    let average = sum / dataArray.length;
+                    if (candlesBlown) { 
+                        micStream.getTracks().forEach(track => track.stop()); 
+                        if (audioCtx.state !== 'closed') audioCtx.close();
+                        return; 
+                    }
                     
-                    if (average > 65) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    // THE HACK: Only listen to the first 15 low-frequency bands (wind rumble)
+                    let lowFreqSum = 0; 
+                    for (let i = 0; i < 15; i++) { lowFreqSum += dataArray[i]; }
+                    let averageLowFreq = lowFreqSum / 15;
+                    
+                    // Extremely low threshold to catch the breath before iOS/Samsung deletes it
+                    if (averageLowFreq > 25) { 
+                        blowOutCandles(); 
+                    } else { 
+                        requestAnimationFrame(checkVolume); 
+                    }
                 }
                 checkVolume();
-            } catch (err) { alert("Microphone access blocked. No worries, just tap the fallback button!"); }
+            } catch (err) { 
+                alert("Microphone blocked. No worries, just tap the fallback button!"); 
+            }
         });
 
         let candlesBlown = false; let cakeCut = false;
