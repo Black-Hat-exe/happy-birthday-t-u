@@ -122,7 +122,6 @@
         .gift-box { font-size: 60px; display: inline-block; margin: 0 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); }
         .gift-box:active { transform: scale(0.9); }
 
-        /* 3D Crystal Reveal Container */
         #crystalCanvas { width: 120px; height: 120px; margin: 0 auto; display: none; cursor: pointer; animation: floatEnv 3s ease-in-out infinite; filter: drop-shadow(0 0 20px var(--accent-glow)); }
         
         .car-container { margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
@@ -142,14 +141,11 @@
         .pop-text { position: absolute; color: var(--accent); font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
-        .cake-stage { position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
-        .flame { animation: flicker 0.12s ease-in-out infinite alternate; transition: opacity 0.5s ease, transform 0.5s ease; filter: drop-shadow(0 0 6px rgba(255, 123, 0, 0.8)); }
-        @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); opacity: 0.9; filter: drop-shadow(0 0 4px rgba(255, 123, 0, 0.6)); } 50% { transform: scale(1.05) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 123, 0, 1)); } 100% { transform: scale(0.95) rotate(3deg); opacity: 0.8; filter: drop-shadow(0 0 3px rgba(255, 123, 0, 0.5)); } }
-        .cake-half { transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
-        .blown-out .flame { opacity: 0 !important; transform: scale(0) !important; }
-        .sliced #cake-left { transform: translate(-12px, 8px) rotate(-4deg); }
-        .sliced #cake-right { transform: translate(12px, 8px) rotate(4deg); }
-        .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+        /* 3D CAKE STYLES */
+        .cake-stage { position: relative; width: 100%; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; }
+        #cake3DCanvas { width: 240px; height: 220px; outline: none; touch-action: none; }
+        
+        .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -15px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
         .swipe-hint.visible { opacity: 1; }
 
@@ -159,7 +155,6 @@
         .caret { display: inline-block; width: 8px; height: 18px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* 3D EARTH OVERLAY CSS */
         #earth-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 1, 8, 0.85); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; backdrop-filter: blur(10px); }
         #earth-overlay.show { opacity: 1; pointer-events: auto; }
         #earthCanvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; outline: none; }
@@ -298,33 +293,7 @@
                 <p id="cakeInstruction">Close your eyes.<br><br>Think of one thing.<br><br>Don't tell anyone.<br><br>Now blow out the candles.</p>
                 
                 <div class="cake-stage" id="cakeStage">
-                    <svg width="240" height="200" viewBox="0 0 240 200" id="theCake">
-                        <defs>
-                            <clipPath id="left-clip"><rect x="0" y="0" width="120" height="200" /></clipPath>
-                            <clipPath id="right-clip"><rect x="120" y="0" width="120" height="200" /></clipPath>
-                            <g id="cake-drawing">
-                                <ellipse cx="120" cy="180" rx="100" ry="15" fill="rgba(255,255,255,0.05)" />
-                                <rect x="50" y="100" width="140" height="70" rx="10" fill="#a18cd1" />
-                                <path d="M 50 100 Q 73 125 96 100 Q 120 125 143 100 Q 166 125 190 100" fill="none" stroke="#fbc2eb" stroke-width="8" stroke-linecap="round" />
-                                <rect x="75" y="40" width="90" height="60" rx="8" fill="#fbc2eb" />
-                                <path d="M 75 40 Q 97 60 120 40 Q 142 60 165 40" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
-                                <rect x="95" y="10" width="6" height="30" fill="#ffffff" />
-                                <rect x="139" y="10" width="6" height="30" fill="#ffffff" />
-                                <g class="flame" style="transform-origin: 98px 8px;">
-                                    <path d="M 98 8 Q 106 -5 98 -16 Q 90 -5 98 8" fill="#ff7b00" />
-                                    <path d="M 98 8 Q 102 -2 98 -10 Q 94 -2 98 8" fill="#ffdd59" />
-                                    <path d="M 98 8 Q 100 0 98 -5 Q 96 0 98 8" fill="#ffffff" />
-                                </g>
-                                <g class="flame" style="transform-origin: 142px 8px;">
-                                    <path d="M 142 8 Q 150 -5 142 -16 Q 134 -5 142 8" fill="#ff7b00" />
-                                    <path d="M 142 8 Q 146 -2 142 -10 Q 138 -2 142 8" fill="#ffdd59" />
-                                    <path d="M 142 8 Q 144 0 142 -5 Q 140 0 142 8" fill="#ffffff" />
-                                </g>
-                            </g>
-                        </defs>
-                        <use href="#cake-drawing" clip-path="url(#left-clip)" id="cake-left" class="cake-half" />
-                        <use href="#cake-drawing" clip-path="url(#right-clip)" id="cake-right" class="cake-half" />
-                    </svg>
+                    <canvas id="cake3DCanvas"></canvas>
                     <div class="swipe-hint" id="swipeHint">↓ Swipe down to slice ↓</div>
                 </div>
 
@@ -354,7 +323,6 @@
                 
                 <div style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
-                    
                     <form id="feedbackForm" action="https://formsubmit.co/18b5331f98d1200b354a8504bae8f419" method="POST" style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_subject" value="New Feedback on Birthday App!">
@@ -407,16 +375,14 @@
         gScene.add(starMesh);
 
         function animateGalaxy() {
-            if(!galaxyActive) return;
-            requestAnimationFrame(animateGalaxy);
+            if(!galaxyActive) return; requestAnimationFrame(animateGalaxy);
             starMesh.rotation.y += 0.0005; starMesh.rotation.x += 0.0002;
             gRenderer.render(gScene, gCamera);
         }
         animateGalaxy();
 
-        // --- 2. NEW: 3D EARTH (PAKISTAN TO AUSTRALIA) ---
-        let earthActive = false;
-        let eRenderer, eScene, eCamera, eControls;
+        // --- 2. 3D EARTH (PAKISTAN TO AUSTRALIA) ---
+        let earthActive = false; let eRenderer, eScene, eCamera, eControls;
 
         function initEarth() {
             const eCanvas = document.getElementById('earthCanvas');
@@ -427,161 +393,174 @@
             eRenderer = new THREE.WebGLRenderer({canvas: eCanvas, alpha: true, antialias: true});
             eRenderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Orbit Controls for swiping
             eControls = new THREE.OrbitControls(eCamera, eRenderer.domElement);
-            eControls.enableZoom = false; 
-            eControls.enablePan = false;
-            eControls.autoRotate = true;
-            eControls.autoRotateSpeed = 1.2;
+            eControls.enableZoom = false; eControls.enablePan = false; eControls.autoRotate = true; eControls.autoRotateSpeed = 1.2;
 
-            // Wireframe Globe
             const globeGeo = new THREE.SphereGeometry(1.5, 32, 32);
             const globeMat = new THREE.MeshBasicMaterial({ color: 0x3e2191, wireframe: true, transparent: true, opacity: 0.4 });
-            const globe = new THREE.Mesh(globeGeo, globeMat);
-            eScene.add(globe);
+            const globe = new THREE.Mesh(globeGeo, globeMat); eScene.add(globe);
 
-            // Math to map Lat/Lon to 3D Sphere
             function get3DPoint(lat, lon, radius) {
-                const phi = (90 - lat) * (Math.PI / 180);
-                const theta = (lon + 180) * (Math.PI / 180);
-                const x = -(radius * Math.sin(phi) * Math.cos(theta));
-                const z = (radius * Math.sin(phi) * Math.sin(theta));
-                const y = (radius * Math.cos(phi));
+                const phi = (90 - lat) * (Math.PI / 180); const theta = (lon + 180) * (Math.PI / 180);
+                const x = -(radius * Math.sin(phi) * Math.cos(theta)); const z = (radius * Math.sin(phi) * Math.sin(theta)); const y = (radius * Math.cos(phi));
                 return new THREE.Vector3(x, y, z);
             }
 
-            // Approximate Coordinates: Pakistan (Lat 30, Lon 70), Australia (Lat -25, Lon 135)
-            const pK = get3DPoint(30, 70, 1.5);
-            const aU = get3DPoint(-25, 135, 1.5);
-
-            // Location Markers
-            const markerGeo = new THREE.SphereGeometry(0.04, 16, 16);
-            const markerMat = new THREE.MeshBasicMaterial({ color: 0xf2c98a });
+            const pK = get3DPoint(30, 70, 1.5); const aU = get3DPoint(-25, 135, 1.5);
+            const markerGeo = new THREE.SphereGeometry(0.04, 16, 16); const markerMat = new THREE.MeshBasicMaterial({ color: 0xf2c98a });
             const pKMesh = new THREE.Mesh(markerGeo, markerMat); pKMesh.position.copy(pK); eScene.add(pKMesh);
             const aUMesh = new THREE.Mesh(markerGeo, markerMat); aUMesh.position.copy(aU); eScene.add(aUMesh);
 
-            // Glowing Connecting Arc
-            const midPoint = pK.clone().lerp(aU, 0.5).normalize().multiplyScalar(1.5 + 0.6); // Arc height
+            const midPoint = pK.clone().lerp(aU, 0.5).normalize().multiplyScalar(1.5 + 0.6); 
             const curve = new THREE.QuadraticBezierCurve3(pK, midPoint, aU);
             const points = curve.getPoints(50);
             const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
             const lineMat = new THREE.LineBasicMaterial({ color: 0xff7e67, linewidth: 3 });
-            const arcLine = new THREE.Line(lineGeo, lineMat);
-            eScene.add(arcLine);
+            const arcLine = new THREE.Line(lineGeo, lineMat); eScene.add(arcLine);
 
-            earthActive = true;
-            animateEarth();
+            earthActive = true; animateEarth();
         }
 
         function animateEarth() {
-            if(!earthActive) return;
-            requestAnimationFrame(animateEarth);
-            eControls.update();
-            eRenderer.render(eScene, eCamera);
+            if(!earthActive) return; requestAnimationFrame(animateEarth); eControls.update(); eRenderer.render(eScene, eCamera);
         }
 
         function closeEarth() {
             document.getElementById('earth-overlay').classList.remove('show');
             document.getElementById('mainUiLayer').classList.remove('fade-out');
-            earthActive = false; // Stop rendering earth
-            galaxyActive = true; // Resume galaxy
-            animateGalaxy();
+            earthActive = false; galaxyActive = true; animateGalaxy();
         }
 
-        // --- 7-CLICK EVENT TRIGGER ---
         let bgClicks = 0; let bgClickTimer;
         document.addEventListener('click', (e) => {
-            if (e.target.closest('button, input, .gift-box, .envelope-wrapper, .car-image, .glass-card, form, textarea, canvas')) return;
-            bgClicks++; clearTimeout(bgClickTimer);
-            bgClickTimer = setTimeout(() => { bgClicks = 0; }, 2000); 
-            
+            if (e.target.closest('button, input, .gift-box, .envelope-wrapper, #earthCanvas, canvas')) return;
+            bgClicks++; clearTimeout(bgClickTimer); bgClickTimer = setTimeout(() => { bgClicks = 0; }, 2000); 
             if (bgClicks === 7) {
-                // Pause Galaxy to save phone battery
-                galaxyActive = false; 
-                
-                // Hide UI and Show Earth
-                document.getElementById('mainUiLayer').classList.add('fade-out');
-                const earthOverlay = document.getElementById('earth-overlay');
-                earthOverlay.classList.add('show');
+                galaxyActive = false; document.getElementById('mainUiLayer').classList.add('fade-out');
+                document.getElementById('earth-overlay').classList.add('show');
                 initAudio(); playTone(600, 'sine', 0.5, 0.1);
-                
-                if(!eScene) { initEarth(); } else { earthActive = true; animateEarth(); }
-                bgClicks = 0;
+                if(!eScene) { initEarth(); } else { earthActive = true; animateEarth(); } bgClicks = 0;
             }
         });
 
-        // --- 3. TIME CAPSULE LOGIC ---
-        let timeCapsuleUnlocked = false;
-        const targetDate = new Date(2026, 7, 12, 0, 0, 0).getTime(); // August 12, 2026
+        // --- 3. NEW: 3D CAKE & KNIFE LOGIC ---
+        const cCanvas = document.getElementById('cake3DCanvas');
+        const cScene = new THREE.Scene();
+        const cCamera = new THREE.PerspectiveCamera(45, 240/220, 0.1, 100);
+        cCamera.position.set(0, 3.5, 6.5);
+        cCamera.lookAt(0, 0.5, 0);
+        const cRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true });
+        cRenderer.setSize(240, 220);
+
+        const cAmbient = new THREE.AmbientLight(0xffffff, 0.8); cScene.add(cAmbient);
+        const cDirLight = new THREE.DirectionalLight(0xffffff, 0.6); cDirLight.position.set(5, 10, 5); cScene.add(cDirLight);
+
+        const leftCakeGroup = new THREE.Group(); const rightCakeGroup = new THREE.Group();
+        cScene.add(leftCakeGroup); cScene.add(rightCakeGroup);
+
+        const spongeMat = new THREE.MeshStandardMaterial({ color: 0xfbc2eb, roughness: 0.9 });
+        const icingMat = new THREE.MeshStandardMaterial({ color: 0xa18cd1, roughness: 0.4 });
         
+        // Build 3D Cake Halves using Math.PI sweeps
+        const leftSponge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1.2, 32, 1, false, Math.PI/2, Math.PI), spongeMat);
+        const leftIcing = new THREE.Mesh(new THREE.CylinderGeometry(1.65, 1.65, 0.3, 32, 1, false, Math.PI/2, Math.PI), icingMat);
+        leftIcing.position.y = 0.6; leftCakeGroup.add(leftSponge); leftCakeGroup.add(leftIcing);
+
+        const rightSponge = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1.2, 32, 1, false, -Math.PI/2, Math.PI), spongeMat);
+        const rightIcing = new THREE.Mesh(new THREE.CylinderGeometry(1.65, 1.65, 0.3, 32, 1, false, -Math.PI/2, Math.PI), icingMat);
+        rightIcing.position.y = 0.6; rightCakeGroup.add(rightSponge); rightCakeGroup.add(rightIcing);
+
+        // 3D Candle & Flame
+        const candleGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 16);
+        const candleMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const cCandle = new THREE.Mesh(candleGeo, candleMat);
+        cCandle.position.set(-0.2, 1.1, 0); // Put on left slice
+        leftCakeGroup.add(cCandle);
+
+        const cFlameGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const cFlameMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+        const cFlame = new THREE.Mesh(cFlameGeo, cFlameMat);
+        cFlame.position.set(-0.2, 1.6, 0);
+        const cFlameLight = new THREE.PointLight(0xffaa00, 1.5, 5);
+        cFlame.add(cFlameLight);
+        leftCakeGroup.add(cFlame);
+
+        // 3D Knife
+        const knifeGroup = new THREE.Group();
+        const bladeGeo = new THREE.BoxGeometry(0.04, 1.8, 0.4);
+        const bladeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.8, roughness: 0.2 });
+        const blade = new THREE.Mesh(bladeGeo, bladeMat);
+        const handleGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 16);
+        const handleMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+        const handle = new THREE.Mesh(handleGeo, handleMat);
+        handle.position.y = 1.3; blade.position.y = 0;
+        knifeGroup.add(blade); knifeGroup.add(handle);
+        knifeGroup.position.set(0, 3.5, 0.5); // Starts high above
+        knifeGroup.rotation.x = Math.PI / 6; // Angled down
+        knifeGroup.visible = false; // Hidden until candles blown
+        cScene.add(knifeGroup);
+
+        let cakeActive = true; let isSlicingAnim = false;
+        function animateCake() {
+            if(!cakeActive) return; requestAnimationFrame(animateCake);
+            
+            // Flicker flame
+            if(cFlame.visible) {
+                cFlame.scale.setScalar(1 + Math.random() * 0.1);
+                cFlameLight.intensity = 1.2 + Math.random() * 0.5;
+            }
+
+            // Animate physical split
+            if(isSlicingAnim) {
+                if(leftCakeGroup.position.x > -1.0) leftCakeGroup.position.x -= 0.05;
+                if(rightCakeGroup.position.x < 1.0) rightCakeGroup.position.x += 0.05;
+                if(knifeGroup.position.y > -0.5) knifeGroup.position.y -= 0.1;
+                knifeGroup.rotation.x += 0.03; // Knife falls flat
+            }
+
+            cRenderer.render(cScene, cCamera);
+        }
+        animateCake();
+
+        // --- 4. TIME CAPSULE LOGIC ---
+        let timeCapsuleUnlocked = false; const targetDate = new Date(2026, 7, 12, 0, 0, 0).getTime();
         function checkTimeVault() {
             const now = new Date().getTime(); const distance = targetDate - now;
             if (distance < 0) {
-                document.getElementById('vaultTimer').innerText = "00:00:00:00";
-                document.getElementById('vaultEnterBtn').classList.remove('hidden');
-                document.getElementById('devLockIcon').innerText = "🔓";
-                timeCapsuleUnlocked = true;
+                document.getElementById('vaultTimer').innerText = "00:00:00:00"; document.getElementById('vaultEnterBtn').classList.remove('hidden');
+                document.getElementById('devLockIcon').innerText = "🔓"; timeCapsuleUnlocked = true;
             } else {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24)); const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 document.getElementById('vaultTimer').innerText = (days < 10 ? "0" + days : days) + ":" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
             }
         }
 
-        if(new Date().getTime() >= targetDate) {
-            document.getElementById('step-vault').classList.remove('active');
-            document.getElementById('step-0').classList.add('active');
-            timeCapsuleUnlocked = true;
-        } else {
-            document.getElementById('step-vault').classList.add('active');
-            setInterval(checkTimeVault, 1000); checkTimeVault();
-        }
+        if(new Date().getTime() >= targetDate) { document.getElementById('step-vault').classList.remove('active'); document.getElementById('step-0').classList.add('active'); timeCapsuleUnlocked = true; } 
+        else { document.getElementById('step-vault').classList.add('active'); setInterval(checkTimeVault, 1000); checkTimeVault(); }
 
-        // DEVELOPER BYPASS (Tap lock 5 times)
         let devClicks = 0;
         document.getElementById('devLockIcon').addEventListener('click', function() {
-            if(timeCapsuleUnlocked) return;
-            devClicks++;
-            if(devClicks === 5) {
-                playSuccessMelody(); this.innerText = "🔓";
-                document.getElementById('vaultTimer').innerText = "DEV UNLOCK";
-                document.getElementById('vaultEnterBtn').classList.remove('hidden');
-                timeCapsuleUnlocked = true;
-            }
+            if(timeCapsuleUnlocked) return; devClicks++;
+            if(devClicks === 5) { playSuccessMelody(); this.innerText = "🔓"; document.getElementById('vaultTimer').innerText = "DEV UNLOCK"; document.getElementById('vaultEnterBtn').classList.remove('hidden'); timeCapsuleUnlocked = true; }
         });
+        document.getElementById('vaultEnterBtn').addEventListener('click', () => { initAudio(); playTone(800, 'triangle', 0.1); document.getElementById('step-vault').classList.remove('active'); document.getElementById('step-0').classList.add('active'); });
 
-        document.getElementById('vaultEnterBtn').addEventListener('click', () => {
-            initAudio(); playTone(800, 'triangle', 0.1);
-            document.getElementById('step-vault').classList.remove('active');
-            document.getElementById('step-0').classList.add('active');
-        });
-
-        // --- 4. THE 3D CRYSTAL REVEAL ---
-        let crystalRenderer, crystalScene, crystalCamera, crystalMesh;
-        let crystalActive = false;
-        
+        // --- 5. THE 3D CRYSTAL REVEAL ---
+        let crystalRenderer, crystalScene, crystalCamera, crystalMesh; let crystalActive = false;
         function initCrystal() {
-            const cCanvas = document.getElementById('crystalCanvas'); cCanvas.style.display = 'block';
+            const cryCanvas = document.getElementById('crystalCanvas'); cryCanvas.style.display = 'block';
             crystalScene = new THREE.Scene(); crystalCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100); crystalCamera.position.z = 5;
-            crystalRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true }); crystalRenderer.setSize(120, 120);
+            crystalRenderer = new THREE.WebGLRenderer({ canvas: cryCanvas, alpha: true, antialias: true }); crystalRenderer.setSize(120, 120);
 
-            const geo = new THREE.IcosahedronGeometry(1.5, 0);
-            const mat = new THREE.MeshStandardMaterial({ color: 0xf2c98a, wireframe: true, transparent: true, opacity: 0.9 });
+            const geo = new THREE.IcosahedronGeometry(1.5, 0); const mat = new THREE.MeshStandardMaterial({ color: 0xf2c98a, wireframe: true, transparent: true, opacity: 0.9 });
             crystalMesh = new THREE.Mesh(geo, mat); crystalScene.add(crystalMesh);
             const light = new THREE.PointLight(0xffffff, 2); light.position.set(2, 2, 2); crystalScene.add(light);
-
             crystalActive = true; animateCrystal();
         }
+        function animateCrystal() { if(!crystalActive) return; requestAnimationFrame(animateCrystal); crystalMesh.rotation.x += 0.01; crystalMesh.rotation.y += 0.02; crystalRenderer.render(crystalScene, crystalCamera); }
 
-        function animateCrystal() {
-            if(!crystalActive) return; requestAnimationFrame(animateCrystal);
-            crystalMesh.rotation.x += 0.01; crystalMesh.rotation.y += 0.02;
-            crystalRenderer.render(crystalScene, crystalCamera);
-        }
-
-        // --- 5. CORE LOGIC ---
+        // --- 6. CORE LOGIC ---
         let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
 
         window.addEventListener("deviceorientation", (e) => {
@@ -605,8 +584,7 @@
         document.getElementById('envelopeWrapper').addEventListener('click', function() {
             if (this.classList.contains('open')) return;
             initAudio(); playTone(800, 'square', 0.05, 0.1); setTimeout(() => playTone(1200, 'triangle', 0.05, 0.1), 50); setTimeout(() => playTone(600, 'square', 0.08, 0.1), 100);
-            this.classList.add('open'); document.getElementById('envInstruction').innerHTML = "Welcome.<br><br>No one else was supposed to open this.<br><br>Just you.";
-            setTimeout(() => { goToStep('step-1'); }, 2000); 
+            this.classList.add('open'); document.getElementById('envInstruction').innerHTML = "Welcome.<br><br>No one else was supposed to open this.<br><br>Just you."; setTimeout(() => { goToStep('step-1'); }, 2000); 
         });
 
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
@@ -615,12 +593,8 @@
             initAudio(); const input = document.getElementById("secretInput"); const errorMsg = document.getElementById("errorMsg");
             const attempt = input.value.toLowerCase().trim(); if (attempt === "") return;
             const correctAnswer = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase(); 
-            
             if (attempt === correctAnswer) { errorMsg.classList.remove("show"); input.blur(); playSuccessMelody(); securityUnlocked = true; goToStep('step-3'); } 
-            else {
-                playErrorSound(); errorMsg.classList.add("show"); const group = document.querySelector('.input-group');
-                if(group) { group.style.transform = 'translateX(-8px)'; setTimeout(() => group.style.transform = 'translateX(8px)', 100); setTimeout(() => group.style.transform = 'translateX(-4px)', 200); setTimeout(() => group.style.transform = 'translateX(0)', 300); }
-            }
+            else { playErrorSound(); errorMsg.classList.add("show"); const group = document.querySelector('.input-group'); if(group) { group.style.transform = 'translateX(-8px)'; setTimeout(() => group.style.transform = 'translateX(8px)', 100); setTimeout(() => group.style.transform = 'translateX(-4px)', 200); setTimeout(() => group.style.transform = 'translateX(0)', 300); } }
         }
         document.getElementById("unlockBtn").addEventListener("click", checkPassword); document.getElementById("secretInput").addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); checkPassword(); } });
 
@@ -638,21 +612,14 @@
 
         function openBox(el) {
             if (el.style.pointerEvents === 'none') return;
-            boxesOpenedCount++; initAudio(); playTone(600 + (boxesOpenedCount*100), 'triangle', 0.1);
-            el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)'; const feedback = document.getElementById('box-feedback');
-            
+            boxesOpenedCount++; initAudio(); playTone(600 + (boxesOpenedCount*100), 'triangle', 0.1); el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)'; const feedback = document.getElementById('box-feedback');
             if (boxesOpenedCount === 1) { feedback.innerHTML = "⭐ You unlocked:<br>One good birthday wish."; el.innerText = "⭐"; }
             else if (boxesOpenedCount === 2) { feedback.innerHTML = "🌸 You found:<br>One extra smile."; el.innerText = "🌸"; }
-            else if (boxesOpenedCount === 3) {
-                feedback.innerHTML = "Click the gem to receive it."; el.style.display = 'none';
-                allBoxesOpened = true; initCrystal(); playSuccessMelody();
-            }
+            else if (boxesOpenedCount === 3) { feedback.innerHTML = "Click the gem to receive it."; el.style.display = 'none'; allBoxesOpened = true; initCrystal(); playSuccessMelody(); }
         }
 
         function goToReveal() { 
-            if(!allBoxesOpened) return;
-            crystalActive = false; // Kill render loop for performance
-            playTone(1000, 'square', 0.1);
+            if(!allBoxesOpened) return; crystalActive = false; playTone(1000, 'square', 0.1);
             document.getElementById('crystalCanvas').style.transform = "scale(1.5)"; document.getElementById('crystalCanvas').style.opacity = "0";
             setTimeout(() => { goToStep('step-5'); setTimeout(spawnBalloons, 500); }, 300);
         }
@@ -660,19 +627,14 @@
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
             const popMessages = ["+1 Good Vibe", "+20 Birthday Energy", "+100 Smile Points", "Today's Main Character", "Australian Certified Birthday", "Level Up!", "Another year unlocked"];
-            
             for(let i=0; i<6; i++) {
                 let balloon = document.createElement('div'); balloon.innerText = '🎈'; balloon.className = 'balloon';
-                balloon.style.left = (Math.random() * 70 + 10) + '%'; balloon.style.bottom = '-60px'; balloon.style.pointerEvents = 'auto'; 
-                balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`; balloon.style.animationDelay = `${Math.random() * 2}s`;
+                balloon.style.left = (Math.random() * 70 + 10) + '%'; balloon.style.bottom = '-60px'; balloon.style.pointerEvents = 'auto'; balloon.style.animation = `floatUp ${Math.random()*3 + 4}s linear forwards`; balloon.style.animationDelay = `${Math.random() * 2}s`;
                 balloon.onclick = function(e) {
-                    initAudio(); playTone(900, 'triangle', 0.05); 
-                    let popText = document.createElement('div'); popText.className = 'pop-text'; popText.innerText = popMessages[Math.floor(Math.random() * popMessages.length)];
-                    popText.style.left = (e.clientX - 40) + 'px'; popText.style.top = (e.clientY - 20) + 'px';
-                    document.body.appendChild(popText); setTimeout(() => popText.remove(), 1000);
+                    initAudio(); playTone(900, 'triangle', 0.05); let popText = document.createElement('div'); popText.className = 'pop-text'; popText.innerText = popMessages[Math.floor(Math.random() * popMessages.length)];
+                    popText.style.left = (e.clientX - 40) + 'px'; popText.style.top = (e.clientY - 20) + 'px'; document.body.appendChild(popText); setTimeout(() => popText.remove(), 1000);
                     this.innerText = '💥'; this.style.pointerEvents = 'none'; setTimeout(() => this.remove(), 150);
-                };
-                container.appendChild(balloon);
+                }; container.appendChild(balloon);
             }
         }
 
@@ -697,27 +659,21 @@
             });
         }
 
-        // MOBILE MIC HACK
+        // --- 7. CAKE BLOW & 3D SLICING LOGIC ---
         let micStream = null;
         document.getElementById("micBtn").addEventListener("click", async function(e) {
             e.preventDefault();
             try {
                 const constraints = { audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } };
                 micStream = await navigator.mediaDevices.getUserMedia(constraints);
-                
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                const audioCtx = new AudioCtx(); if (audioCtx.state === 'suspended') { await audioCtx.resume(); }
-
+                const AudioCtx = window.AudioContext || window.webkitAudioContext; const audioCtx = new AudioCtx(); if (audioCtx.state === 'suspended') { await audioCtx.resume(); }
                 const analyser = audioCtx.createAnalyser(); const microphone = audioCtx.createMediaStreamSource(micStream);
                 microphone.connect(analyser); analyser.fftSize = 256; const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-                this.innerText = "Listening... Blow or tap the mic! 🌬️"; 
-                this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff6b8f";
+                this.innerText = "Listening... Blow or tap the mic! 🌬️"; this.style.background = "rgba(255, 22, 93, 0.2)"; this.style.borderColor = "rgba(255, 22, 93, 0.4)"; this.style.color = "#ff6b8f";
 
                 function checkVolume() {
                     if (candlesBlown) { micStream.getTracks().forEach(track => track.stop()); if (audioCtx.state !== 'closed') audioCtx.close(); return; }
-                    analyser.getByteFrequencyData(dataArray);
-                    let lowFreqSum = 0; for (let i = 0; i < 15; i++) { lowFreqSum += dataArray[i]; }
+                    analyser.getByteFrequencyData(dataArray); let lowFreqSum = 0; for (let i = 0; i < 15; i++) { lowFreqSum += dataArray[i]; }
                     let averageLowFreq = lowFreqSum / 15;
                     if (averageLowFreq > 25) { blowOutCandles(); } else { requestAnimationFrame(checkVolume); }
                 }
@@ -728,8 +684,13 @@
         let candlesBlown = false; let cakeCut = false;
         function blowOutCandles() {
             if (candlesBlown) return; initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
-            document.getElementById('theCake').classList.add('blown-out'); candlesBlown = true;
-            document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down through the cake to cut a slice!"; document.getElementById('swipeHint').classList.add('visible');
+            
+            // Extinguish 3D Flame & Summon Knife
+            cFlame.visible = false; cFlameLight.intensity = 0;
+            knifeGroup.visible = true;
+
+            candlesBlown = true;
+            document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now grab the knife and swipe down to slice!"; document.getElementById('swipeHint').classList.add('visible');
             if (micStream) micStream.getTracks().forEach(track => track.stop()); 
         }
 
@@ -740,16 +701,28 @@
         cakeStage.addEventListener('mousemove', (e) => { if (e.buttons === 1) handleSwipe(e); });
 
         function handleSwipe(e) {
-            if (!candlesBlown || cakeCut) return; let currentY = e.touches ? e.touches[0].clientY : e.clientY;
-            if (currentY - startY > 70) cutCake(); 
+            if (!candlesBlown || cakeCut) return; 
+            let currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            let delta = currentY - startY;
+            
+            // Map the physical swipe to the 3D Knife dropping
+            if(delta > 0) {
+                knifeGroup.position.y = 3.5 - (delta * 0.02);
+            }
+            
+            // If knife hits the bottom, trigger slice
+            if (knifeGroup.position.y < 0.5) cutCake(); 
         }
 
         function cutCake() {
             cakeCut = true; isCakeSliced = true; document.getElementById('swipeHint').classList.remove('visible');
-            playTone(1200, 'triangle', 0.1, 0.05); document.getElementById('theCake').classList.add('sliced'); document.getElementById('cakeInstruction').innerText = "Looks delicious!";
-            setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 600);
+            playTone(1200, 'triangle', 0.1, 0.05); 
+            isSlicingAnim = true; // Tells the 3D renderer to split the cake
+            document.getElementById('cakeInstruction').innerText = "Looks delicious!";
+            setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 800);
         }
 
+        // --- 8. ENDING & SECRETS ---
         let secretEndingTimer;
         function triggerFinale() {
             if (!isCakeSliced) return; 
@@ -842,3 +815,4 @@
     </script>
 </body>
 </html>
+
