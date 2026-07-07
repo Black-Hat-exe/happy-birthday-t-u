@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta property="og:title" content="A Special Birthday Surprise For You 🎁">
-    <meta property="og:description" content="You have received a secured digital gift. Tap to unwrap your surprise!">
+    <meta property="og:title" content="A Tiny Surprise for Siena 🌸">
+    <meta property="og:description" content="Someone spent weeks building something just to make you smile today.">
     <meta property="og:image" content="https://raw.githubusercontent.com/Black-Hat-exe/happy-birthday-t-u/main/gift.jpg">
     <meta property="og:url" content="https://black-hat-exe.github.io/happy-birthday-t-u/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     
     <meta name="theme-color" content="#0a060e">
-    <title>A Special Surprise</title>
+    <title>Siena's Little Corner of the Internet ✨</title>
 
     <link rel="preload" href="mcqueen.jpg" as="image">
     <link rel="preload" href="doc.jpg" as="image">
@@ -73,7 +73,7 @@
         .envelope-wrapper:hover .wax-seal { transform: translate(-50%, -50%) scale(1.08); }
         .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
         .envelope-wrapper.open .wax-seal { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; filter: blur(4px); }
-        .envelope-instruction { margin-top: 40px; color: #d4af37; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 600; opacity: 0.8; }
+        .envelope-instruction { margin-top: 40px; color: #d4af37; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 2s infinite; font-weight: 600; opacity: 0.8; line-height: 1.5; text-align: center; }
 
         .glass-card {
             background: rgba(20, 10, 25, 0.4); padding: 40px 30px; border-radius: 28px; 
@@ -120,9 +120,10 @@
         .car-title { font-weight: 500; font-size: 16px; margin: 5px 0; transition: color 0.3s; }
         .mcqueen-text { color: #ff4757; } .doc-text { color: #70a1ff; }
         .car-quote { font-style: italic; color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
+        
         .personal-message { background: rgba(0, 0, 0, 0.2); border-left: 3px solid #d4af37; padding: 20px; margin: 25px 0; border-radius: 0 12px 12px 0; text-align: left; }
         .personal-message p { font-size: 14px; color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; }
-        .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #d4af37; text-align: right; }
+        .signature { font-family: 'Courier New', Courier, monospace; font-weight: 600; color: #d4af37; text-align: right; margin-top: 10px; }
 
         .balloon { position: absolute; font-size: 35px; cursor: pointer; z-index: 50; transition: transform 0.1s; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); touch-action: manipulation; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity: 0; } 10% { opacity: 1; } 50% { transform: translateY(-40vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity: 1; } }
@@ -155,6 +156,17 @@
         .caret { display: inline-block; width: 8px; height: 18px; background: #fff; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
         @keyframes blink { 50% { opacity: 0; } }
 
+        /* Australia Easter Egg Overlay */
+        #aus-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 6, 14, 0.95); z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.8s ease; text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        #aus-overlay.show { opacity: 1; pointer-events: auto; }
+        .aus-text { font-size: 18px; color: #fff; line-height: 2; font-weight: 300; letter-spacing: 1px; }
+
         .watermark { position: fixed; bottom: 15px; right: 20px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 16px; border-radius: 20px; font-size: 10px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; z-index: 1000; pointer-events: none; }
         @media (max-width: 350px) { .watermark { display: none; } }
         #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 20; display: none; }
@@ -166,7 +178,16 @@
     <div class="film-grain"></div>
     <canvas id="confettiCanvas"></canvas>
     
-    <div class="watermark">Engineered by M. Ertaza</div>
+    <div id="aus-overlay" onclick="this.classList.remove('show')">
+        <div class="aus-text">
+            <div style="font-size: 40px; margin-bottom: 20px;">🌏</div>
+            Australia: 13,000 km away.<br><br>
+            This website somehow travelled further.<br><br>
+            <div style="font-size: 24px; margin-top: 20px;">❤️</div>
+        </div>
+    </div>
+
+    <div class="watermark">Made for Siena. Built by Ertaza.</div>
 
     <div class="ui-layer">
         <div id="step-0" class="step-container active">
@@ -177,21 +198,21 @@
                 <div class="envelope-flap"></div>
                 <div class="wax-seal" id="waxSeal">M.E</div>
             </div>
-            <div class="envelope-instruction">Tap to break seal</div>
+            <div class="envelope-instruction" id="envInstruction">Siena, this letter has been waiting for you.</div>
         </div>
 
         <div id="step-1" class="step-container">
             <div class="glass-card">
-                <h1>Hey there 👋</h1>
-                <p>This isn't just a birthday message. It's a little journey made especially for you.</p>
-                <button id="startBtn">Begin Experience</button>
+                <h1>Hi Siena 🌼</h1>
+                <p>Before today disappears into another ordinary day, I wanted to steal a few minutes of it and turn them into something you'll hopefully remember.</p>
+                <button id="startBtn">Ready?</button>
             </div>
         </div>
 
         <div id="step-2" class="step-container">
             <div class="glass-card">
-                <h2>Security Check</h2>
-                <p>Every good surprise needs a tiny challenge first. Let's see if you're paying attention today:<br><br><span style="color:#fff; font-weight: 400;">What day of the week is it?</span></p>
+                <h2>One tiny challenge...</h2>
+                <p>If you've come this far,<br>I should at least make you work a little.<br><br><span style="color:#fff; font-weight: 400;">What day is it today?</span></p>
                 <div class="input-group">
                     <input type="text" id="secretInput" placeholder="Enter the day..." autocomplete="off">
                 </div>
@@ -202,10 +223,10 @@
 
         <div id="step-3" class="step-container">
             <div class="glass-card">
-                <h2>Wait a second...</h2>
-                <p>Before we proceed to the actual gift... Are you truly excited for this?</p>
+                <h2>Promise me one thing.</h2>
+                <p>Don't rush.<br><br>Take your time.<br><br>This took a while to make.</p>
                 <div class="btn-row">
-                    <button id="yesBtnTease">YES!</button>
+                    <button id="yesBtnTease">I promise</button>
                     <button id="noBtn">No</button>
                 </div>
             </div>
@@ -215,7 +236,7 @@
             <div class="glass-card">
                 <h2>Choose a Box 🎁</h2>
                 <p>The best surprises aren't always in the first box. You'll need to open these to find what you're really looking for.</p>
-                <div id="box-feedback" style="min-height: 20px; margin-bottom: 25px; color: #d4af37; font-size: 14px; font-weight: 500;"></div>
+                <div id="box-feedback" style="min-height: 40px; margin-bottom: 25px; color: #d4af37; font-size: 14px; font-weight: 500; line-height: 1.5;"></div>
                 
                 <div style="margin-bottom: 20px;">
                     <div class="gift-box" onclick="openBox(this)">🎁</div>
@@ -229,27 +250,27 @@
 
         <div id="step-5" class="step-container" style="position: relative;">
             <div class="glass-card" style="max-height: 85dvh; overflow-y: auto; z-index: 10;">
-                <h1 style="font-size: 24px;">Today's main character has officially arrived. Happy Birthday! 🎉</h1>
+                <h1 style="font-size: 26px; margin-bottom: 10px;">Happy Birthday,<br>Siena.</h1>
+                <p style="color: #d4af37; font-size: 14px; margin-bottom: 25px;">For the next few minutes,<br>this little website belongs entirely to you.</p>
                 
                 <div class="car-container">
                     <img src="mcqueen.jpg" id="mcqueenImg" class="car-image drive-in" alt="Lightning McQueen">
-                    <div class="car-title mcqueen-text" id="mcqueenTitle">Lightning McQueen</div>
+                    <div class="car-title mcqueen-text" id="mcqueenTitle">Special Guest #1</div>
                     <p class="car-quote">"Ka-chow! Hope your day is lightning fast!"</p>
                 </div>
 
                 <div class="car-container">
                     <img src="doc.jpg" class="car-image" alt="Doc Hudson">
-                    <div class="car-title doc-text">Fabulous Hudson Hornet</div>
+                    <div class="car-title doc-text">Special Guest #2</div>
                     <p class="car-quote">"The Doc says: Have a legendary birthday."</p>
                 </div>
                 
                 <div class="personal-message">
-                    <p>To someone who deserves a great day,</p>
-                    <p>I wanted to do something a little different this year. Instead of just sending a standard text, I coded this entire digital experience from scratch just for you.</p>
-                    <div class="signature">
-                        — M. Ertaza<br>
-                        <span style="font-size: 11px; opacity: 0.6; font-style: italic;">The person responsible for all the buttons you clicked.</span>
-                    </div>
+                    <p>You once became a friend from the other side of the world.</p>
+                    <p>Australia and Pakistan are pretty far apart.<br>Yet somehow a browser tab makes that distance feel much smaller.</p>
+                    <p>I couldn't wrap a present.<br>I couldn't hand you a birthday card.<br>So I built one instead.</p>
+                    <p>Every button...<br>every animation...<br>every bug I fixed...<br>every time something broke and I had to rebuild it...<br>eventually became this.</p>
+                    <div class="signature">— Ertaza</div>
                 </div>
                 
                 <button id="impossibleContinueBtn" style="margin-top: 15px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">Continue</button>
@@ -259,8 +280,8 @@
 
         <div id="step-6" class="step-container">
             <div class="glass-card">
-                <h2>Make a Wish!</h2>
-                <p id="cakeInstruction">One wish. No pressure. Blow out the candles when you're ready.</p>
+                <h2>Make a wish</h2>
+                <p id="cakeInstruction">Close your eyes.<br><br>Think of one thing.<br><br>Don't tell anyone.<br><br>Now blow out the candles.</p>
                 
                 <div class="cake-stage" id="cakeStage">
                     <svg width="240" height="200" viewBox="0 0 240 200" id="theCake">
@@ -304,19 +325,19 @@
 
         <div id="step-7" class="step-container">
             <div class="glass-card">
-                <h2>Be honest...</h2>
-                <p>Was it worth all those buttons?</p>
+                <h2>One last question.</h2>
+                <p>Did I manage to make you smile?</p>
                 <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <button onclick="triggerFinale()">Yes</button>
-                    <button onclick="triggerFinale()">Absolutely Yes</button>
+                    <button onclick="triggerFinale()">Yes 🙂</button>
+                    <button onclick="triggerFinale()">Definitely 😊</button>
                 </div>
             </div>
         </div>
 
         <div id="step-8" class="step-container">
             <div class="glass-card">
-                <h1 style="font-size: 24px;">End of experience. Beginning of another great year. 🎉</h1>
-                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">Every line of code on this page was written with one goal—to make you smile today. I hope this little surprise made your birthday a bit more memorable. Wishing you happiness, success, and countless wonderful moments in the year ahead.</p>
+                <h1 style="font-size: 24px; margin-bottom: 15px;">The website ends here.<br>The birthday doesn't. 🎉</h1>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 25px;">I hope this year brings you more reasons to laugh, more reasons to be proud of yourself, and plenty of ordinary days that quietly become your favourite memories.<br><br>Happy Birthday, Siena.<br><br>Take care of yourself.</p>
                 
                 <div style="background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <p style="font-size: 13px; margin-top: 0; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Send a secret message to the developer:</p>
@@ -346,9 +367,31 @@
     </div>
 
     <script>
-        console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tEngineered by M. Ertaza\n\n", "color: #050505; background: #d4af37; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
+        console.log("%c\n\n\tHello, curious developer.\n\n\tIf you're reading this, you're either inspecting the code\n\tor trying to find hidden secrets.\n\n\tBoth are acceptable.\n\n\tMade for Siena. Built by Ertaza.\n\n", "color: #050505; background: #d4af37; font-size: 14px; padding: 20px; border-radius: 10px; font-family: monospace; font-weight: bold;");
 
         let securityUnlocked = false; let boxesOpenedCount = 0; let allBoxesOpened = false; let isCakeSliced = false;
+
+        // --- AUSTRALIA EASTER EGG LOGIC ---
+        let bgClicks = 0;
+        let bgClickTimer;
+        document.addEventListener('click', (e) => {
+            // Ignore if clicking on interactive elements
+            if (e.target.closest('button, input, .gift-box, .envelope-wrapper, .car-image, .glass-card, form, textarea')) return;
+            
+            bgClicks++;
+            clearTimeout(bgClickTimer);
+            bgClickTimer = setTimeout(() => { bgClicks = 0; }, 2000); 
+            
+            if (bgClicks === 7) {
+                const ausOverlay = document.getElementById('aus-overlay');
+                if(ausOverlay) {
+                    ausOverlay.classList.add('show');
+                    initAudio(); playTone(600, 'sine', 0.5, 0.1);
+                }
+                bgClicks = 0;
+            }
+        });
+        // ----------------------------------
 
         window.addEventListener("deviceorientation", (e) => {
             const cards = document.querySelectorAll('.glass-card');
@@ -385,8 +428,9 @@
             setTimeout(() => playTone(600, 'square', 0.08, 0.1), 100);
 
             this.classList.add('open');
+            document.getElementById('envInstruction').innerHTML = "Welcome.<br><br>No one else was supposed to open this.<br><br>Just you.";
             
-            setTimeout(() => { goToStep('step-1'); }, 1200); 
+            setTimeout(() => { goToStep('step-1'); }, 1800); 
         });
 
         document.getElementById("startBtn").addEventListener("click", (e) => { e.preventDefault(); goToStep('step-2'); });
@@ -425,9 +469,9 @@
         document.getElementById("yesBtnTease").addEventListener("click", function(e) {
             e.preventDefault(); initAudio(); yesClickCount++;
             playTone(400 + (yesClickCount * 150), 'sine', 0.1, 0.05);
-            if (yesClickCount === 1) { this.innerText = "Are you sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
-            else if (yesClickCount === 2) { this.innerText = "Like, 100% sure?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
-            else { yesClickCount = 0; this.innerText = "YES!"; goToStep('step-4'); }
+            if (yesClickCount === 1) { this.innerText = "Really?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else if (yesClickCount === 2) { this.innerText = "Really really?"; this.style.transform = "scale(0.95)"; setTimeout(() => this.style.transform = "scale(1)", 150); } 
+            else { yesClickCount = 0; this.innerText = "I promise"; goToStep('step-4'); }
         });
 
         const noBtn = document.getElementById('noBtn');
@@ -446,10 +490,10 @@
             el.style.pointerEvents = 'none'; el.style.transform = 'scale(0.8)';
             const feedback = document.getElementById('box-feedback');
             
-            if (boxesOpenedCount === 1) { feedback.innerText = "You found: +1,000,000 Birthday Points! 🌟"; el.innerText = "🌟"; }
-            else if (boxesOpenedCount === 2) { feedback.innerText = "You found: A Lightning McQueen Sticker! ⚡"; el.innerText = "⚡"; }
+            if (boxesOpenedCount === 1) { feedback.innerHTML = "⭐ You unlocked:<br>One good birthday wish."; el.innerText = "⭐"; }
+            else if (boxesOpenedCount === 2) { feedback.innerHTML = "🌸 You found:<br>One extra smile."; el.innerText = "🌸"; }
             else if (boxesOpenedCount === 3) {
-                feedback.innerText = "You found the real surprise! 🎉"; el.innerText = "🎉";
+                feedback.innerHTML = "You found what I actually wanted to give you."; el.innerText = "🎁";
                 allBoxesOpened = true; 
                 document.getElementById('boxContinueBtn').classList.remove('hidden'); playSuccessMelody();
             }
@@ -459,7 +503,7 @@
 
         function spawnBalloons() {
             const container = document.getElementById('balloonContainer');
-            const popMessages = ["+100 Happiness", "+50 Birthday Luck", "+1 Legendary Memory", "Achievement Unlocked: Balloon Menace", "+3 Ka-Chows"];
+            const popMessages = ["+1 Good Vibe", "+20 Birthday Energy", "+100 Smile Points", "Today's Main Character", "Australian Certified Birthday", "Level Up!", "Another year unlocked"];
             
             for(let i=0; i<6; i++) {
                 let balloon = document.createElement('div');
@@ -598,7 +642,8 @@
             const secretScreen = document.getElementById('step-9');
             secretScreen.classList.add('active-ending');
 
-            const textToType = "For a few minutes today, I wanted the internet to be about you.\n\nEvery line of code...\nEvery animation...\nEvery interaction...\n\nWas written just to make you smile today.\n\nHappy Birthday ❤️";
+            const textToType = "For a few minutes today,\nI wanted one tiny corner of the internet\nto belong only to you.\n\nYou reached the end.\nWhich means...\nevery button worked.\nevery animation played.\nevery little idea made it here.\n\nIt wasn't perfect while I was making it.\nIt broke.\nA lot.\n\nBut I kept fixing it.\nBecause I wanted this page to exist.\nFor one person.\n\nHappy Birthday, Siena.";
+            
             const target = document.getElementById('typewriter');
             let i = 0;
             
