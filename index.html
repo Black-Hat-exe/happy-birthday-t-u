@@ -14,16 +14,12 @@
     <meta name="theme-color" content="#0a0310">
     <title>Siena's Little Corner of the Internet ✨</title>
 
-    <!-- Invisible Read Receipt Script -->
     <script data-goatcounter="https://ertaza-siena.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-
-    <!-- Three.js Core & OrbitControls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <link rel="preload" href="mcqueen.jpg" as="image">
     <link rel="preload" href="doc.jpg" as="image">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -75,12 +71,10 @@
         .step-container.active { display: flex; animation: silkenFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes silkenFadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* TIME VAULT STYLES */
         .vault-timer { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: var(--accent); margin: 20px 0; font-family: monospace; text-shadow: 0 0 15px var(--accent-glow); }
         .vault-lock { font-size: 40px; margin-bottom: 10px; cursor: pointer; transition: transform 0.2s; }
         .vault-lock:active { transform: scale(0.9); }
 
-        /* WAX SEAL ENVELOPE CSS */
         .envelope-wrapper { position: relative; width: 320px; height: 220px; perspective: 1200px; cursor: pointer; filter: drop-shadow(0 15px 35px rgba(182, 49, 133, 0.3)); animation: floatEnv 4s ease-in-out infinite; }
         @keyframes floatEnv { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
         .envelope-body { position: absolute; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.05); border-radius: 12px; backdrop-filter: blur(15px); z-index: 1; overflow: hidden; }
@@ -143,9 +137,8 @@
         .pop-text { position: absolute; color: var(--accent); font-weight: bold; font-size: 14px; pointer-events: none; animation: floatAway 1s forwards; z-index: 60; }
         @keyframes floatAway { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
 
-        /* THE FLAWLESS 3D CAKE CANVAS */
         .cake-stage { position: relative; width: 100%; height: 260px; display: flex; justify-content: center; align-items: center; margin: 20px 0; cursor: crosshair; touch-action: none; overflow: visible; }
-        #cake3DCanvas { width: 100%; height: 100%; outline: none; touch-action: none; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.5)); }
+        #cake3DCanvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.5)); }
         
         .swipe-hint { font-size: 12px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; animation: pulseHint 1.5s infinite; position: absolute; bottom: -10px; width: 100%; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
         @keyframes pulseHint { 0% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(5px); } 100% { opacity: 0.3; transform: translateY(0); } }
@@ -294,7 +287,6 @@
                 <h2>Make a wish</h2>
                 <p id="cakeInstruction">Close your eyes.<br><br>Think of one thing.<br><br>Don't tell anyone.<br><br>Now blow out the candles.</p>
                 
-                <!-- NEW LAZY-LOADED 3D CAKE -->
                 <div class="cake-stage" id="cakeStage">
                     <canvas id="cake3DCanvas"></canvas>
                     <div class="swipe-hint" id="swipeHint">↓ Swipe down to slice ↓</div>
@@ -491,80 +483,75 @@
 
         function initCake3D() {
             const cCanvas = document.getElementById('cake3DCanvas');
-            // Hardcode fallback dimensions to prevent the 0x0 display:none bug
+            
+            // Measure actual rendered size, fallback to static dimension if 0
             const w = cCanvas.parentElement.clientWidth || 280;
             const h = cCanvas.parentElement.clientHeight || 260;
+            cCanvas.style.width = w + 'px';
+            cCanvas.style.height = h + 'px';
             
             cScene = new THREE.Scene();
             cCamera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
-            cCamera.position.set(0, 5, 8); cCamera.lookAt(0, 0, 0);
+            cCamera.position.set(0, 4, 7); 
+            cCamera.lookAt(0, 0, 0);
             
             cRenderer = new THREE.WebGLRenderer({ canvas: cCanvas, alpha: true, antialias: true });
-            cRenderer.setSize(w, h);
+            cRenderer.setSize(w, h, false);
             cRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
             const cAmbient = new THREE.AmbientLight(0xffffff, 0.8); cScene.add(cAmbient);
             const cDirLight = new THREE.DirectionalLight(0xffffff, 0.6); 
             cDirLight.position.set(5, 10, 5); cScene.add(cDirLight);
 
-            // Premium Soft Materials
             const frostingMat = new THREE.MeshStandardMaterial({ color: 0xa18cd1, roughness: 0.6 });
             const plateMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, transparent: true, opacity: 0.6 });
 
-            // Glass Plate
             const plate = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.1, 32), plateMat);
             plate.position.y = -0.55; cScene.add(plate);
 
-            // Extrude Settings for smooth, beautiful beveled edges
-            const extrudeSettings = { depth: 1.2, bevelEnabled: true, bevelSegments: 4, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 };
+            const extrudeSettings = { depth: 1.2, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 };
             
-            // The Math for the perfect 🍰 45-degree wedge
             const sliceShape = new THREE.Shape();
-            sliceShape.moveTo(0, 0); sliceShape.arc(0, 0, 1.6, 0, Math.PI / 4, false); sliceShape.lineTo(0, 0);
+            sliceShape.moveTo(0, 0); sliceShape.arc(0, 0, 1.5, 0, Math.PI / 4, false); sliceShape.lineTo(0, 0);
             const sliceGeo = new THREE.ExtrudeGeometry(sliceShape, extrudeSettings);
-            sliceGeo.rotateX(-Math.PI / 2); // Lay it flat
+            sliceGeo.rotateX(-Math.PI / 2); 
+            sliceGeo.translate(0, -0.6, 0);
 
-            // The Math for the Main Cake
             const mainShape = new THREE.Shape();
-            mainShape.moveTo(0, 0); mainShape.arc(0, 0, 1.6, Math.PI / 4, Math.PI * 2, false); mainShape.lineTo(0, 0);
+            mainShape.moveTo(0, 0); mainShape.arc(0, 0, 1.5, Math.PI / 4, Math.PI * 2, false); mainShape.lineTo(0, 0);
             const mainGeo = new THREE.ExtrudeGeometry(mainShape, extrudeSettings);
             mainGeo.rotateX(-Math.PI / 2);
+            mainGeo.translate(0, -0.6, 0);
 
-            // Build the Mesh Groups
             mainCakeGroup = new THREE.Mesh(mainGeo, frostingMat);
             sliceGroup = new THREE.Group();
             const sliceMesh = new THREE.Mesh(sliceGeo, frostingMat);
             sliceGroup.add(sliceMesh);
             
-            // The 3D Candle on the slice
             const candle = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.6, 16), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-            candle.position.set(0.8, 1.5, 0.4); 
+            candle.position.set(0.8, 0.9, 0.4); 
             sliceGroup.add(candle);
 
-            // The 3D Flame Particle
             cFlame = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffaa00 }));
-            cFlame.position.set(0.8, 1.9, 0.4);
+            cFlame.position.set(0.8, 1.3, 0.4);
             cFlameLight = new THREE.PointLight(0xffaa00, 1.5, 5);
             cFlame.add(cFlameLight);
             sliceGroup.add(cFlame);
 
             cScene.add(mainCakeGroup); cScene.add(sliceGroup);
 
-            // The Sleek Silver Knife
             knifeGroup = new THREE.Group();
             const blade = new THREE.Mesh(new THREE.BoxGeometry(0.02, 1.8, 0.4), new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.8, roughness: 0.2 }));
             const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.6, 16), new THREE.MeshStandardMaterial({ color: 0x111111 }));
             handle.position.y = 1.2; blade.position.y = 0;
             knifeGroup.add(blade); knifeGroup.add(handle);
-            knifeGroup.position.set(0.8, 5, 0.4); // Start strictly above the screen
-            knifeGroup.rotation.x = Math.PI / 2; // Point blade strictly down
-            knifeGroup.rotation.z = Math.PI / 8; // Align with the slice gap
+            knifeGroup.position.set(0.8, 5, 0.4); 
+            knifeGroup.rotation.x = Math.PI / 2; 
+            knifeGroup.rotation.z = Math.PI / 8; 
             knifeGroup.visible = false;
             cScene.add(knifeGroup);
 
-            // Turn cake slightly to show off the wedge
             cScene.rotation.y = -Math.PI / 8;
-
             cakeActive = true;
             animateCake();
         }
@@ -572,22 +559,17 @@
         function animateCake() {
             if(!cakeActive) return; requestAnimationFrame(animateCake);
             
-            // Flicker the flame
             if(cFlame.visible) {
                 cFlame.scale.setScalar(1 + Math.random() * 0.15);
                 cFlameLight.intensity = 1.2 + Math.random() * 0.5;
             }
 
-            // Slicing Animation
             if(isSlicingAnim) {
-                // Slice physically slides forward
-                if(sliceGroup.position.x < 0.8) sliceGroup.position.x += 0.03;
-                if(sliceGroup.position.z < 0.8) sliceGroup.position.z += 0.03;
-                // Knife drops down and through
+                if(sliceGroup.position.x < 0.8) sliceGroup.position.x += 0.02;
+                if(sliceGroup.position.z < 0.8) sliceGroup.position.z += 0.02;
                 if(knifeGroup.position.y > -2) knifeGroup.position.y -= 0.15;
-                if(knifeGroup.position.y <= -2) knifeGroup.visible = false; // Kill the knife!
+                if(knifeGroup.position.y <= -2) knifeGroup.visible = false; 
             }
-
             cRenderer.render(cScene, cCamera);
         }
 
@@ -609,14 +591,15 @@
             initAudio(); playTone(440, 'sine', 0.08, 0.03); 
             const steps = document.querySelectorAll('.step-container'); steps.forEach(step => step.classList.remove('active'));
             const nextStep = document.getElementById(stepId);
+            
             if (nextStep) { 
                 nextStep.classList.add('active'); 
                 if (stepId === 'step-2') { setTimeout(() => { const inputField = document.getElementById('secretInput'); if (inputField) inputField.focus(); }, 50); } 
                 
-                // LAZY LOAD THE 3D CAKE ONLY WHEN SCREEN IS VISIBLE
+                // WAIT 150ms for CSS to apply before measuring the 3D Canvas
                 if (stepId === 'step-6' && !cakeInitialized) {
-                    initCake3D();
                     cakeInitialized = true;
+                    setTimeout(() => { initCake3D(); }, 150);
                 }
             }
         }
@@ -661,7 +644,12 @@
         function goToReveal() { 
             if(!allBoxesOpened) return; crystalActive = false; playTone(1000, 'square', 0.1);
             document.getElementById('crystalCanvas').style.transform = "scale(1.5)"; document.getElementById('crystalCanvas').style.opacity = "0";
-            setTimeout(() => { goToStep('step-5'); setTimeout(spawnBalloons, 500); }, 300);
+            
+            // DELETE CRYSTAL CONTEXT TO PREVENT MOBILE MEMORY CRASH
+            setTimeout(() => { 
+                if(crystalRenderer) { crystalRenderer.dispose(); crystalRenderer.forceContextLoss(); }
+                goToStep('step-5'); setTimeout(spawnBalloons, 500); 
+            }, 300);
         }
 
         function spawnBalloons() {
@@ -724,11 +712,8 @@
         let candlesBlown = false; let cakeCut = false;
         function blowOutCandles() {
             if (candlesBlown) return; initAudio(); playTone(300, 'sine', 0.4, 0.05); setTimeout(() => playTone(200, 'sine', 0.4, 0.03), 100);
-            
-            // Extinguish flame and summon knife
             if(cFlame) { cFlame.visible = false; cFlameLight.intensity = 0; }
             if(knifeGroup) { knifeGroup.visible = true; }
-
             candlesBlown = true;
             document.getElementById('blowControls').classList.add('hidden'); document.getElementById('cakeInstruction').innerText = "Perfect. Now swipe down to slice!"; document.getElementById('swipeHint').classList.add('visible');
             if (micStream) micStream.getTracks().forEach(track => track.stop()); 
@@ -744,21 +729,13 @@
             if (!candlesBlown || cakeCut) return; 
             let currentY = e.touches ? e.touches[0].clientY : e.clientY;
             let delta = currentY - startY;
-            
-            // Map physical swipe to knife dropping
-            if(delta > 0 && knifeGroup) {
-                // Starts at Y = 5, drops down based on finger drag
-                knifeGroup.position.y = 5 - (delta * 0.03);
-            }
+            if(delta > 0 && knifeGroup) { knifeGroup.position.y = 5 - (delta * 0.03); }
             if (delta > 150) cutCake(); 
         }
 
         function cutCake() {
             cakeCut = true; isCakeSliced = true; document.getElementById('swipeHint').classList.remove('visible');
-            playTone(1200, 'triangle', 0.1, 0.05); 
-            
-            isSlicingAnim = true; // Triggers the slide-out in the render loop
-
+            playTone(1200, 'triangle', 0.1, 0.05); isSlicingAnim = true; 
             document.getElementById('cakeInstruction').innerText = "Looks delicious!";
             setTimeout(() => { document.getElementById('proceedToFinalBtn').classList.remove('hidden'); playSuccessMelody(); }, 800);
         }
